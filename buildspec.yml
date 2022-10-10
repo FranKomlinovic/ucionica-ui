@@ -1,7 +1,7 @@
 version: 0.2
 env:
   variables:
-    APP_NAME: "Ucionica"
+    APP_NAME: "ucionica"
 phases:
   install:
     runtime-versions:
