@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ucionica-dev-143751-authRole",
+      "UnauthRoleArn": "arn:aws:iam::837397013660:role/amplify-ucionica-dev-143751-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::837397013660:role/amplify-ucionica-dev-143751-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-ucionica-dev-143751-deployment",
+      "UnauthRoleName": "amplify-ucionica-dev-143751-unauthRole",
+      "StackName": "amplify-ucionica-dev-143751",
+      "StackId": "arn:aws:cloudformation:eu-central-1:837397013660:stack/amplify-ucionica-dev-143751/5bb4ae30-4898-11ed-9067-0608aa09db90",
+      "AmplifyAppId": "d3dbs2dtqe7rxc"
+    },
+    "categories": {
+      "auth": {
+        "ucionica04f8a13e": {}
+      }
+    }
+  }
+}
