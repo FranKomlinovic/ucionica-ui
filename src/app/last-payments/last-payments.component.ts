@@ -34,9 +34,9 @@ export class LastPaymentsComponent implements OnInit {
   }
 
   deletePayment(id: string) {
-    this.http.get<PaymentsModel[]>("https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod/delete-payment/" + id)
+    this.http.delete<any>("https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod/delete-payment/" + id)
       .subscribe((data) => {
-          this.lastPayments = data;
+          console.log(data);
         }
       );
   }

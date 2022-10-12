@@ -1,6 +1,6 @@
 export interface PaymentsModel {
+  id: string;
   user: string;
-  userId: string;
   time: string;
   amount: string;
   picture: string;
