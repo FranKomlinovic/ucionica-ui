@@ -1,9 +1,25 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {AmplifyAuthenticatorModule} from '@aws-amplify/ui-angular';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {Amplify} from "aws-amplify";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LastPaymentsComponent} from './last-payments/last-payments.component';
+import {HttpClientModule} from "@angular/common/http";
+import {RouterLinkWithHref, RouterOutlet} from "@angular/router";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {TieredMenuModule} from "primeng/tieredmenu";
+import {UcionicaMenuComponent} from './ucionica-menu/ucionica-menu.component';
+import {MenuModule} from "primeng/menu";
+import {RippleModule} from "primeng/ripple";
+import {ButtonModule} from "primeng/button";
+import {CardModule} from "primeng/card";
+import {DialogModule} from "primeng/dialog";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {InputNumberModule} from "primeng/inputnumber";
+import {CalendarModule} from "primeng/calendar";
+import {ToastModule} from "primeng/toast";
 
 Amplify.configure({
   aws_cognito_region: 'eu-central-1', // (required) - Region where Amazon Cognito project was created
@@ -13,9 +29,10 @@ Amplify.configure({
 });
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, AmplifyAuthenticatorModule],
+  declarations: [AppComponent, LastPaymentsComponent, UcionicaMenuComponent],
+  imports: [BrowserModule, HttpClientModule, AmplifyAuthenticatorModule, BrowserAnimationsModule, RouterLinkWithHref, RouterOutlet, ReactiveFormsModule, TieredMenuModule, MenuModule, RippleModule, ButtonModule, CardModule, DialogModule, AutoCompleteModule, FormsModule, InputNumberModule, CalendarModule, ToastModule],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,0 +1,48 @@
+<h1>Posljednje uplate</h1>
+
+<p-button (click)="showBasicDialog()" icon="pi pi-external-link" label="Dodaj uplatu"></p-button>
+<p-dialog header="Dodaj uplatu" [(visible)]="displayDialog">
+  <h5>Korisnik</h5>
+  <p-autoComplete [(ngModel)]="selectedUserAdvanced" [suggestions]="filteredUsers"
+                  (completeMethod)="filterCountry($event)" field="username" [dropdown]="true">
+    <ng-template let-user pTemplate="item">
+      <div>
+        <div>{{user.username}}</div>
+      </div>
+    </ng-template>
+  </p-autoComplete>
+
+  <h5>Iznos</h5>
+  <p-inputNumber [(ngModel)]="amount" mode="currency" currency="EUR" locale="de-DE">
+  </p-inputNumber>
+
+  <h5>Datum</h5>
+  <p-calendar  [(ngModel)]="date"  dateFormat="dd.mm.yy"></p-calendar>
+
+  <h5>Vrijeme</h5>
+  <p-calendar  [(ngModel)]="time"  [timeOnly]="true"></p-calendar>
+
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-plus" (click)="savePayment()" label="Kreiraj"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
+
+<div class="grid">
+  <div *ngFor="let payment of lastPayments">
+    <div class="col flex align-items-center justify-content-center m-3">
+      <p-card header="{{payment.user}}" subheader="{{payment.time}}" [style]="{width: '230px', height: '320px'} "
+              styleClass="p-card-shadow">
+        <ng-template pTemplate="header">
+          <img alt="Card" src="{{payment.picture}}">
+        </ng-template>
+        <div>
+          {{payment.amount}}
+          <p-button icon="pi pi-trash" styleClass="p-button-danger" (click)="deletePayment(payment.userId)"></p-button>
+        </div>
+      </p-card>
+    </div>
+
+  </div>
+</div>
