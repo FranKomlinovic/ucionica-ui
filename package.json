@@ -19,7 +19,6 @@
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
     "@aws-amplify/ui-angular": "^2.4.23",
-    "@aws-sdk/client-lambda": "^3.186.0",
     "aws-amplify": "^4.3.37",
     "aws-sdk": "^2.1231.0",
     "primeflex": "^3.2.1",

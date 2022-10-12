@@ -15,7 +15,7 @@ import {PaymentCreate} from "../models/PaymentCreate";
 export class LastPaymentsComponent implements OnInit {
 
   AWS = require('aws-sdk');
-  cognito = new this.AWS.CognitoIdentityServiceProvider({region: "eu-central-1"});
+  cognito = this.AWS.CognitoIdentityServiceProvider({region: "eu-central-1"});
   lastPayments: PaymentsModel[] = [];
   displayDialog: boolean = false;
   selectedUserAdvanced: UserModel | undefined;
