@@ -35,10 +35,16 @@ export class LastPaymentsComponent implements OnInit {
 
   deletePayment(id: string) {
     this.http.delete<any>("https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod/delete-payment/" + id)
-      .subscribe((data) => {
-          console.log(data);
+      .subscribe({
+        next: data => {
+          this.getAllPayments();
+          this.showSuccess("Uspješno ste obrisali uplatu");
+        },
+        error: error => {
+          this.showSuccess("Vjerojatno ste obrisali upravu, fixaj ovo");
+          this.getAllPayments();
         }
-      );
+      });
   }
 
   ngOnInit(): void {
