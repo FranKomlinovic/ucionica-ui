@@ -4,8 +4,10 @@
     let-user="user"
     let-signOut="signOut"
   >
-    <p-button style="float: right" (click)="signOut()" icon="pi pi-sign-out"  styleClass="p-button-danger" label="Odjavi se"></p-button>
+
     <app-ucionica-menu></app-ucionica-menu>
+    <p-button style="float: right" (click)="signOut()" icon="pi pi-sign-out" styleClass="p-button-danger"
+              label="Odjavi se"></p-button>
 
     <app-last-payments></app-last-payments>
   </ng-template>

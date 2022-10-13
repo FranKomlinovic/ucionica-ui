@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {PaymentsModel} from "../models/payments-model.model";
-import {MessageService, PrimeNGConfig} from "primeng/api";
+import {ConfirmationService, MessageService, PrimeNGConfig} from "primeng/api";
 import {UserModel} from "../models/user.model";
 import {MessageResponse} from "../models/MessageResponse";
 import {PaymentCreate} from "../models/PaymentCreate";
@@ -16,6 +16,7 @@ export class LastPaymentsComponent implements OnInit {
 
   lastPayments: PaymentsModel[] = [];
   displayDialog: boolean = false;
+  spinnerOn: boolean = false;
   selectedUserAdvanced: UserModel | undefined;
   amount: number = 100;
   date: Date = new Date();
@@ -26,32 +27,39 @@ export class LastPaymentsComponent implements OnInit {
 
 
   getAllPayments() {
+    this.spinnerOn = true;
     this.http.get<PaymentsModel[]>("https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod/get-payments")
       .subscribe((data) => {
           this.lastPayments = data;
+          this.spinnerOn = false;
         }
       );
   }
 
   deletePayment(id: string) {
+    this.spinnerOn = true;
     this.http.delete<any>("https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod/delete-payment/" + id)
       .subscribe({
-        next: data => {
+        next: () => {
           this.getAllPayments();
           this.showSuccess("Uspješno ste obrisali uplatu");
+          this.spinnerOn = false;
         },
-        error: error => {
+        error: () => {
           this.showSuccess("Vjerojatno ste obrisali upravu, fixaj ovo");
           this.getAllPayments();
+          this.spinnerOn = false;
         }
       });
   }
 
   ngOnInit(): void {
+    this.spinnerOn = true;
     this.getAllPayments();
     this.http.get<UserModel[]>("https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod/get-users")
       .subscribe((data) => {
           this.users = data;
+          this.spinnerOn = false;
         }
       );
     this.primengConfig.ripple = true;
@@ -60,11 +68,24 @@ export class LastPaymentsComponent implements OnInit {
   }
 
 
-  constructor(private http: HttpClient, private primengConfig: PrimeNGConfig, private messageService: MessageService) {
+  constructor(private http: HttpClient, private primengConfig: PrimeNGConfig, private messageService: MessageService, private confirmationService: ConfirmationService) {
+  }
+
+  confirm(id: string) {
+    this.confirmationService.confirm({
+      message: 'Jeste li sigurni da želite obrisati uplatu?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deletePayment(id);
+      },
+      reject: () => {
+        this.getAllPayments();
+      }
+    });
   }
 
   savePayment() {
-
+    this.spinnerOn = true;
     if (this.selectedUserAdvanced === undefined) {
       return;
     }
@@ -74,6 +95,7 @@ export class LastPaymentsComponent implements OnInit {
       this.showSuccess(response.message);
       this.getAllPayments();
       this.displayDialog = false;
+      this.spinnerOn = false;
     });
 
   }

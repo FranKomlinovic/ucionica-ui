@@ -13,14 +13,8 @@
   </p-autoComplete>
 
   <h5>Iznos</h5>
-  <p-inputNumber [(ngModel)]="amount" mode="currency" currency="EUR" locale="de-DE">
+  <p-inputNumber [(ngModel)]="amount" mode="currency" currency="HRK" locale="de-DE">
   </p-inputNumber>
-
-  <h5>Datum</h5>
-  <p-calendar  [(ngModel)]="date"  dateFormat="dd.mm.yy"></p-calendar>
-
-  <h5>Vrijeme</h5>
-  <p-calendar  [(ngModel)]="time"  [timeOnly]="true"></p-calendar>
 
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-plus" (click)="savePayment()" label="Kreiraj"></p-button>
@@ -29,18 +23,26 @@
 
 <p-toast></p-toast>
 
+<div class="progress-spinner" *ngIf="spinnerOn">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+
 <div class="grid">
   <div *ngFor="let payment of lastPayments">
     <div class="col flex align-items-center justify-content-center m-3">
-      <p-card header="{{payment.user}}" subheader="{{payment.time}}" [style]="{width: '230px', height: '320px'} "
+      <p-card header="{{payment.user}}" subheader="{{payment.time}}" [style]="{width: '230px'} "
               styleClass="p-card-shadow">
         <ng-template pTemplate="header">
           <img alt="Card" src="{{payment.picture}}">
         </ng-template>
         <div>
           {{payment.amount}}
-          <p-button icon="pi pi-trash" styleClass="p-button-danger" (click)="deletePayment(payment.id)"></p-button>
         </div>
+        <p-confirmDialog></p-confirmDialog>
+        <ng-template pTemplate="footer">
+          <p-button icon="pi pi-trash" styleClass="p-button-danger" (click)="confirm(payment.id)">
+          </p-button>
+        </ng-template>
       </p-card>
     </div>
 
