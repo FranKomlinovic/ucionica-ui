@@ -16,10 +16,12 @@ export class UcionicaMenuComponent implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'Dejstva', icon: 'pi pi-fw pi-plus'
+        label: 'Dejstva', icon: 'pi pi-fw pi-fast-forward', routerLink: '/'
       },
-      {label: 'Uplate', icon: 'pi pi-fw pi-download'},
-      {label: 'Dužnici', icon: 'pi pi-fw pi-refresh'}
+      {label: 'Uplate', icon: 'pi pi-fw pi-euro', routerLink: '/payments'},
+      {label: 'Dužnici', icon: 'pi pi-fw pi-credit-card', routerLink: '/debtor'},
+      {label: 'Korisnici', icon: 'pi pi-fw pi-id-card', routerLink: '/users'},
+
     ];
   }
 
