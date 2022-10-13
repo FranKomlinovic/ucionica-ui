@@ -43,7 +43,7 @@ export class CurrentStaysComponent implements OnInit {
       }
     );
 
-    this.backendService.getNonStayUsers().subscribe((data) => {
+    this.backendService.getUsers().subscribe((data) => {
         this.users = data;
         this.spinnerOn = false;
         this.selectedUserAdvanced = undefined;
