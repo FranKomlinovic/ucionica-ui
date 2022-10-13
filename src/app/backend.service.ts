@@ -36,7 +36,7 @@ export class BackendService {
   }
 
   getAllStays(): Observable<CurrentStayModel[]> {
-    return this.http.get<CurrentStayModel[]>(this.rootUrl + "/get-current-stays");
+    return this.http.get<CurrentStayModel[]>(this.rootUrl + "/stays");
   }
 
   getNonStayUsers(): Observable<UserModel[]> {
@@ -45,7 +45,10 @@ export class BackendService {
 
   postStay(userId: string, date: Date): Observable<MessageResponse> {
     return this.http.post<MessageResponse>(this.rootUrl + "/evident-stay", new CreateStayModel(userId, date))
+  }
 
+  endAllStays(): Observable<MessageResponse> {
+    return this.http.get<MessageResponse>(this.rootUrl + "/end-current-stays");
   }
 
 }

@@ -60,6 +60,15 @@ export class CurrentStaysComponent implements OnInit {
     });
   }
 
+  endAllStays() {
+    this.spinnerOn = true;
+    this.backendService.endAllStays().pipe().subscribe(response => {
+      this.showSuccess(response.message);
+      this.getAllStays();
+      this.spinnerOn = false;
+    });
+  }
+
   saveStay() {
     this.spinnerOn = true;
     if (this.selectedUserAdvanced === undefined) {
@@ -69,7 +78,7 @@ export class CurrentStaysComponent implements OnInit {
     this.evidentStay(this.selectedUserAdvanced.id, this.date);
   }
 
-  confirm(id: string) {
+  confirmEndStay(id: string) {
     this.confirmationService.confirm({
       message: 'Jeste li sigurni da želite završiti dejstvo za ovog korisnika?',
       icon: 'pi pi-exclamation-triangle',
@@ -77,7 +86,21 @@ export class CurrentStaysComponent implements OnInit {
         this.evidentStay(id, new Date());
       },
       reject: () => {
-        this.getAllStays();
+        this.confirmationService.close()
+      }
+    });
+  }
+
+  confirmEndAllStays() {
+    this.confirmationService.confirm({
+      message: 'Jeste li sigurni da želite završiti dejstvo za sve korisnike?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.endAllStays();
+      },
+      reject: () => {
+        this.confirmationService.close()
+
       }
     });
   }
