@@ -4,8 +4,7 @@
     let-user="user"
     let-signOut="signOut"
   >
-
-    <app-ucionica-menu></app-ucionica-menu>
+    <app-ucionica-menu [userId]="user.username"></app-ucionica-menu>
     <p-button style="float: right" (click)="signOut()" icon="pi pi-sign-out" styleClass="p-button-danger"
               label="Odjavi se"></p-button>
 

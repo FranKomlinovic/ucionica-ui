@@ -7,6 +7,7 @@ import {MessageResponse} from "./models/MessageResponse";
 import {PaymentCreate} from "./models/PaymentCreate";
 import {CurrentStayModel} from "./models/CurrentStay.model";
 import {CreateStayModel} from "./models/CreateStay";
+import {HighestDebt} from "./models/HighestDebt";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class BackendService {
   staysUrl = this.rootUrl + "/stays";
   usersUrl = this.rootUrl + "/users";
   paymentsUrl = this.rootUrl + "/payments";
+  highestDebtUrl = this.rootUrl + "/users/highest-debt";
 
   constructor(private http: HttpClient) {
   }
@@ -40,6 +42,10 @@ export class BackendService {
 
   getAllStays(): Observable<CurrentStayModel[]> {
     return this.http.get<CurrentStayModel[]>(this.staysUrl);
+  }
+
+  getHighestDebt(): Observable<HighestDebt[]> {
+    return this.http.get<HighestDebt[]>(this.highestDebtUrl);
   }
 
   postStay(userId: string, date: Date): Observable<MessageResponse> {

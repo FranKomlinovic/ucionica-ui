@@ -25,6 +25,7 @@ import {ConfirmationService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import { AppRoutingModule } from './app-routing.module';
 import { CurrentStaysComponent } from './current-stays/current-stays.component';
+import { HighestDebtComponent } from './highest-debt/highest-debt.component';
 
 Amplify.configure({
   aws_cognito_region: 'eu-central-1', // (required) - Region where Amazon Cognito project was created
@@ -34,7 +35,7 @@ Amplify.configure({
 });
 
 @NgModule({
-  declarations: [AppComponent, LastPaymentsComponent, UcionicaMenuComponent, CurrentStaysComponent],
+  declarations: [AppComponent, LastPaymentsComponent, UcionicaMenuComponent, CurrentStaysComponent, HighestDebtComponent],
   imports: [BrowserModule, HttpClientModule, AmplifyAuthenticatorModule, BrowserAnimationsModule, RouterLinkWithHref, RouterOutlet, ReactiveFormsModule, TieredMenuModule, MenuModule, RippleModule, ButtonModule, CardModule, DialogModule, AutoCompleteModule, FormsModule, InputNumberModule, CalendarModule, ToastModule, ProgressSpinnerModule, ConfirmDialogModule, AppRoutingModule],
   providers: [ConfirmationService],
   bootstrap: [AppComponent],
