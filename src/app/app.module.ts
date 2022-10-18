@@ -26,16 +26,17 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import { AppRoutingModule } from './app-routing.module';
 import { CurrentStaysComponent } from './current-stays/current-stays.component';
 import { HighestDebtComponent } from './highest-debt/highest-debt.component';
+import { UserInfoComponent } from './user-info/user-info.component';
 
 Amplify.configure({
   aws_cognito_region: 'eu-central-1', // (required) - Region where Amazon Cognito project was created
-  aws_user_pools_id: 'eu-central-1_11B0dPaGy', // (optional) -  Amazon Cognito User Pool ID
-  aws_user_pools_web_client_id: '41j9f3clgq9hotur5r9n28o91t', // (optional) - Amazon Cognito App Client ID (App client secret needs to be disabled)
+  aws_user_pools_id: 'eu-central-1_zpNOTpJzD', // (optional) -  Amazon Cognito User Pool ID
+  aws_user_pools_web_client_id: '5abotfe77buga1l7kavuusjlfj', // (optional) - Amazon Cognito App Client ID (App client secret needs to be disabled)
   aws_mandatory_sign_in: 'enable' // (optional) - Users are not allowed to get the aws credentials unless they are signed in
 });
 
 @NgModule({
-  declarations: [AppComponent, LastPaymentsComponent, UcionicaMenuComponent, CurrentStaysComponent, HighestDebtComponent],
+  declarations: [AppComponent, LastPaymentsComponent, UcionicaMenuComponent, CurrentStaysComponent, HighestDebtComponent, UserInfoComponent],
   imports: [BrowserModule, HttpClientModule, AmplifyAuthenticatorModule, BrowserAnimationsModule, RouterLinkWithHref, RouterOutlet, ReactiveFormsModule, TieredMenuModule, MenuModule, RippleModule, ButtonModule, CardModule, DialogModule, AutoCompleteModule, FormsModule, InputNumberModule, CalendarModule, ToastModule, ProgressSpinnerModule, ConfirmDialogModule, AppRoutingModule],
   providers: [ConfirmationService],
   bootstrap: [AppComponent],

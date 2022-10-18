@@ -8,6 +8,7 @@ import {PaymentCreate} from "./models/PaymentCreate";
 import {CurrentStayModel} from "./models/CurrentStay.model";
 import {CreateStayModel} from "./models/CreateStay";
 import {HighestDebt} from "./models/HighestDebt";
+import {UserDetails} from "./models/UserDetails";
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,11 @@ export class BackendService {
   }
 
   deletePayment(id: string): Observable<MessageResponse> {
-    return this.http.get<MessageResponse>(this.paymentsUrl + "/" + id)
+    return this.http.delete<MessageResponse>(this.paymentsUrl + "/" + id)
+  }
 
+  getUserDetails(id: string | null): Observable<UserDetails> {
+    return this.http.get<UserDetails>(this.usersUrl + "/" + id)
   }
 
   getUsers(): Observable<UserModel[]> {
