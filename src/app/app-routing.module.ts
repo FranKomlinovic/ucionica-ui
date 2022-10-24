@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: 'payments', component: LastPaymentsComponent},
   {path: 'stays', component: CurrentStaysComponent},
   {path: 'debtors', component: HighestDebtComponent},
-  {path: ':userId', component: UserInfoComponent}
+  {path: '', component: UserInfoComponent}
 ];
 
 @NgModule({

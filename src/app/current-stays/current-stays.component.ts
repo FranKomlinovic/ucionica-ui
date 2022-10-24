@@ -3,6 +3,7 @@ import {CurrentStayModel} from "../models/CurrentStay.model";
 import {ConfirmationService, MessageService, PrimeNGConfig} from "primeng/api";
 import {UserModel} from "../models/user.model";
 import {BackendService} from "../backend.service";
+import {Auth} from "aws-amplify";
 
 @Component({
   selector: 'app-current-stays',
@@ -15,6 +16,7 @@ export class CurrentStaysComponent implements OnInit {
   //Display controls
   displayDialog: boolean = false;
   spinnerOn: boolean = false;
+  admin: boolean = false;
   //Form controls
   selectedUserAdvanced: UserModel | undefined;
   date: Date = new Date();
@@ -31,6 +33,19 @@ export class CurrentStaysComponent implements OnInit {
   ngOnInit(): void {
     this.getAllStays();
     this.primengConfig.ripple = true;
+
+    Auth.currentAuthenticatedUser()
+      .then(data => {
+        let groups = data.signInUserSession.accessToken.payload['cognito:groups'];
+        if (groups === undefined) {
+          this.admin = false;
+          return;
+        }
+        if (groups.includes("Generali")) {
+         this.admin = true;
+        }
+      });
+
   }
 
   getAllStays() {
@@ -45,7 +60,6 @@ export class CurrentStaysComponent implements OnInit {
 
     this.backendService.getUsers().subscribe((data) => {
         this.users = data;
-        this.spinnerOn = false;
         this.selectedUserAdvanced = undefined;
       }
     );
@@ -84,9 +98,10 @@ export class CurrentStaysComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.evidentStay(id, new Date());
+        this.confirmationService.close();
       },
       reject: () => {
-        this.confirmationService.close()
+        this.confirmationService.close();
       }
     });
   }
@@ -97,6 +112,7 @@ export class CurrentStaysComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.endAllStays();
+        this.confirmationService.close();
       },
       reject: () => {
         this.confirmationService.close()

@@ -1,2 +1,2 @@
-<button type="button" pButton pRipple icon="pi pi-bars" label="Menu" (click)="menu.toggle($event)"></button>
-<p-menu #menu [popup]="true" [model]="items"></p-menu>
+<p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

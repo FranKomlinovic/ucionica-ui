@@ -1,6 +1,12 @@
+import {UserStayModel} from "./UserStayModel";
+import {UserPaymentModel} from "./UserPaymentModel";
+
 export class UserDetails {
-  id: string | undefined;
-  username: string | undefined;
-  balance: string | undefined;
-  picture: string | undefined;
+  id: string;
+  username: string;
+  balance: string;
+  picture: string;
+  currentlyActive: boolean;
+  stays: UserStayModel[];
+  payments: UserPaymentModel[];
 }

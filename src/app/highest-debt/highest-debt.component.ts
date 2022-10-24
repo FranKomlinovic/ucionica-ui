@@ -12,7 +12,8 @@ export class HighestDebtComponent implements OnInit {
   highestDebt: HighestDebt[] = [];
   spinnerOn: boolean = false;
 
-  constructor(private backendService: BackendService) { }
+  constructor(private backendService: BackendService) {
+  }
 
   ngOnInit(): void {
     this.getHighestDebt();
@@ -21,7 +22,7 @@ export class HighestDebtComponent implements OnInit {
   getHighestDebt() {
     this.spinnerOn = true;
     this.backendService.getHighestDebt().subscribe((data) => {
-        this.highestDebt = data
+        this.highestDebt = data;
         this.spinnerOn = false;
       }
     );

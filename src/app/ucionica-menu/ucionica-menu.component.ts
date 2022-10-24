@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MenuItem} from "primeng/api";
+import {Component, OnInit} from '@angular/core';
+import {ConfirmationService, MenuItem} from "primeng/api";
+import {Auth} from "aws-amplify";
 
 @Component({
   selector: 'app-ucionica-menu',
@@ -8,22 +9,60 @@ import {MenuItem} from "primeng/api";
 })
 export class UcionicaMenuComponent implements OnInit {
 
-  @Input() userId: string = "";
-  items: MenuItem[] = [];
+  nonAdminMenu: MenuItem[] = [];
+  adminMenu: MenuItem[] = [];
+  items: MenuItem[] = this.nonAdminMenu;
+  activeItem: MenuItem;
 
-  constructor() {
+  constructor(private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
-    this.items = [
-      {
-        label: 'Dejstva', icon: 'pi pi-fw pi-fast-forward', routerLink: '/stays'
-      },
-      {label: 'Uplate', icon: 'pi pi-fw pi-euro', routerLink: '/payments'},
-      {label: 'Dužnici', icon: 'pi pi-fw pi-credit-card', routerLink: '/debtors'},
-      {label: 'Korisnici', icon: 'pi pi-fw pi-id-card', routerLink: '/' + this.userId},
 
+    this.adminMenu = [
+      {icon: 'pi pi-fw pi-home', routerLink: '/'},
+      {icon: 'pi pi-fw pi-users', routerLink: '/stays'},
+      {icon: 'pi pi-fw pi-euro', routerLink: '/payments'},
+      {icon: 'pi pi-fw pi-credit-card', routerLink: '/debtors'},
+      {icon: 'pi pi-fw pi-sign-out', command: () => this.confirmSignOut()}
     ];
+
+    this.nonAdminMenu = [
+      {icon: 'pi pi-fw pi-home', routerLink: '/'},
+      {icon: 'pi pi-fw pi-users', routerLink: '/stays'},
+      {icon: 'pi pi-fw pi-sign-out', command: () => this.confirmSignOut()}
+    ];
+
+    Auth.currentAuthenticatedUser()
+      .then(data => {
+        let groups = data.signInUserSession.accessToken.payload['cognito:groups'];
+        if (groups === undefined) {
+          this.items = this.nonAdminMenu;
+          return;
+        }
+        if (groups.includes("Generali")) {
+          this.items = this.adminMenu;
+        }
+      });
+
+
+    this.activeItem = this.items[0];
   }
 
+  signOut() {
+    Auth.signOut();
+  }
+
+  confirmSignOut() {
+    this.confirmationService.confirm({
+      message: 'Jeste li sigurni da se želite odjaviti?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.signOut();
+      },
+      reject: () => {
+        this.confirmationService.close()
+      }
+    });
+  }
 }

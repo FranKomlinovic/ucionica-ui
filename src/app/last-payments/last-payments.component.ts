@@ -29,15 +29,17 @@ export class LastPaymentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.spinnerOn = true;
     this.getAllPayments();
+    this.getAllUsers();
+    this.primengConfig.ripple = true;
+  }
+
+  getAllUsers() {
     this.backendService.getUsers()
       .subscribe((data) => {
           this.users = data;
-          this.spinnerOn = false;
         }
       );
-    this.primengConfig.ripple = true;
   }
 
   getAllPayments() {
