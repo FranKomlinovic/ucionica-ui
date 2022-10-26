@@ -17,6 +17,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ConfirmationService } from 'primeng/api';
 import { SharedModule } from './modules/shared/shared.module';
+import {MultiSelectModule} from "primeng/multiselect";
 
 Amplify.configure({
   aws_cognito_region: 'eu-central-1', // (required) - Region where Amazon Cognito project was created
@@ -34,24 +35,25 @@ Amplify.configure({
     HighestDebtComponent,
     UserInfoComponent,
   ],
-  imports: [
-    AppRoutingModule,
-    SharedModule,
-    BrowserModule,
-    HttpClientModule,
-    AmplifyAuthenticatorModule,
-    BrowserAnimationsModule,
-    RouterLinkWithHref,
-    RouterOutlet,
-    ReactiveFormsModule,
-    FormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-  ],
+    imports: [
+        AppRoutingModule,
+        SharedModule,
+        BrowserModule,
+        HttpClientModule,
+        AmplifyAuthenticatorModule,
+        BrowserAnimationsModule,
+        RouterLinkWithHref,
+        RouterOutlet,
+        ReactiveFormsModule,
+        FormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+        }),
+        MultiSelectModule,
+    ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent],
 })

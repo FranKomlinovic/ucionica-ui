@@ -23,20 +23,14 @@
 <!-- Dialog -->
 <p-dialog header="Dodaj dejstvo" [(visible)]="displayDialog">
   <h5>Korisnik</h5>
-  <p-autoComplete
-    [(ngModel)]="selectedUserAdvanced"
-    [suggestions]="filteredUsers"
-    (completeMethod)="filterStays($event)"
-    field="username"
-    [dropdown]="true"
-  >
+  <p-multiSelect [options]="users" [showToggleAll]="false" [(ngModel)]="selectedUserAdvanced" optionLabel="username"
+                 [virtualScroll]="true" [filter]="true" [itemSize]="34" class="multiselect-custom-virtual-scroll">
     <ng-template let-user pTemplate="item">
-      <div>
-        <div>{{ user.username }}</div>
+      <div class="country-item">
+        <div>{{user.username}}</div>
       </div>
     </ng-template>
-  </p-autoComplete>
-
+  </p-multiSelect>
   <h5>Datum</h5>
   <p-calendar [(ngModel)]="date" dateFormat="dd.mm.yy"></p-calendar>
 

@@ -1,13 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { CurrentStayModel } from '../../interfaces/current-stay.interface';
-import {
-  ConfirmationService,
-  MessageService,
-  PrimeNGConfig,
-} from 'primeng/api';
-import { UserModel } from '../../interfaces/user.interface';
-import { BackendService } from '../../backend.service';
-import { Auth } from 'aws-amplify';
+import {Component, OnInit} from '@angular/core';
+import {CurrentStayModel} from '../../interfaces/current-stay.interface';
+import {ConfirmationService, MessageService, PrimeNGConfig,} from 'primeng/api';
+import {UserModel} from '../../interfaces/user.interface';
+import {BackendService} from '../../backend.service';
+import {Auth} from 'aws-amplify';
 
 @Component({
   selector: 'app-current-stays',
@@ -21,7 +17,7 @@ export class CurrentStaysComponent implements OnInit {
   spinnerOn: boolean = false;
   admin: boolean = false;
   //Form controls
-  selectedUserAdvanced: UserModel | undefined;
+  selectedUserAdvanced: UserModel[];
   date: Date = new Date();
   time: Date = new Date();
   filteredUsers: UserModel[] = [];
@@ -64,7 +60,7 @@ export class CurrentStaysComponent implements OnInit {
 
     this.backendService.getUsers().subscribe((data) => {
       this.users = data;
-      this.selectedUserAdvanced = undefined;
+      this.selectedUserAdvanced = [];
     });
   }
 
@@ -98,7 +94,9 @@ export class CurrentStaysComponent implements OnInit {
       return;
     }
     this.date.setTime(this.time.getTime());
-    this.evidentStay(this.selectedUserAdvanced.id, this.date);
+    for (const userModel of this.selectedUserAdvanced) {
+      this.evidentStay(userModel.id, this.date);
+    }
   }
 
   confirmEndStay(id: string) {
@@ -135,19 +133,5 @@ export class CurrentStaysComponent implements OnInit {
       summary: 'Success',
       detail: message,
     });
-  }
-
-  filterStays(event: any) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.users.length; i++) {
-      let user = this.users[i];
-      if (user.username.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(user);
-      }
-    }
-
-    this.filteredUsers = filtered;
   }
 }
