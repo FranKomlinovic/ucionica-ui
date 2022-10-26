@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDetails } from '../models/UserDetails';
+import { UserDetails } from '../models/user.details.model';
 import { BackendService } from '../backend.service';
 import { Auth } from 'aws-amplify';
 import { ConfirmationService, MessageService } from 'primeng/api';

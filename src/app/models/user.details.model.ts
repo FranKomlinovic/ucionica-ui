@@ -1,5 +1,5 @@
-import {UserStayModel} from "./UserStayModel";
-import {UserPaymentModel} from "./UserPaymentModel";
+import { UserPaymentModel } from '../interfaces/user-payment.model';
+import { UserStayModel } from '../interfaces/user-stay.model';
 
 export class UserDetails {
   id: string;

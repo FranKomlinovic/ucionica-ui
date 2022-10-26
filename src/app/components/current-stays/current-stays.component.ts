@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentStayModel } from '../models/CurrentStay.model';
+import { CurrentStayModel } from '../../interfaces/current-stay.interface';
 import {
   ConfirmationService,
   MessageService,
   PrimeNGConfig,
 } from 'primeng/api';
-import { UserModel } from '../models/user.model';
-import { BackendService } from '../backend.service';
+import { UserModel } from '../../interfaces/user.interface';
+import { BackendService } from '../../backend.service';
 import { Auth } from 'aws-amplify';
 
 @Component({

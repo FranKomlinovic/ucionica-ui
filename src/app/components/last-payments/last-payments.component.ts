@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {PaymentsModel} from "../models/payments-model.model";
+import {PaymentsModel} from "../../interfaces/payments.interface";
 import {ConfirmationService, MessageService, PrimeNGConfig} from "primeng/api";
-import {UserModel} from "../models/user.model";
-import {BackendService} from "../backend.service";
+import {UserModel} from "../../interfaces/user.interface";
+import {BackendService} from "../../backend.service";
 
 @Component({
   selector: 'app-last-payments',

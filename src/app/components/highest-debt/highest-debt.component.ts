@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {HighestDebt} from "../models/HighestDebt";
-import {BackendService} from "../backend.service";
+import {HighestDebt} from "../../interfaces/highest-debt";
+import {BackendService} from "../../backend.service";
 
 @Component({
   selector: 'app-highest-debt',
