@@ -5,11 +5,13 @@ import {LastPaymentsComponent} from "./components/last-payments/last-payments.co
 import {CurrentStaysComponent} from "./components/current-stays/current-stays.component";
 import {HighestDebtComponent} from "./components/highest-debt/highest-debt.component";
 import {UserInfoComponent} from "./user-info/user-info.component";
+import {UserCreateComponent} from "./components/user-create/user-create.component";
 
 const routes: Routes = [
   {path: 'payments', component: LastPaymentsComponent},
   {path: 'stays', component: CurrentStaysComponent},
   {path: 'debtors', component: HighestDebtComponent},
+  {path: 'user-create', component: UserCreateComponent},
   {path: '', component: UserInfoComponent}
 ];
 
