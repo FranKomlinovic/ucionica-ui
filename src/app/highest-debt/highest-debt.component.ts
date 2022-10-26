@@ -5,7 +5,7 @@ import {BackendService} from "../backend.service";
 @Component({
   selector: 'app-highest-debt',
   templateUrl: './highest-debt.component.html',
-  styleUrls: ['./highest-debt.component.css']
+  styleUrls: ['./highest-debt.component.scss']
 })
 export class HighestDebtComponent implements OnInit {
 

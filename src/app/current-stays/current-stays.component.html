@@ -6,20 +6,35 @@
 <h1>Trenutni dejstvenici</h1>
 
 <!-- Open form button -->
-<p-button *ngIf="admin" (click)="this.displayDialog = true;" icon="pi pi-external-link" label="Evidentiraj dolazak"></p-button>
-<p-button *ngIf="admin" style="margin-left: 3px" styleClass="p-button-danger" label="Završi dejstvo" (click)="confirmEndAllStays()"></p-button>
+<p-button
+  *ngIf="admin"
+  (click)="this.displayDialog = true"
+  icon="pi pi-external-link"
+  label="Evidentiraj dolazak"
+></p-button>
+<p-button
+  *ngIf="admin"
+  style="margin-left: 3px"
+  styleClass="p-button-danger"
+  label="Završi dejstvo"
+  (click)="confirmEndAllStays()"
+></p-button>
 
-
-<h2>Broj dejstvenika: {{numberOfStays}}</h2>
+<h2>Broj dejstvenika: {{ numberOfStays }}</h2>
 
 <!-- Dialog -->
 <p-dialog header="Dodaj dejstvo" [(visible)]="displayDialog">
   <h5>Korisnik</h5>
-  <p-autoComplete [(ngModel)]="selectedUserAdvanced" [suggestions]="filteredUsers"
-                  (completeMethod)="filterStays($event)" field="username" [dropdown]="true">
+  <p-autoComplete
+    [(ngModel)]="selectedUserAdvanced"
+    [suggestions]="filteredUsers"
+    (completeMethod)="filterStays($event)"
+    field="username"
+    [dropdown]="true"
+  >
     <ng-template let-user pTemplate="item">
       <div>
-        <div>{{user.username}}</div>
+        <div>{{ user.username }}</div>
       </div>
     </ng-template>
   </p-autoComplete>
@@ -39,17 +54,26 @@
 <div class="grid">
   <div *ngFor="let stay of currentStays">
     <div class="col flex align-items-center justify-content-center m-3">
-      <p-card header="{{stay.user}}" subheader="{{stay.startTime}}" [style]="{width: '230px'} "
-              styleClass="p-card-shadow">
+      <p-card
+        header="{{ stay.user }}"
+        subheader="{{ stay.startTime }}"
+        [style]="{ width: '230px' }"
+        styleClass="p-card-shadow"
+      >
         <ng-template pTemplate="header">
-          <img alt="Card" src="{{stay.picture}}">
+          <img alt="Card" src="{{ stay.picture }}" />
         </ng-template>
         <div>
-          {{stay.balance}}
+          {{ stay.balance }}
         </div>
         <p-confirmDialog></p-confirmDialog>
         <ng-template pTemplate="footer">
-          <p-button *ngIf="admin" styleClass="p-button-secondary" label="Završi dejstvo" (click)="confirmEndStay(stay.userId)">
+          <p-button
+            *ngIf="admin"
+            styleClass="p-button-secondary"
+            label="Završi dejstvo"
+            (click)="confirmEndStay(stay.userId)"
+          >
           </p-button>
         </ng-template>
       </p-card>

@@ -1,0 +1,17 @@
+:host {
+  ::ng-deep {
+    p-tabmenu {
+      div {
+        div {
+          div {
+            ul {
+              li:nth-last-child(2) {
+                margin-left: auto !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

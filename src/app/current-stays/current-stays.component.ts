@@ -1,18 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {CurrentStayModel} from "../models/CurrentStay.model";
-import {ConfirmationService, MessageService, PrimeNGConfig} from "primeng/api";
-import {UserModel} from "../models/user.model";
-import {BackendService} from "../backend.service";
-import {Auth} from "aws-amplify";
+import { Component, OnInit } from '@angular/core';
+import { CurrentStayModel } from '../models/CurrentStay.model';
+import {
+  ConfirmationService,
+  MessageService,
+  PrimeNGConfig,
+} from 'primeng/api';
+import { UserModel } from '../models/user.model';
+import { BackendService } from '../backend.service';
+import { Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-current-stays',
   templateUrl: './current-stays.component.html',
-  styleUrls: ['./current-stays.component.css'],
-  providers: [MessageService]
+  styleUrls: ['./current-stays.component.scss'],
+  providers: [MessageService],
 })
 export class CurrentStaysComponent implements OnInit {
-
   //Display controls
   displayDialog: boolean = false;
   spinnerOn: boolean = false;
@@ -27,60 +30,66 @@ export class CurrentStaysComponent implements OnInit {
   numberOfStays: number = 0;
   currentStays: CurrentStayModel[] = [];
 
-  constructor(private backendService: BackendService, private confirmationService: ConfirmationService, private messageService: MessageService, private primengConfig: PrimeNGConfig) {
-  }
+  constructor(
+    private backendService: BackendService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig
+  ) {}
 
   ngOnInit(): void {
     this.getAllStays();
     this.primengConfig.ripple = true;
 
-    Auth.currentAuthenticatedUser()
-      .then(data => {
-        let groups = data.signInUserSession.accessToken.payload['cognito:groups'];
-        if (groups === undefined) {
-          this.admin = false;
-          return;
-        }
-        if (groups.includes("Generali")) {
-         this.admin = true;
-        }
-      });
-
+    Auth.currentAuthenticatedUser().then((data) => {
+      let groups = data.signInUserSession.accessToken.payload['cognito:groups'];
+      if (groups === undefined) {
+        this.admin = false;
+        return;
+      }
+      if (groups.includes('Generali')) {
+        this.admin = true;
+      }
+    });
   }
 
   getAllStays() {
     this.spinnerOn = true;
-    this.backendService.getAllStays().subscribe((data) => {
-        this.currentStays = data
-        this.numberOfStays = data.length;
-        this.displayDialog = false;
-        this.spinnerOn = false;
-      }
-    );
+    this.backendService.getAllStays().subscribe((data: CurrentStayModel[]) => {
+      this.currentStays = data;
+      this.numberOfStays = data.length;
+      this.displayDialog = false;
+      this.spinnerOn = false;
+    });
 
     this.backendService.getUsers().subscribe((data) => {
-        this.users = data;
-        this.selectedUserAdvanced = undefined;
-      }
-    );
+      this.users = data;
+      this.selectedUserAdvanced = undefined;
+    });
   }
 
   evidentStay(userId: string, date: Date) {
     this.spinnerOn = true;
-    this.backendService.postStay(userId, date).pipe().subscribe(response => {
-      this.showSuccess(response.message);
-      this.getAllStays();
-      this.spinnerOn = false;
-    });
+    this.backendService
+      .postStay(userId, date)
+      .pipe()
+      .subscribe((response) => {
+        this.showSuccess(response.message);
+        this.getAllStays();
+        this.spinnerOn = false;
+      });
   }
 
   endAllStays() {
     this.spinnerOn = true;
-    this.backendService.endAllStays().pipe().subscribe(response => {
-      this.showSuccess(response.message);
-      this.getAllStays();
-      this.spinnerOn = false;
-    });
+    this.backendService
+      .endAllStays()
+      .pipe()
+      .subscribe((response) => {
+        this.showSuccess(response.message);
+        this.getAllStays();
+        this.spinnerOn = false;
+      });
   }
 
   saveStay() {
@@ -102,7 +111,7 @@ export class CurrentStaysComponent implements OnInit {
       },
       reject: () => {
         this.confirmationService.close();
-      }
+      },
     });
   }
 
@@ -115,14 +124,17 @@ export class CurrentStaysComponent implements OnInit {
         this.confirmationService.close();
       },
       reject: () => {
-        this.confirmationService.close()
-
-      }
+        this.confirmationService.close();
+      },
     });
   }
 
   showSuccess(message: string) {
-    this.messageService.add({severity: 'success', summary: 'Success', detail: message});
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: message,
+    });
   }
 
   filterStays(event: any) {
@@ -138,6 +150,4 @@ export class CurrentStaysComponent implements OnInit {
 
     this.filteredUsers = filtered;
   }
-
-
 }

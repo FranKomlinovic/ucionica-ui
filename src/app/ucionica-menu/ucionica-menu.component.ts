@@ -1,50 +1,45 @@
-import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, MenuItem} from "primeng/api";
-import {Auth} from "aws-amplify";
+import { Component, OnInit } from '@angular/core';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+import { Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-ucionica-menu',
   templateUrl: './ucionica-menu.component.html',
-  styleUrls: ['./ucionica-menu.component.css']
+  styleUrls: ['./ucionica-menu.component.scss'],
 })
 export class UcionicaMenuComponent implements OnInit {
-
   nonAdminMenu: MenuItem[] = [];
   adminMenu: MenuItem[] = [];
   items: MenuItem[] = this.nonAdminMenu;
   activeItem: MenuItem;
 
-  constructor(private confirmationService: ConfirmationService) {
-  }
+  constructor(private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
-
     this.adminMenu = [
-      {icon: 'pi pi-fw pi-home', routerLink: '/'},
-      {icon: 'pi pi-fw pi-users', routerLink: '/stays'},
-      {icon: 'pi pi-fw pi-euro', routerLink: '/payments'},
-      {icon: 'pi pi-fw pi-credit-card', routerLink: '/debtors'},
-      {icon: 'pi pi-fw pi-sign-out', command: () => this.confirmSignOut()}
+      { icon: 'pi pi-fw pi-home', routerLink: '/' },
+      { icon: 'pi pi-fw pi-users', routerLink: '/stays' },
+      { icon: 'pi pi-fw pi-euro', routerLink: '/payments' },
+      { icon: 'pi pi-fw pi-credit-card', routerLink: '/debtors' },
+      { icon: 'pi pi-fw pi-sign-out', command: () => this.confirmSignOut() },
     ];
 
     this.nonAdminMenu = [
-      {icon: 'pi pi-fw pi-home', routerLink: '/'},
-      {icon: 'pi pi-fw pi-users', routerLink: '/stays'},
-      {icon: 'pi pi-fw pi-sign-out', command: () => this.confirmSignOut()}
+      { icon: 'pi pi-fw pi-home', routerLink: '/' },
+      { icon: 'pi pi-fw pi-users', routerLink: '/stays' },
+      { icon: 'pi pi-fw pi-sign-out', command: () => this.confirmSignOut() },
     ];
 
-    Auth.currentAuthenticatedUser()
-      .then(data => {
-        let groups = data.signInUserSession.accessToken.payload['cognito:groups'];
-        if (groups === undefined) {
-          this.items = this.nonAdminMenu;
-          return;
-        }
-        if (groups.includes("Generali")) {
-          this.items = this.adminMenu;
-        }
-      });
-
+    Auth.currentAuthenticatedUser().then((data) => {
+      let groups = data.signInUserSession.accessToken.payload['cognito:groups'];
+      if (groups === undefined) {
+        this.items = this.nonAdminMenu;
+        return;
+      }
+      if (groups.includes('Generali')) {
+        this.items = this.adminMenu;
+      }
+    });
 
     this.activeItem = this.items[0];
   }
@@ -61,8 +56,8 @@ export class UcionicaMenuComponent implements OnInit {
         this.signOut();
       },
       reject: () => {
-        this.confirmationService.close()
-      }
+        this.confirmationService.close();
+      },
     });
   }
 }

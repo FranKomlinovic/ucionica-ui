@@ -7,7 +7,7 @@ import {BackendService} from "../backend.service";
 @Component({
   selector: 'app-last-payments',
   templateUrl: './last-payments.component.html',
-  styleUrls: ['./last-payments.component.css'],
+  styleUrls: ['./last-payments.component.scss'],
   providers: [MessageService]
 })
 export class LastPaymentsComponent implements OnInit {
