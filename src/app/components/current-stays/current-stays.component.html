@@ -1,6 +1,7 @@
 <p-toast></p-toast>
 <app-spinner [visible]="spinnerOn"></app-spinner>
 
+<div style="margin-left: 20px">
 <h1>Trenutni dejstvenici</h1>
 
 <!-- Open form button -->
@@ -19,7 +20,7 @@
 ></p-button>
 
 <h2>Broj dejstvenika: {{ numberOfStays }}</h2>
-
+</div>
 <!-- Dialog -->
 <p-dialog header="Dodaj dejstvo" [(visible)]="displayDialog">
   <h5>Korisnik</h5>
@@ -49,11 +50,11 @@
       <p-card
         header="{{ stay.user }}"
         subheader="{{ stay.startTime }}"
-        [style]="{ width: '230px' }"
+        [style]="{ width: '230px'}"
         styleClass="p-card-shadow"
       >
-        <ng-template pTemplate="header">
-          <img alt="Card" src="{{ stay.picture }}" />
+        <ng-template pTemplate="header" style="width: 100%; height: 40%">
+          <img [style]="{ width: '270px', height: '270px', 'object-fit': 'cover'}" alt="Card" src="{{ stay.picture }}" />
         </ng-template>
         <div>
           {{ stay.balance }}

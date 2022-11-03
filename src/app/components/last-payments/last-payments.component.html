@@ -1,6 +1,7 @@
 <p-toast></p-toast>
 <app-spinner [visible]="spinnerOn"></app-spinner>
 
+<div style="margin-left: 20px">
 <h1>Posljednje uplate</h1>
 <!-- Open form button -->
 <p-button
@@ -8,7 +9,7 @@
   icon="pi pi-external-link"
   label="Dodaj uplatu"
 ></p-button>
-
+</div>
 <!-- Dialog -->
 <p-dialog header="Dodaj uplatu" [(visible)]="displayDialog">
   <h5>Korisnik</h5>
@@ -55,7 +56,7 @@
         styleClass="p-card-shadow"
       >
         <ng-template pTemplate="header">
-          <img alt="Card" src="{{ payment.picture }}" />
+          <img [style]="{ width: '270px', height: '270px', 'object-fit': 'cover'}" alt="Card" src="{{ payment.picture }}" />
         </ng-template>
         <div>
           {{ payment.amount }}

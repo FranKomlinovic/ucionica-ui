@@ -6,7 +6,7 @@
 <p-card header="{{userDetails.username}}" subheader="{{userDetails.balance}}"
         styleClass="p-card-shadow">
   <ng-template pTemplate="header">
-    <img alt="Card" src="{{userDetails.picture}}">
+    <img [style]="{ width: '270px', height: '270px', 'object-fit': 'cover'}" alt="Card" src="{{userDetails.picture}}">
   </ng-template>
   <h5 *ngIf="userDetails.currentlyActive">Trenutno ste u učionici</h5>
   <h5 *ngIf="!userDetails.currentlyActive">Jeste li u učionici?</h5>
