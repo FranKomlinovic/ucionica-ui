@@ -1,7 +1,7 @@
 {
   "name": "Učionica",
   "short_name": "Učionica",
-  "theme_color": "#1976d2",
+  "theme_color": "#ffffff",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
