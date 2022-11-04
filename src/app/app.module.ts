@@ -12,7 +12,7 @@ import {UcionicaMenuComponent} from './ucionica-menu/ucionica-menu.component';
 import {AppRoutingModule} from './app-routing.module';
 import {CurrentStaysComponent} from './components/current-stays/current-stays.component';
 import {HighestDebtComponent} from './components/highest-debt/highest-debt.component';
-import {UserInfoComponent} from './user-info/user-info.component';
+import {HomepageInfoComponent} from './homepage/homepage-info.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {ConfirmationService} from 'primeng/api';
@@ -22,6 +22,8 @@ import {UserCreateComponent} from './components/user-create/user-create.componen
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {FileUploadModule} from "primeng/fileupload";
+import {HighestCreditComponent} from './components/highest-credit/highest-credit.component';
+import {UserInfoComponent} from "./components/user-info/user-info.component";
 
 Amplify.configure({
     Auth: {
@@ -44,8 +46,10 @@ Amplify.configure({
     UcionicaMenuComponent,
     CurrentStaysComponent,
     HighestDebtComponent,
+    HomepageInfoComponent,
     UserInfoComponent,
     UserCreateComponent,
+    HighestCreditComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -19,6 +19,7 @@ export class BackendService {
   usersUrl = this.rootUrl + '/users';
   paymentsUrl = this.rootUrl + '/payments';
   highestDebtUrl = this.rootUrl + '/users/highest-debt';
+  highestCreditUrl = this.rootUrl + '/users/highest-credit';
 
   constructor(private http: HttpClient) {}
 
@@ -51,6 +52,10 @@ export class BackendService {
 
   getHighestDebt(): Observable<HighestDebt[]> {
     return this.http.get<HighestDebt[]>(this.highestDebtUrl);
+  }
+
+  getHighestCredit(): Observable<HighestDebt[]> {
+    return this.http.get<HighestDebt[]>(this.highestCreditUrl);
   }
 
   postStay(userId: string, date: Date): Observable<MessageResponse> {

@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { UserDetails } from '../models/user.details.model';
-import { BackendService } from '../backend.service';
-import { Auth } from 'aws-amplify';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {Component, Input, OnInit} from '@angular/core';
+import {BackendService} from '../../backend.service';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {UserDetails} from "../../models/user.details.model";
 
 @Component({
   selector: 'app-user-info',
@@ -17,6 +16,9 @@ export class UserInfoComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
+  @Input() userId: string;
+  @Input() showButton: boolean;
+
   userDetails: UserDetails = new UserDetails();
   spinnerOn: boolean;
 
@@ -26,12 +28,10 @@ export class UserInfoComponent implements OnInit {
 
   getAuthenticatedUser() {
     this.spinnerOn = true;
-    Auth.currentAuthenticatedUser().then((data) => {
-      this.backendService.getUserDetails(data.username).subscribe((a) => {
+      this.backendService.getUserDetails(this.userId).subscribe((a) => {
         this.userDetails = a;
         this.spinnerOn = false;
       });
-    });
   }
 
   evidentStay(userId: string) {

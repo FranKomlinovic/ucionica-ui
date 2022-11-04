@@ -9,13 +9,15 @@
     <img [style]="{ width: '270px', height: '270px', 'object-fit': 'cover'}" alt="Card" src="{{userDetails.picture}}">
   </ng-template>
   <h5 *ngIf="userDetails.currentlyActive">Trenutno ste u učionici</h5>
-  <h5 *ngIf="!userDetails.currentlyActive">Jeste li u učionici?</h5>
-  <p-button *ngIf="!userDetails.currentlyActive" label="Prijavi dolazak" styleClass="p-button"
-            (click)="confirmStay()">
-  </p-button>
-  <p-button *ngIf="userDetails.currentlyActive" label="Odjavi se" styleClass="p-button-danger"
-            (click)="confirmStay()">
-  </p-button>
+  <div *ngIf="showButton">
+    <h5 *ngIf="!userDetails.currentlyActive">Jeste li u učionici?</h5>
+    <p-button *ngIf="!userDetails.currentlyActive" label="Prijavi dolazak" styleClass="p-button"
+              (click)="confirmStay()">
+    </p-button>
+    <p-button *ngIf="userDetails.currentlyActive" label="Odjavi se" styleClass="p-button-danger"
+              (click)="confirmStay()">
+    </p-button>
+  </div>
 </p-card>
 <p-tabView>
   <p-tabPanel header="Moja dejstva">

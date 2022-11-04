@@ -20,8 +20,9 @@ export class UcionicaMenuComponent implements OnInit {
       { icon: 'pi pi-fw pi-home', routerLink: '/' },
       { icon: 'pi pi-fw pi-users', routerLink: '/stays' },
       { icon: 'pi pi-fw pi-euro', routerLink: '/payments' },
-      { icon: 'pi pi-fw pi-credit-card', routerLink: '/debtors' },
-      { icon: 'pi pi-fw pi-plus', routerLink: '/user-create' },
+      { icon: 'pi pi-fw pi-search-minus', routerLink: '/debtors' },
+      { icon: 'pi pi-fw pi-search-plus', routerLink: '/creditors' },
+      { icon: 'pi pi-fw pi-user-plus', routerLink: '/user-create' },
       { icon: 'pi pi-fw pi-sign-out', command: () => this.confirmSignOut() },
     ];
 

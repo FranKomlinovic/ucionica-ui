@@ -20,18 +20,21 @@ export class CurrentStaysComponent implements OnInit {
   selectedUserAdvanced: UserModel[];
   date: Date = new Date();
   time: Date = new Date();
-  filteredUsers: UserModel[] = [];
   users: UserModel[] = [];
   //Grid controls
   numberOfStays: number = 0;
   currentStays: CurrentStayModel[] = [];
+  //User details
+  selectedUserId: string;
+  showDialog: boolean;
 
   constructor(
     private backendService: BackendService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private primengConfig: PrimeNGConfig
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.getAllStays();
@@ -133,5 +136,10 @@ export class CurrentStaysComponent implements OnInit {
       summary: 'Success',
       detail: message,
     });
+  }
+
+  showInfo(userId: string) {
+    this.selectedUserId = userId;
+    this.showDialog = true;
   }
 }
