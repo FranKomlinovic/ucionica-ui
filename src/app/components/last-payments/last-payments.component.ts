@@ -67,6 +67,12 @@ export class LastPaymentsComponent implements OnInit {
     });
   }
 
+  openDialog() {
+    this.displayDialog = true
+    this.date = new Date();
+    this.time = new Date();
+  }
+
   savePayment() {
     this.spinnerOn = true;
     if (this.selectedUserAdvanced === undefined) {
