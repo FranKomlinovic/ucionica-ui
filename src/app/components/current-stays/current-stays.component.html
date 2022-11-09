@@ -19,7 +19,15 @@
     (click)="confirmEndAllStays()"
   ></p-button>
 
-  <h2>Broj dejstvenika: {{ numberOfStays }}</h2>
+  <h2>Broj dejstvenika: {{ numberOfStays }}
+    <p-button
+      *ngIf="admin"
+      icon="pi pi-sync"
+      styleClass="p-button-secondary"
+      (click)="getAllStays()"
+    ></p-button>
+  </h2>
+
 </div>
 <!-- Dialog -->
 <p-dialog header="Dodaj dejstvo" [(visible)]="displayDialog">
@@ -73,7 +81,7 @@
             styleClass="p-button-primary"
             label="Info"
             (click)="showInfo(stay.userId)"
-          class="m-3"
+            class="m-3"
           >
           </p-button>
         </ng-template>
