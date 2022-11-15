@@ -9,6 +9,8 @@ import { CurrentStayModel } from './interfaces/current-stay.interface';
 import { HighestDebt } from './interfaces/highest-debt';
 import { UserDetails } from './models/user.details.model';
 import { CreateStayModel } from './models/create-stay.model';
+import {CreateEventModel} from "./models/create-event.model";
+import {Events} from "./interfaces/events";
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +19,7 @@ export class BackendService {
   rootUrl = 'https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod';
   staysUrl = this.rootUrl + '/stays';
   usersUrl = this.rootUrl + '/users';
+  eventsUrl = this.rootUrl + '/events';
   paymentsUrl = this.rootUrl + '/payments';
   highestDebtUrl = this.rootUrl + '/users/highest-debt';
   highestCreditUrl = this.rootUrl + '/users/highest-credit';
@@ -29,6 +32,10 @@ export class BackendService {
 
   deletePayment(id: string): Observable<MessageResponse> {
     return this.http.delete<MessageResponse>(this.paymentsUrl + '/' + id);
+  }
+
+  deleteEvent(id: string): Observable<MessageResponse> {
+    return this.http.delete<MessageResponse>(this.eventsUrl + '/' + id);
   }
 
   getUserDetails(id: string | null): Observable<UserDetails> {
@@ -50,6 +57,14 @@ export class BackendService {
     return this.http.get<CurrentStayModel[]>(this.staysUrl);
   }
 
+  getAllEvents(): Observable<Events[]> {
+    return this.http.get<Events[]>(this.eventsUrl);
+  }
+
+  getEventsByUserId(userId: string): Observable<Events[]> {
+    return this.http.get<Events[]>(this.eventsUrl + "/" + userId);
+  }
+
   getHighestDebt(): Observable<HighestDebt[]> {
     return this.http.get<HighestDebt[]>(this.highestDebtUrl);
   }
@@ -62,6 +77,13 @@ export class BackendService {
     return this.http.post<MessageResponse>(
       this.staysUrl,
       new CreateStayModel(userId, date)
+    );
+  }
+
+  postEvent(event: CreateEventModel): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(
+      this.eventsUrl,
+      event
     );
   }
 

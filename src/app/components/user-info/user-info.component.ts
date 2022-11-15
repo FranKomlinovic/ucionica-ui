@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {BackendService} from '../../backend.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {UserDetails} from "../../models/user.details.model";
+import {Events} from "../../interfaces/events";
 
 @Component({
   selector: 'app-user-info',
@@ -20,18 +21,38 @@ export class UserInfoComponent implements OnInit {
   @Input() showButton: boolean;
 
   userDetails: UserDetails = new UserDetails();
+  events: Events[] ;
   spinnerOn: boolean;
 
   ngOnInit() {
     this.getAuthenticatedUser();
   }
 
+  generateName(event: Events): string {
+    if (event.currentEvent) {
+      return '[UPRAVO] ' + event.name;
+    }
+    return event.name;
+  }
   getAuthenticatedUser() {
+    this.getUserDetails();
+    this.getUserEvents();
+  }
+
+  getUserEvents() {
     this.spinnerOn = true;
-      this.backendService.getUserDetails(this.userId).subscribe((a) => {
-        this.userDetails = a;
-        this.spinnerOn = false;
-      });
+    this.backendService.getEventsByUserId(this.userId).subscribe((a) => {
+      this.events = a;
+      this.spinnerOn = false;
+    });
+  }
+
+  getUserDetails() {
+    this.spinnerOn = true;
+    this.backendService.getUserDetails(this.userId).subscribe((a) => {
+      this.userDetails = a;
+      this.spinnerOn = false;
+    });
   }
 
   evidentStay(userId: string) {

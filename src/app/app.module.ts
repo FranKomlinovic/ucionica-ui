@@ -24,6 +24,8 @@ import {PasswordModule} from "primeng/password";
 import {FileUploadModule} from "primeng/fileupload";
 import {HighestCreditComponent} from './components/highest-credit/highest-credit.component';
 import {UserInfoComponent} from "./components/user-info/user-info.component";
+import { EventsComponent } from './components/events/events.component';
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 Amplify.configure({
     Auth: {
@@ -50,29 +52,31 @@ Amplify.configure({
     UserInfoComponent,
     UserCreateComponent,
     HighestCreditComponent,
+    EventsComponent,
   ],
-  imports: [
-    AppRoutingModule,
-    SharedModule,
-    BrowserModule,
-    HttpClientModule,
-    AmplifyAuthenticatorModule,
-    BrowserAnimationsModule,
-    RouterLinkWithHref,
-    RouterOutlet,
-    ReactiveFormsModule,
-    FormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-    MultiSelectModule,
-    InputTextModule,
-    PasswordModule,
-    FileUploadModule,
-  ],
+    imports: [
+        AppRoutingModule,
+        SharedModule,
+        BrowserModule,
+        HttpClientModule,
+        AmplifyAuthenticatorModule,
+        BrowserAnimationsModule,
+        RouterLinkWithHref,
+        RouterOutlet,
+        ReactiveFormsModule,
+        FormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+        }),
+        MultiSelectModule,
+        InputTextModule,
+        PasswordModule,
+        FileUploadModule,
+        InputTextareaModule,
+    ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,88 @@
+<p-toast></p-toast>
+<app-spinner [visible]="spinnerOn"></app-spinner>
+
+<div style="margin-left: 20px">
+  <h1>Eventi</h1>
+
+  <!-- Open form button -->
+  <p-button
+    (click)="openDialog()"
+    icon="pi pi-external-link"
+    label="Kreiraj event"
+  ></p-button>
+
+  <h2>Svi eventi:
+    <p-button
+      icon="pi pi-sync"
+      styleClass="p-button-secondary"
+      (click)="getAllEvents()"
+    ></p-button>
+  </h2>
+
+</div>
+<!-- Dialog -->
+<p-dialog header="Kreiraj event" [(visible)]="displayDialog">
+  <h5>Naziv</h5>
+  <input type="text" pInputText [(ngModel)]="name"/>
+
+  <h5>Opis</h5>
+  <textarea pInputTextarea [(ngModel)]="description"></textarea>
+
+  <h5>Korisnik</h5>
+  <p-multiSelect [options]="users" [showToggleAll]="false" [(ngModel)]="selectedUserAdvanced" optionLabel="username"
+                 [filter]="true" [itemSize]="34">
+    <ng-template let-user pTemplate="item">
+      <div class="country-item">
+        <div>{{user.username}}</div>
+      </div>
+    </ng-template>
+  </p-multiSelect>
+
+  <h5>Početak</h5>
+  <p-calendar [(ngModel)]="startTime" [showTime]="true"></p-calendar>
+
+  <h5>Kraj</h5>
+  <p-calendar [(ngModel)]="endTime" [showTime]="true"></p-calendar>
+
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-plus" (click)="postEvent()" label="Kreiraj"></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Grid -->
+<div class="grid">
+  <div *ngFor="let event of allEvents">
+    <div class="col flex align-items-center justify-content-center m-3">
+      <p-card
+        header="{{ event.name }}"
+        subheader="{{ event.date + ' u ' + event.startTime }}"
+        [style]="{ width: '230px'}"
+        styleClass="p-card-shadow"
+      >
+        <ng-template pTemplate="header" style="width: 100%; height: 40%">
+          <img alt="Card"
+               src="{{ event.picture }}"/>
+        </ng-template>
+        <div>
+          <p>Opis:</p>
+          {{ event.description }}
+          <p>Vrijeme:</p>
+          {{ event.startTime }} - {{event.endTime}}
+          <p>Pozvani su:</p>
+          {{ event.users }}
+        </div>
+        <p-confirmDialog></p-confirmDialog>
+        <ng-template pTemplate="footer">
+          <p-button
+            styleClass="p-button-danger"
+            label="Obriši"
+            icon="pi pi-trash"
+            (click)="confirm(event.id)"
+          >
+          </p-button>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>
+

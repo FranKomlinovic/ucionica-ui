@@ -7,6 +7,7 @@ import {HighestDebtComponent} from "./components/highest-debt/highest-debt.compo
 import {HomepageInfoComponent} from "./homepage/homepage-info.component";
 import {UserCreateComponent} from "./components/user-create/user-create.component";
 import {HighestCreditComponent} from "./components/highest-credit/highest-credit.component";
+import {EventsComponent} from "./components/events/events.component";
 
 const routes: Routes = [
   {path: 'payments', component: LastPaymentsComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'debtors', component: HighestDebtComponent},
   {path: 'creditors', component: HighestCreditComponent},
   {path: 'user-create', component: UserCreateComponent},
+  {path: 'events', component: EventsComponent},
   {path: '', component: HomepageInfoComponent}
 ];
 
