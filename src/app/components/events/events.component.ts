@@ -21,6 +21,7 @@ export class EventsComponent implements OnInit {
   endTime: Date = new Date();
   name: string;
   description: string;
+  picture: string;
   users: UserModel[] = [];
   //Grid controls
   allEvents: Events[] = [];
@@ -83,7 +84,7 @@ export class EventsComponent implements OnInit {
   }
 
   postEvent() {
-    let event = new CreateEventModel(this.name, this.description, this.selectedUserAdvanced.map(a => a.id), this.startTime, this.endTime)
+    let event = new CreateEventModel(this.name, this.description, this.selectedUserAdvanced.map(a => a.id), this.startTime, this.endTime, this.picture)
     this.spinnerOn = true;
     this.backendService
       .postEvent(event)
@@ -109,5 +110,8 @@ export class EventsComponent implements OnInit {
     });
   }
 
+  isValid(): boolean {
+    return !(this.startTime < this.endTime && this.name != null);
+  }
 
 }

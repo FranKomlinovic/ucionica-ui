@@ -23,10 +23,13 @@
 <!-- Dialog -->
 <p-dialog header="Kreiraj event" [(visible)]="displayDialog">
   <h5>Naziv</h5>
-  <input type="text" pInputText [(ngModel)]="name"/>
+  <input type="text" pInputText [(ngModel)]="name" required/>
 
   <h5>Opis</h5>
   <textarea pInputTextarea [(ngModel)]="description"></textarea>
+
+  <h5>Link slike</h5>
+  <input type="text" pInputText [(ngModel)]="picture" required/>
 
   <h5>Korisnik</h5>
   <p-multiSelect [options]="users" [showToggleAll]="false" [(ngModel)]="selectedUserAdvanced" optionLabel="username"
@@ -45,7 +48,7 @@
   <p-calendar [(ngModel)]="endTime" [showTime]="true"></p-calendar>
 
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-plus" (click)="postEvent()" label="Kreiraj"></p-button>
+    <p-button [disabled]="isValid()"  icon="pi pi-plus" (click)="postEvent()" label="Kreiraj"></p-button>
   </ng-template>
 </p-dialog>
 
