@@ -1,43 +1,46 @@
-import {Component, OnInit} from '@angular/core';
-import {UserModel} from "../../interfaces/user.interface";
-import {Events} from "../../interfaces/events";
-import {BackendService} from "../../backend.service";
-import {ConfirmationService, MessageService, PrimeNGConfig} from "primeng/api";
-import {CreateEventModel} from "../../models/create-event.model";
+import { Component, OnInit } from '@angular/core';
+import { IUser } from '../../interfaces/user.interface';
+import { IEvent } from '../../interfaces/events';
+import { BackendService } from '../../backend.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { FormControl, FormGroup } from '@angular/forms';
+import { delay } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class EventsComponent implements OnInit {
   //Display controls
   displayDialog: boolean = false;
   spinnerOn: boolean = false;
   //Form controls
-  selectedUserAdvanced: UserModel[];
-  startTime: Date = new Date();
-  endTime: Date = new Date();
-  name: string;
-  description: string;
-  picture: string;
-  users: UserModel[] = [];
-  //Grid controls
-  allEvents: Events[] = [];
+  selectedUserAdvanced: IUser[];
+  users: IUser[] = [];
+  allEvents: IEvent[] = [];
+
+  formGroup = new FormGroup({
+    name: new FormControl('', { nonNullable: true }),
+    description: new FormControl(''),
+    picture: new FormControl(''),
+    users: new FormControl([]),
+    startTime: new FormControl(new Date().toISOString()),
+    endTime: new FormControl(new Date().toISOString()),
+  });
+
+  allEvents$ = this.backendService.getAllEvents();
+  users$ = this.backendService.getUsers();
 
   constructor(
     private backendService: BackendService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
-    private primengConfig: PrimeNGConfig
-  ) {
-  }
+    private messageService: MessageService
+  ) {}
 
-  ngOnInit(): void {
-    this.getAllEvents();
-    this.primengConfig.ripple = true;
-  }
+  ngOnInit(): void {}
 
   confirm(id: string) {
     this.confirmationService.confirm({
@@ -49,7 +52,7 @@ export class EventsComponent implements OnInit {
       },
       reject: () => {
         this.confirmationService.close();
-      }
+      },
     });
   }
 
@@ -57,49 +60,51 @@ export class EventsComponent implements OnInit {
     this.spinnerOn = true;
     this.backendService.deleteEvent(id).subscribe({
       next: () => {
-        this.getAllEvents();
-        this.showSuccess("Uspješno ste obrisali događaj");
+        // this.getAllEvents();
+        this.showSuccess('Uspješno ste obrisali događaj');
         this.spinnerOn = false;
       },
       error: () => {
-        this.showSuccess("Vjerojatno ste obrisali događaj, fixaj ovo");
-        this.getAllEvents();
+        this.showSuccess('Vjerojatno ste obrisali događaj, fixaj ovo');
+        // this.getAllEvents();
         this.spinnerOn = false;
-      }
+      },
     });
   }
 
-  getAllEvents() {
-    this.spinnerOn = true;
-    this.backendService.getAllEvents().subscribe((data: Events[]) => {
-      this.allEvents = data;
-      this.displayDialog = false;
-      this.spinnerOn = false;
-    });
+  // getAllEvents() {
+  //   this.spinnerOn = true;
+  //   this.backendService.getAllEvents().subscribe((data: IEvent[]) => {
+  //     this.allEvents = data;
+  //     this.displayDialog = false;
+  //     this.spinnerOn = false;
+  //   });
 
-    this.backendService.getUsers().subscribe((data) => {
-      this.users = data;
-      this.selectedUserAdvanced = [];
-    });
-  }
+  //   this.backendService.getUsers().subscribe((data) => {
+  //     this.users = data;
+  //     this.selectedUserAdvanced = [];
+  //   });
+  // }
 
   postEvent() {
-    let event = new CreateEventModel(this.name, this.description, this.selectedUserAdvanced.map(a => a.id), this.startTime, this.endTime, this.picture)
     this.spinnerOn = true;
     this.backendService
-      .postEvent(event)
+      .postEvent(this.formGroup.getRawValue())
       .pipe()
       .subscribe((response) => {
         this.showSuccess(response.message);
-        this.getAllEvents();
         this.spinnerOn = false;
+        this.displayDialog = false;
+        // this.updateEvents();
       });
   }
 
+  // updateEvents() {
+  //   this.allEvents$ = this.backendService.getAllEvents();
+  // }
+
   openDialog() {
-    this.displayDialog = true
-    this.startTime = new Date();
-    this.endTime = new Date();
+    this.displayDialog = true;
   }
 
   showSuccess(message: string) {
@@ -109,9 +114,4 @@ export class EventsComponent implements OnInit {
       detail: message,
     });
   }
-
-  isValid(): boolean {
-    return !(this.startTime < this.endTime && this.name != null);
-  }
-
 }

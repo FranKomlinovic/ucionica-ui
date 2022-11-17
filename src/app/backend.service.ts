@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { PaymentsModel } from './interfaces/payments.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { UserModel } from './interfaces/user.interface';
+import { Observable, shareReplay } from 'rxjs';
+import { IUser } from './interfaces/user.interface';
 import { MessageResponse } from './interfaces/message-response';
 import { PaymentCreate } from './models/payment-create.model';
 import { CurrentStayModel } from './interfaces/current-stay.interface';
 import { HighestDebt } from './interfaces/highest-debt';
 import { UserDetails } from './models/user.details.model';
 import { CreateStayModel } from './models/create-stay.model';
-import {CreateEventModel} from "./models/create-event.model";
-import {Events} from "./interfaces/events";
+import { CreateEventModel } from './models/create-event.model';
+import { IEvent } from './interfaces/events';
 
 @Injectable({
   providedIn: 'root',
@@ -42,8 +42,8 @@ export class BackendService {
     return this.http.get<UserDetails>(this.usersUrl + '/' + id);
   }
 
-  getUsers(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(this.usersUrl);
+  getUsers(): Observable<IUser[]> {
+    return this.http.get<IUser[]>(this.usersUrl);
   }
 
   postPayment(userId: string, amount: number): Observable<MessageResponse> {
@@ -57,12 +57,12 @@ export class BackendService {
     return this.http.get<CurrentStayModel[]>(this.staysUrl);
   }
 
-  getAllEvents(): Observable<Events[]> {
-    return this.http.get<Events[]>(this.eventsUrl);
+  getAllEvents(): Observable<IEvent[]> {
+    return this.http.get<IEvent[]>(this.eventsUrl);
   }
 
-  getEventsByUserId(userId: string): Observable<Events[]> {
-    return this.http.get<Events[]>(this.eventsUrl + "/" + userId);
+  getEventsByUserId(userId: string): Observable<IEvent[]> {
+    return this.http.get<IEvent[]>(this.eventsUrl + '/' + userId);
   }
 
   getHighestDebt(): Observable<HighestDebt[]> {
@@ -81,10 +81,7 @@ export class BackendService {
   }
 
   postEvent(event: CreateEventModel): Observable<MessageResponse> {
-    return this.http.post<MessageResponse>(
-      this.eventsUrl,
-      event
-    );
+    return this.http.post<MessageResponse>(this.eventsUrl, event);
   }
 
   endAllStays(): Observable<MessageResponse> {

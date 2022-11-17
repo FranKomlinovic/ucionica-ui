@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CurrentStayModel} from '../../interfaces/current-stay.interface';
 import {ConfirmationService, MessageService, PrimeNGConfig,} from 'primeng/api';
-import {UserModel} from '../../interfaces/user.interface';
+import {IUser} from '../../interfaces/user.interface';
 import {BackendService} from '../../backend.service';
 import {Auth} from 'aws-amplify';
 
@@ -17,10 +17,10 @@ export class CurrentStaysComponent implements OnInit {
   spinnerOn: boolean = false;
   admin: boolean = false;
   //Form controls
-  selectedUserAdvanced: UserModel[];
+  selectedUserAdvanced: IUser[];
   date: Date = new Date();
   time: Date = new Date();
-  users: UserModel[] = [];
+  users: IUser[] = [];
   //Grid controls
   numberOfStays: number = 0;
   currentStays: CurrentStayModel[] = [];

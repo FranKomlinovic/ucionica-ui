@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {BackendService} from '../../backend.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {UserDetails} from "../../models/user.details.model";
-import {Events} from "../../interfaces/events";
+import {IEvent} from "../../interfaces/events";
 
 @Component({
   selector: 'app-user-info',
@@ -21,14 +21,14 @@ export class UserInfoComponent implements OnInit {
   @Input() showButton: boolean;
 
   userDetails: UserDetails = new UserDetails();
-  events: Events[] ;
+  events: IEvent[] ;
   spinnerOn: boolean;
 
   ngOnInit() {
     this.getAuthenticatedUser();
   }
 
-  generateName(event: Events): string {
+  generateName(event: IEvent): string {
     if (event.currentEvent) {
       return '[UPRAVO] ' + event.name;
     }

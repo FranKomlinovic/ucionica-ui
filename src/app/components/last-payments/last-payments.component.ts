@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PaymentsModel} from "../../interfaces/payments.interface";
 import {ConfirmationService, MessageService, PrimeNGConfig} from "primeng/api";
-import {UserModel} from "../../interfaces/user.interface";
+import {IUser} from "../../interfaces/user.interface";
 import {BackendService} from "../../backend.service";
 
 @Component({
@@ -19,9 +19,9 @@ export class LastPaymentsComponent implements OnInit {
   amount: number = 100;
   date: Date = new Date();
   time: Date = new Date();
-  selectedUserAdvanced: UserModel | undefined;
-  filteredUsers: UserModel[] = [];
-  users: UserModel[] = [];
+  selectedUserAdvanced: IUser | undefined;
+  filteredUsers: IUser[] = [];
+  users: IUser[] = [];
   //Grid controls
   lastPayments: PaymentsModel[] = [];
 
