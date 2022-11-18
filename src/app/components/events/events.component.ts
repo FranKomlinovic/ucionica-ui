@@ -4,114 +4,137 @@ import { IEvent } from '../../interfaces/events';
 import { BackendService } from '../../backend.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
-import { delay } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-events',
-  templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss'],
-  providers: [MessageService],
+    selector: 'app-events',
+    templateUrl: './events.component.html',
+    styleUrls: ['./events.component.scss'],
+    providers: [MessageService],
 })
 export class EventsComponent implements OnInit {
-  //Display controls
-  displayDialog: boolean = false;
-  spinnerOn: boolean = false;
-  //Form controls
-  selectedUserAdvanced: IUser[];
-  users: IUser[] = [];
-  allEvents: IEvent[] = [];
+    //Display controls
+    displayDialog: boolean = false;
+    showSpinner: boolean = false;
 
-  formGroup = new FormGroup({
-    name: new FormControl('', { nonNullable: true }),
-    description: new FormControl(''),
-    picture: new FormControl(''),
-    users: new FormControl([]),
-    startTime: new FormControl(new Date().toISOString()),
-    endTime: new FormControl(new Date().toISOString()),
-  });
+    //Form controls
+    selectedUserAdvanced: IUser[];
+    users: IUser[] = [];
+    allEvents: IEvent[] = [];
 
-  allEvents$ = this.backendService.getAllEvents();
-  users$ = this.backendService.getUsers();
-
-  constructor(
-    private backendService: BackendService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
-  ) {}
-
-  ngOnInit(): void {}
-
-  confirm(id: string) {
-    this.confirmationService.confirm({
-      message: 'Jeste li sigurni da želite obrisati događaj?',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.deleteEvent(id);
-        this.confirmationService.close();
-      },
-      reject: () => {
-        this.confirmationService.close();
-      },
+    formGroup = new FormGroup({
+        name: new FormControl('', { nonNullable: true }),
+        description: new FormControl(''),
+        picture: new FormControl(''),
+        users: new FormControl([]),
+        startTime: new FormControl(new Date().toISOString()),
+        endTime: new FormControl(new Date().toISOString()),
     });
-  }
 
-  deleteEvent(id: string) {
-    this.spinnerOn = true;
-    this.backendService.deleteEvent(id).subscribe({
-      next: () => {
-        // this.getAllEvents();
-        this.showSuccess('Uspješno ste obrisali događaj');
-        this.spinnerOn = false;
-      },
-      error: () => {
-        this.showSuccess('Vjerojatno ste obrisali događaj, fixaj ovo');
-        // this.getAllEvents();
-        this.spinnerOn = false;
-      },
-    });
-  }
+    allEvents$ = new Subject<IEvent[]>();
+    users$ = new Subject<IUser[]>();
+    destroy$ = new Subject<boolean>();
 
-  // getAllEvents() {
-  //   this.spinnerOn = true;
-  //   this.backendService.getAllEvents().subscribe((data: IEvent[]) => {
-  //     this.allEvents = data;
-  //     this.displayDialog = false;
-  //     this.spinnerOn = false;
-  //   });
+    constructor(
+        private backendService: BackendService,
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService
+    ) {}
 
-  //   this.backendService.getUsers().subscribe((data) => {
-  //     this.users = data;
-  //     this.selectedUserAdvanced = [];
-  //   });
-  // }
+    ngOnInit(): void {
+        this.loadEvents();
+        this.loadUsers();
+    }
 
-  postEvent() {
-    this.spinnerOn = true;
-    this.backendService
-      .postEvent(this.formGroup.getRawValue())
-      .pipe()
-      .subscribe((response) => {
-        this.showSuccess(response.message);
-        this.spinnerOn = false;
-        this.displayDialog = false;
-        // this.updateEvents();
-      });
-  }
+    loadEvents(): void {
+        this.backendService
+            .getAllEvents()
+            .pipe(
+                tap(() => this.toggleSpinner(true)),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((events: IEvent[]) => {
+                this.allEvents$.next(events);
+                this.toggleSpinner(false);
+            });
+    }
 
-  // updateEvents() {
-  //   this.allEvents$ = this.backendService.getAllEvents();
-  // }
+    loadUsers() {
+        this.backendService
+            .getUsers()
+            .pipe(
+                tap(() => this.toggleSpinner(true)),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((users: IUser[]) => {
+                this.users$.next(users);
+                this.toggleSpinner(false);
+            });
+    }
 
-  openDialog() {
-    this.displayDialog = true;
-  }
+    toggleSpinner(value: boolean) {
+        this.showSpinner = value;
+    }
 
-  showSuccess(message: string) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: message,
-    });
-  }
+    confirm(id: string) {
+        this.confirmationService.confirm({
+            message: 'Jeste li sigurni da želite obrisati događaj?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.deleteEvent(id);
+                this.confirmationService.close();
+            },
+            reject: () => {
+                this.confirmationService.close();
+            },
+        });
+    }
+
+    deleteEvent(id: string) {
+        this.backendService
+            .deleteEvent(id)
+            .pipe(tap(() => this.toggleSpinner(true)))
+            .subscribe({
+                next: () => {
+                    this.toggleSpinner(false);
+                    this.showSuccess('Uspješno ste obrisali događaj');
+                    this.loadEvents();
+                },
+                error: () => {
+                    this.toggleSpinner(false);
+                    this.showSuccess(
+                        'Vjerojatno ste obrisali događaj, fixaj ovo'
+                    );
+                },
+            });
+    }
+
+    postEvent() {
+        this.showSpinner = true;
+        this.backendService
+            .postEvent(this.formGroup.getRawValue())
+            .subscribe((response) => {
+                this.showSuccess(response.message);
+                this.loadEvents();
+                this.displayDialog = false;
+            });
+    }
+
+    openDialog() {
+        this.displayDialog = true;
+    }
+
+    showSuccess(message: string) {
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: message,
+        });
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next(true);
+        this.destroy$.complete();
+    }
 }
