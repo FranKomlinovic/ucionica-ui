@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { PaymentsModel } from './interfaces/payments.interface';
+import { IPayment } from './interfaces/payments.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IUser } from './interfaces/user.interface';
-import { MessageResponse } from './interfaces/message-response';
+import { IMessageResponse } from './interfaces/message-response.interface';
 import { PaymentCreate } from './models/payment-create.model';
-import { CurrentStayModel } from './interfaces/current-stay.interface';
-import { HighestDebt } from './interfaces/highest-debt';
+import { ICurrentStay } from './interfaces/current-stay.interface';
+import { IHighestDebt } from './interfaces/highest-debt.interface';
 import { UserDetails } from './models/user.details.model';
 import { CreateStayModel } from './models/create-stay.model';
 import { CreateEventModel } from './models/create-event.model';
-import { IEvent } from './interfaces/events';
+import { IEvent } from './interfaces/event.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -26,16 +26,16 @@ export class BackendService {
 
     constructor(private http: HttpClient) {}
 
-    getAllPayments(): Observable<PaymentsModel[]> {
-        return this.http.get<PaymentsModel[]>(this.paymentsUrl);
+    getAllPayments(): Observable<IPayment[]> {
+        return this.http.get<IPayment[]>(this.paymentsUrl);
     }
 
-    deletePayment(id: string): Observable<MessageResponse> {
-        return this.http.delete<MessageResponse>(this.paymentsUrl + '/' + id);
+    deletePayment(id: string): Observable<IMessageResponse> {
+        return this.http.delete<IMessageResponse>(this.paymentsUrl + '/' + id);
     }
 
-    deleteEvent(id: string): Observable<MessageResponse> {
-        return this.http.delete<MessageResponse>(this.eventsUrl + '/' + id);
+    deleteEvent(id: string): Observable<IMessageResponse> {
+        return this.http.delete<IMessageResponse>(this.eventsUrl + '/' + id);
     }
 
     getUserDetails(id: string | null): Observable<UserDetails> {
@@ -46,15 +46,15 @@ export class BackendService {
         return this.http.get<IUser[]>(this.usersUrl);
     }
 
-    postPayment(userId: string, amount: number): Observable<MessageResponse> {
-        return this.http.post<MessageResponse>(
+    postPayment(userId: string, amount: number): Observable<IMessageResponse> {
+        return this.http.post<IMessageResponse>(
             this.paymentsUrl,
             new PaymentCreate(userId, amount)
         );
     }
 
-    getAllStays(): Observable<CurrentStayModel[]> {
-        return this.http.get<CurrentStayModel[]>(this.staysUrl);
+    getAllStays(): Observable<ICurrentStay[]> {
+        return this.http.get<ICurrentStay[]>(this.staysUrl);
     }
 
     getAllEvents(): Observable<IEvent[]> {
@@ -65,26 +65,26 @@ export class BackendService {
         return this.http.get<IEvent[]>(this.eventsUrl + '/' + userId);
     }
 
-    getHighestDebt(): Observable<HighestDebt[]> {
-        return this.http.get<HighestDebt[]>(this.highestDebtUrl);
+    getHighestDebt(): Observable<IHighestDebt[]> {
+        return this.http.get<IHighestDebt[]>(this.highestDebtUrl);
     }
 
-    getHighestCredit(): Observable<HighestDebt[]> {
-        return this.http.get<HighestDebt[]>(this.highestCreditUrl);
+    getHighestCredit(): Observable<IHighestDebt[]> {
+        return this.http.get<IHighestDebt[]>(this.highestCreditUrl);
     }
 
-    postStay(userId: string, date: Date): Observable<MessageResponse> {
-        return this.http.post<MessageResponse>(
+    postStay(userId: string, date: Date): Observable<IMessageResponse> {
+        return this.http.post<IMessageResponse>(
             this.staysUrl,
             new CreateStayModel(userId, date)
         );
     }
 
-    postEvent(event: CreateEventModel): Observable<MessageResponse> {
-        return this.http.post<MessageResponse>(this.eventsUrl, event);
+    createEvent(event: CreateEventModel): Observable<IMessageResponse> {
+        return this.http.post<IMessageResponse>(this.eventsUrl, event);
     }
 
-    endAllStays(): Observable<MessageResponse> {
-        return this.http.delete<MessageResponse>(this.staysUrl);
+    endAllStays(): Observable<IMessageResponse> {
+        return this.http.delete<IMessageResponse>(this.staysUrl);
     }
 }

@@ -1,20 +1,26 @@
 .example-spacer {
-  flex: 1 1 auto;
+    flex: 1 1 auto;
 }
 :host {
-  ::ng-deep {
-    .p-card {
-      width: 270px !important;
+    ::ng-deep {
+        .p-card {
+            width: 100%;
+        }
     }
-  }
 }
 
 @media (max-width: 500px) {
-  :host {
-    ::ng-deep {
-      .p-card {
-        width: 100% !important;
-      }
+    :host {
+        ::ng-deep {
+            .p-card {
+                width: 100% !important;
+                min-width: 20rem;
+                margin: 1rem 0;
+            }
+        }
     }
-  }
+}
+
+.content {
+    padding: 1.5rem;
 }

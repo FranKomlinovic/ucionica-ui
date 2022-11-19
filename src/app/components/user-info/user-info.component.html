@@ -1,10 +1,8 @@
-<div class="progress-spinner" *ngIf="spinnerOn">
-    <p-progressSpinner></p-progressSpinner>
-</div>
-<div style="margin-left: 20px">
+<app-spinner [visible]="spinnerOn"></app-spinner>
+<div>
     <h1>Profil</h1>
     <p-card
-        [style]="{ width: '270px' }"
+        [style]="{ width: '100%' }"
         header="{{ userDetails.username }}"
         subheader="{{ userDetails.balance }}"
         styleClass="p-card-shadow"
@@ -37,8 +35,8 @@
     </p-card>
 </div>
 
-<h1 style="margin-left: 20px">Eventi</h1>
-<div class="grid">
+<h1>Eventi</h1>
+<div class="grid nogutter">
     <div *ngFor="let event of events">
         <div class="col flex align-items-center justify-content-center m-3">
             <p-card

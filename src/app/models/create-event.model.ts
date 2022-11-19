@@ -16,7 +16,7 @@ export class CreateEventModel {
     ) {
         this.name = name;
         this.description = description;
-        this.users = users;
+        this.users = users || null;
         this.startTime = new Date(
             startTime.getTime() - startTime.getTimezoneOffset() * 60000
         ).toISOString();

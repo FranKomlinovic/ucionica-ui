@@ -1,7 +1,7 @@
-export interface PaymentsModel {
-  id: string;
-  user: string;
-  time: string;
-  amount: string;
-  picture: string;
+export interface IPayment {
+    id: string;
+    user: string;
+    time: string;
+    amount: string;
+    picture: string;
 }

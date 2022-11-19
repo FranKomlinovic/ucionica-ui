@@ -1,12 +1,12 @@
-import { UserPaymentModel } from '../interfaces/user-payment.model';
-import { UserStayModel } from '../interfaces/user-stay.model';
+import { IUserPayment } from '../interfaces/user-payment.interface';
+import { IUserStay } from '../interfaces/user-stay.interface';
 
 export class UserDetails {
-  id: string;
-  username: string;
-  balance: string;
-  picture: string;
-  currentlyActive: boolean;
-  stays: UserStayModel[];
-  payments: UserPaymentModel[];
+    id: string;
+    username: string;
+    balance: string;
+    picture: string;
+    currentlyActive: boolean;
+    stays: IUserStay[];
+    payments: IUserPayment[];
 }

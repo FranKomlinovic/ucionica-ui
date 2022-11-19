@@ -1,6 +1,6 @@
 <app-spinner [visible]="showSpinner"></app-spinner>
 
-<div class="events-header">
+<div>
     <h1>Eventi</h1>
 
     <!-- Open form button -->
@@ -75,39 +75,34 @@
 
 <!-- Grid -->
 <div class="grid grid-nogutter" *ngIf="allEvents$ | async as events">
-    <div *ngFor="let event of events">
-        <div class="col flex align-items-center justify-content-center m-3">
-            <p-card
-                header="{{ event.name }}"
-                subheader="{{ event.date + ' u ' + event.startTime }}"
-                [style]="{ width: '230px' }"
-                styleClass="p-card-shadow"
-            >
-                <ng-template
-                    pTemplate="header"
-                    style="width: 100%; height: 40%"
+    <div *ngFor="let event of events" class="col">
+        <p-card
+            header="{{ event.name }}"
+            subheader="{{ event.date + ' u ' + event.startTime }}"
+            styleClass="p-card-shadow"
+            (click)="editEvent(event)"
+        >
+            <ng-template pTemplate="header" style="width: 100%; height: 40%">
+                <img alt="Card" src="{{ event.picture }}" />
+            </ng-template>
+            <div>
+                <p>Opis:</p>
+                {{ event.description }}
+                <p>Vrijeme:</p>
+                {{ event.startTime }} - {{ event.endTime }}
+                <p>Pozvani su:</p>
+                {{ event.users }}
+            </div>
+            <p-confirmDialog></p-confirmDialog>
+            <ng-template pTemplate="footer">
+                <p-button
+                    styleClass="p-button-danger"
+                    label="Obriši"
+                    icon="pi pi-trash"
+                    (click)="confirm(event.id)"
                 >
-                    <img alt="Card" src="{{ event.picture }}" />
-                </ng-template>
-                <div>
-                    <p>Opis:</p>
-                    {{ event.description }}
-                    <p>Vrijeme:</p>
-                    {{ event.startTime }} - {{ event.endTime }}
-                    <p>Pozvani su:</p>
-                    {{ event.users }}
-                </div>
-                <p-confirmDialog></p-confirmDialog>
-                <ng-template pTemplate="footer">
-                    <p-button
-                        styleClass="p-button-danger"
-                        label="Obriši"
-                        icon="pi pi-trash"
-                        (click)="confirm(event.id)"
-                    >
-                    </p-button>
-                </ng-template>
-            </p-card>
-        </div>
+                </p-button>
+            </ng-template>
+        </p-card>
     </div>
 </div>

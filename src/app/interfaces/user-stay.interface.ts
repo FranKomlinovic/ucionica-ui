@@ -1,4 +1,4 @@
-export interface UserStayModel {
+export interface IUserStay {
   date: string
   startTime: string;
   endTime: string;

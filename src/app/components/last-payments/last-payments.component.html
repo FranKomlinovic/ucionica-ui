@@ -1,6 +1,6 @@
 <app-spinner [visible]="spinnerOn"></app-spinner>
 
-<div style="margin-left: 20px">
+<div>
     <h1>Posljednje uplate</h1>
     <!-- Open form button -->
     <p-button
@@ -51,7 +51,7 @@
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid">
+<div class="grid grid-nogutter">
     <div *ngFor="let payment of lastPayments">
         <div class="col flex align-items-center justify-content-center m-3">
             <p-card

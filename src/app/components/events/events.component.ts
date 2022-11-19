@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '../../interfaces/user.interface';
-import { IEvent } from '../../interfaces/events';
+import { IEvent } from '../../interfaces/event.interface';
 import { BackendService } from '../../backend.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FeedbackService } from 'src/app/services/feedback.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-events',
@@ -17,7 +18,7 @@ import { FeedbackService } from 'src/app/services/feedback.service';
 export class EventsComponent implements OnInit {
     //Display controls
     displayDialog: boolean = false;
-    showSpinner: boolean = false;
+    showSpinner: boolean = true;
 
     //Form controls
     selectedUserAdvanced: IUser[];
@@ -29,7 +30,7 @@ export class EventsComponent implements OnInit {
         }),
         description: new FormControl(''),
         picture: new FormControl(''),
-        users: new FormControl([]),
+        users: new FormControl(['']),
         startTime: new FormControl('', {
             validators: Validators.required,
         }),
@@ -49,8 +50,8 @@ export class EventsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        // this.loadUsers();
         this.loadEvents();
-        this.loadUsers();
     }
 
     loadEvents(): void {
@@ -119,20 +120,27 @@ export class EventsComponent implements OnInit {
 
     createEvent() {
         this.showSpinner = true;
-        this.backendService.postEvent(this.formGroup.getRawValue()).subscribe({
-            next: () => {
-                this.feedbackService.successToast(
-                    'Uspješno ste kreirali događaj'
-                );
-                this.loadEvents();
-                this.displayDialog = false;
-            },
-            error: (err) => {
-                this.toggleSpinner(false);
-                this.displayDialog = false;
-                this.feedbackService.errorToast(err);
-            },
-        });
+        this.backendService
+            .createEvent(this.formGroup.getRawValue())
+            .subscribe({
+                next: () => {
+                    this.feedbackService.successToast(
+                        'Uspješno ste kreirali događaj'
+                    );
+                    this.loadEvents();
+                    this.displayDialog = false;
+                },
+                error: (err: HttpErrorResponse) => {
+                    this.toggleSpinner(false);
+                    this.displayDialog = false;
+                    this.feedbackService.errorToast(err.message);
+                },
+            });
+    }
+
+    editEvent(event: IEvent) {
+        this.openDialog();
+        this.formGroup.patchValue(event);
     }
 
     openDialog() {

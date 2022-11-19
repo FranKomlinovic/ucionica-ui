@@ -1,6 +1,6 @@
 <app-spinner [visible]="spinnerOn"></app-spinner>
 
-<div style="margin-left: 20px">
+<div>
     <h1>Trenutni dejstvenici</h1>
 
     <!-- Open form button -->
@@ -63,7 +63,7 @@
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid">
+<div class="grid grid-nogutter">
     <div *ngFor="let stay of currentStays">
         <div class="col flex align-items-center justify-content-center m-3">
             <p-card
