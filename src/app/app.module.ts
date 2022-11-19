@@ -15,7 +15,7 @@ import { HighestDebtComponent } from './components/highest-debt/highest-debt.com
 import { HomepageInfoComponent } from './homepage/homepage-info.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedModule } from './modules/shared/shared.module';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { UserCreateComponent } from './components/user-create/user-create.component';
@@ -26,57 +26,59 @@ import { HighestCreditComponent } from './components/highest-credit/highest-cred
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { EventsComponent } from './components/events/events.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FeedbackService } from './services/feedback.service';
 
 Amplify.configure({
-  Auth: {
-    region: 'eu-central-1',
-    userPoolId: 'eu-central-1_zpNOTpJzD',
-    userPoolWebClientId: '5abotfe77buga1l7kavuusjlfj',
-    mandatorySignIn: 'enable',
-  },
-  Storage: {
-    bucket: 'ucionica-pictures/profile/',
-    region: 'eu-central-1',
-  },
+    Auth: {
+        region: 'eu-central-1',
+        userPoolId: 'eu-central-1_zpNOTpJzD',
+        userPoolWebClientId: '5abotfe77buga1l7kavuusjlfj',
+        mandatorySignIn: 'enable',
+    },
+    Storage: {
+        bucket: 'ucionica-pictures/profile/',
+        region: 'eu-central-1',
+    },
 });
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LastPaymentsComponent,
-    UcionicaMenuComponent,
-    CurrentStaysComponent,
-    HighestDebtComponent,
-    HomepageInfoComponent,
-    UserInfoComponent,
-    UserCreateComponent,
-    HighestCreditComponent,
-    EventsComponent,
-  ],
-  imports: [
-    AppRoutingModule,
-    SharedModule,
-    BrowserModule,
-    HttpClientModule,
-    AmplifyAuthenticatorModule,
-    BrowserAnimationsModule,
-    RouterLinkWithHref,
-    RouterOutlet,
-    ReactiveFormsModule,
-    FormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-    MultiSelectModule,
-    InputTextModule,
-    PasswordModule,
-    FileUploadModule,
-    InputTextareaModule,
-  ],
-  providers: [ConfirmationService],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        LastPaymentsComponent,
+        UcionicaMenuComponent,
+        CurrentStaysComponent,
+        HighestDebtComponent,
+        HomepageInfoComponent,
+        UserInfoComponent,
+        UserCreateComponent,
+        HighestCreditComponent,
+        EventsComponent,
+    ],
+    imports: [
+        AppRoutingModule,
+        SharedModule,
+        BrowserModule,
+        HttpClientModule,
+        AmplifyAuthenticatorModule,
+        BrowserAnimationsModule,
+        RouterLinkWithHref,
+        RouterOutlet,
+        ReactiveFormsModule,
+        FormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+        }),
+        MultiSelectModule,
+        InputTextModule,
+        PasswordModule,
+        FileUploadModule,
+        InputTextareaModule,
+        SharedModule,
+    ],
+    providers: [ConfirmationService, FeedbackService, MessageService],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,8 +1,9 @@
 <amplify-authenticator>
-  <ng-template
-    amplifySlot="authenticated"
-  >
-    <app-ucionica-menu></app-ucionica-menu>
-    <router-outlet></router-outlet>
-  </ng-template>
+    <ng-template amplifySlot="authenticated">
+        <p-toast></p-toast>
+
+        <app-ucionica-menu></app-ucionica-menu>
+
+        <router-outlet></router-outlet>
+    </ng-template>
 </amplify-authenticator>

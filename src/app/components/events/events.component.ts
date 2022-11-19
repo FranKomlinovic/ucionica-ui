@@ -3,9 +3,10 @@ import { IUser } from '../../interfaces/user.interface';
 import { IEvent } from '../../interfaces/events';
 import { BackendService } from '../../backend.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { FeedbackService } from 'src/app/services/feedback.service';
 
 @Component({
     selector: 'app-events',
@@ -20,16 +21,21 @@ export class EventsComponent implements OnInit {
 
     //Form controls
     selectedUserAdvanced: IUser[];
-    users: IUser[] = [];
-    allEvents: IEvent[] = [];
 
     formGroup = new FormGroup({
-        name: new FormControl('', { nonNullable: true }),
+        name: new FormControl('', {
+            nonNullable: true,
+            validators: Validators.required,
+        }),
         description: new FormControl(''),
         picture: new FormControl(''),
         users: new FormControl([]),
-        startTime: new FormControl(new Date().toISOString()),
-        endTime: new FormControl(new Date().toISOString()),
+        startTime: new FormControl('', {
+            validators: Validators.required,
+        }),
+        endTime: new FormControl('', {
+            validators: Validators.required,
+        }),
     });
 
     allEvents$ = new Subject<IEvent[]>();
@@ -39,7 +45,7 @@ export class EventsComponent implements OnInit {
     constructor(
         private backendService: BackendService,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private feedbackService: FeedbackService
     ) {}
 
     ngOnInit(): void {
@@ -97,40 +103,40 @@ export class EventsComponent implements OnInit {
             .pipe(tap(() => this.toggleSpinner(true)))
             .subscribe({
                 next: () => {
-                    this.toggleSpinner(false);
-                    this.showSuccess('Uspješno ste obrisali događaj');
                     this.loadEvents();
+                    this.feedbackService.successToast(
+                        'Uspješno ste obrisali događaj'
+                    );
                 },
                 error: () => {
                     this.toggleSpinner(false);
-                    this.showSuccess(
+                    this.feedbackService.errorToast(
                         'Vjerojatno ste obrisali događaj, fixaj ovo'
                     );
                 },
             });
     }
 
-    postEvent() {
+    createEvent() {
         this.showSpinner = true;
-        this.backendService
-            .postEvent(this.formGroup.getRawValue())
-            .subscribe((response) => {
-                this.showSuccess(response.message);
+        this.backendService.postEvent(this.formGroup.getRawValue()).subscribe({
+            next: () => {
+                this.feedbackService.successToast(
+                    'Uspješno ste kreirali događaj'
+                );
                 this.loadEvents();
                 this.displayDialog = false;
-            });
+            },
+            error: (err) => {
+                this.toggleSpinner(false);
+                this.displayDialog = false;
+                this.feedbackService.errorToast(err);
+            },
+        });
     }
 
     openDialog() {
         this.displayDialog = true;
-    }
-
-    showSuccess(message: string) {
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: message,
-        });
     }
 
     ngOnDestroy() {

@@ -1,7 +1,6 @@
-<p-toast></p-toast>
 <app-spinner [visible]="showSpinner"></app-spinner>
 
-<div style="margin-left: 20px">
+<div class="events-header">
     <h1>Eventi</h1>
 
     <!-- Open form button -->
@@ -10,10 +9,16 @@
         icon="pi pi-external-link"
         label="Kreiraj event"
     ></p-button>
+
+    <p-button
+        icon="pi pi-sync"
+        styleClass="p-button-secondary"
+        (click)="loadEvents()"
+    ></p-button>
 </div>
 
 <!-- Dialog -->
-<p-dialog header="Kreiraj event" [visible]="displayDialog">
+<p-dialog header="Kreiraj event" [(visible)]="displayDialog">
     <form [formGroup]="formGroup">
         <h5>Naziv</h5>
         <input type="text" pInputText formControlName="name" />
@@ -42,24 +47,34 @@
         </p-multiSelect>
 
         <h5>Početak</h5>
-        <p-calendar formControlName="startTime" [showTime]="true"></p-calendar>
+        <p-calendar
+            formControlName="startTime"
+            [showTime]="true"
+            [readonlyInput]="true"
+            [touchUI]="true"
+        ></p-calendar>
 
         <h5>Kraj</h5>
-        <p-calendar formControlName="endTime" [showTime]="true"></p-calendar>
+        <p-calendar
+            formControlName="endTime"
+            [showTime]="true"
+            [readonlyInput]="true"
+            [touchUI]="true"
+        ></p-calendar>
     </form>
 
     <ng-template pTemplate="footer">
         <p-button
             [disabled]="!formGroup.valid"
             icon="pi pi-plus"
-            (click)="postEvent()"
+            (click)="createEvent()"
             label="Kreiraj"
         ></p-button>
     </ng-template>
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid" *ngIf="allEvents$ | async as events">
+<div class="grid grid-nogutter" *ngIf="allEvents$ | async as events">
     <div *ngFor="let event of events">
         <div class="col flex align-items-center justify-content-center m-3">
             <p-card
