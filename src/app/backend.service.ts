@@ -62,7 +62,11 @@ export class BackendService {
     }
 
     getEventsByUserId(userId: string): Observable<IEvent[]> {
-        return this.http.get<IEvent[]>(this.eventsUrl + '/' + userId);
+        return this.http.get<IEvent[]>(this.eventsUrl + '/user/' + userId);
+    }
+
+    getEventById(id: string): Observable<CreateEventModel> {
+    return this.http.get<CreateEventModel>(this.eventsUrl + '/' + id);
     }
 
     getHighestDebt(): Observable<IHighestDebt[]> {
