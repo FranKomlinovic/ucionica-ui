@@ -1,7 +1,7 @@
-import { IUserPayment } from '../interfaces/user-payment.interface';
-import { IUserStay } from '../interfaces/user-stay.interface';
+import { IUserPayment } from './user-payment.interface';
+import { IUserStay } from './user-stay.interface';
 
-export class UserDetails {
+export class IUserDetails {
     id: string;
     username: string;
     balance: string;

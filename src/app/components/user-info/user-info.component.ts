@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BackendService } from '../../backend.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { UserDetails } from '../../models/user.details.model';
+import { IUserDetails } from '../../interfaces/user-details.interface';
 import { IEvent } from '../../interfaces/event.interface';
 
 @Component({
@@ -20,7 +20,7 @@ export class UserInfoComponent implements OnInit {
     @Input() userId: string;
     @Input() showButton: boolean;
 
-    userDetails: UserDetails = new UserDetails();
+    userDetails: IUserDetails = new IUserDetails();
     events: IEvent[];
     spinnerOn: boolean;
 

@@ -7,7 +7,7 @@ import { IMessageResponse } from './interfaces/message-response.interface';
 import { PaymentCreate } from './models/payment-create.model';
 import { ICurrentStay } from './interfaces/current-stay.interface';
 import { IHighestDebt } from './interfaces/highest-debt.interface';
-import { UserDetails } from './models/user.details.model';
+import { IUserDetails } from './interfaces/user-details.interface';
 import { CreateStayModel } from './models/create-stay.model';
 import { CreateEventModel } from './models/create-event.model';
 import { IEvent } from './interfaces/event.interface';
@@ -38,8 +38,8 @@ export class BackendService {
         return this.http.delete<IMessageResponse>(this.eventsUrl + '/' + id);
     }
 
-    getUserDetails(id: string | null): Observable<UserDetails> {
-        return this.http.get<UserDetails>(this.usersUrl + '/' + id);
+    getUserDetails(id: string | null): Observable<IUserDetails> {
+        return this.http.get<IUserDetails>(this.usersUrl + '/' + id);
     }
 
     getUsers(): Observable<IUser[]> {
