@@ -12,7 +12,6 @@
     ></p-button>
     <p-button
         *ngIf="admin"
-        style="margin-left: 3px"
         styleClass="p-button-danger"
         label="Završi dejstvo"
         (click)="confirmEndAllStays()"
@@ -64,51 +63,45 @@
 
 <!-- Grid -->
 <div class="grid grid-nogutter">
-    <div *ngFor="let stay of currentStays">
-        <div class="col flex align-items-center justify-content-center m-3">
-            <p-card
-                header="{{ stay.user }}"
-                subheader="{{ stay.startTime }}"
-                
-                styleClass="p-card-shadow"
-            >
-                <ng-template
-                    pTemplate="header"
-                    style="width: 100%; height: 40%"
+    <div *ngFor="let stay of currentStays" class="col">
+        <p-card
+            header="{{ stay.user }}"
+            subheader="{{ stay.startTime }}"
+            styleClass="p-card-shadow"
+        >
+            <ng-template pTemplate="header" style="width: 100%; height: 40%">
+                <img
+                    [style]="{
+                        width: '270px',
+                        height: '270px',
+                        'object-fit': 'cover'
+                    }"
+                    alt="Card"
+                    src="{{ stay.picture }}"
+                />
+            </ng-template>
+            <div>
+                {{ stay.balance }}
+            </div>
+            <p-confirmDialog></p-confirmDialog>
+            <ng-template pTemplate="footer">
+                <p-button
+                    *ngIf="admin"
+                    styleClass="p-button-secondary"
+                    label="Odjavi"
+                    (click)="confirmEndStay(stay.userId)"
                 >
-                    <img
-                        [style]="{
-                            width: '270px',
-                            height: '270px',
-                            'object-fit': 'cover'
-                        }"
-                        alt="Card"
-                        src="{{ stay.picture }}"
-                    />
-                </ng-template>
-                <div>
-                    {{ stay.balance }}
-                </div>
-                <p-confirmDialog></p-confirmDialog>
-                <ng-template pTemplate="footer">
-                    <p-button
-                        *ngIf="admin"
-                        styleClass="p-button-secondary"
-                        label="Odjavi"
-                        (click)="confirmEndStay(stay.userId)"
-                    >
-                    </p-button>
-                    <p-button
-                        *ngIf="admin"
-                        styleClass="p-button-primary"
-                        label="Info"
-                        (click)="showInfo(stay.userId)"
-                        class="m-3"
-                    >
-                    </p-button>
-                </ng-template>
-            </p-card>
-        </div>
+                </p-button>
+                <p-button
+                    *ngIf="admin"
+                    styleClass="p-button-primary"
+                    label="Info"
+                    (click)="showInfo(stay.userId)"
+                    class="m-3"
+                >
+                </p-button>
+            </ng-template>
+        </p-card>
     </div>
 </div>
 

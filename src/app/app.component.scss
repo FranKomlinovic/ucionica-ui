@@ -7,9 +7,14 @@
             width: 100%;
         }
 
+        p-button {
+            margin-right: 1rem;
+        }
+
         .grid-nogutter {
             .col {
                 padding: 1rem !important;
+                max-width: 25rem !important;
             }
         }
     }

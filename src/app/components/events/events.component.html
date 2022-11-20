@@ -80,7 +80,7 @@
             header="{{ event.name }}"
             subheader="{{ event.date + ' u ' + event.startTime }}"
             styleClass="p-card-shadow"
-            (click)="editEvent(event)"
+            (click)="editEvent(event.id)"
         >
             <ng-template pTemplate="header" style="width: 100%; height: 40%">
                 <img alt="Card" src="{{ event.picture }}" />
@@ -99,6 +99,14 @@
                     styleClass="p-button-danger"
                     label="Obriši"
                     icon="pi pi-trash"
+                    (click)="confirm(event.id)"
+                >
+                </p-button>
+                <p-button
+                    styleClass="p-button-success"
+                    class="edit-btn"
+                    label="Uredi"
+                    icon="pi pi-pencil"
                     (click)="confirm(event.id)"
                 >
                 </p-button>

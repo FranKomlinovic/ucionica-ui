@@ -1,4 +1,5 @@
 export class CreateEventModel {
+    id?: string;
     name: string;
     description?: string | null;
     users?: string[] | null;
@@ -7,6 +8,7 @@ export class CreateEventModel {
     picture?: string | null;
 
     constructor(
+        id: string,
         name: string,
         description: string,
         users: string[],
@@ -14,6 +16,7 @@ export class CreateEventModel {
         endTime: Date,
         picture: string
     ) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.users = users || null;

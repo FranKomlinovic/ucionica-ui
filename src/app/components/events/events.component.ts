@@ -8,6 +8,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CreateEventModel } from 'src/app/models/create-event.model';
 
 @Component({
     selector: 'app-events',
@@ -50,7 +51,7 @@ export class EventsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        // this.loadUsers();
+        this.loadUsers();
         this.loadEvents();
     }
 
@@ -138,9 +139,13 @@ export class EventsComponent implements OnInit {
             });
     }
 
-    editEvent(event: IEvent) {
+    editEvent(eventId: string) {
         this.openDialog();
-        this.formGroup.patchValue(event);
+        this.backendService
+            .getEventById(eventId)
+            .subscribe((event: CreateEventModel) => {
+                this.formGroup.patchValue(event);
+            });
     }
 
     openDialog() {
