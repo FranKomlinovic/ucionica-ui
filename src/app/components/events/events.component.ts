@@ -25,17 +25,17 @@ export class EventsComponent implements OnInit {
     selectedUserAdvanced: IUser[];
 
     formGroup = new FormGroup({
-        name: new FormControl('', {
+        name: new FormControl<string>('', {
             nonNullable: true,
             validators: Validators.required,
         }),
-        description: new FormControl(''),
-        picture: new FormControl(''),
-        users: new FormControl(['']),
-        startTime: new FormControl('', {
+        description: new FormControl<string>(''),
+        picture: new FormControl<string>(''),
+        users: new FormControl<string[]>([]),
+        startTime: new FormControl<string>('', {
             validators: Validators.required,
         }),
-        endTime: new FormControl('', {
+        endTime: new FormControl<string>('', {
             validators: Validators.required,
         }),
     });
@@ -51,8 +51,12 @@ export class EventsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.loadUsers();
         this.loadEvents();
+        this.loadUsers();
+
+        this.formGroup.get('users')?.valueChanges.subscribe((value) => {
+            console.log('value: ', value);
+        });
     }
 
     loadEvents(): void {
@@ -121,6 +125,10 @@ export class EventsComponent implements OnInit {
 
     createEvent() {
         this.showSpinner = true;
+        console.log(
+            'this.formGroup.getRawValue(): ',
+            this.formGroup.getRawValue()
+        );
         this.backendService
             .createEvent(this.formGroup.getRawValue())
             .subscribe({
