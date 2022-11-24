@@ -1,6 +1,6 @@
-import { CurrentStayModel } from './current-stay.interface';
+import { ICurrentStay } from './current-stay.interface';
 
-export interface ICurrentStayResponseModel {
-  numberOfStays: number;
-  stayList: CurrentStayModel[];
+export interface ICurrentStayResponse {
+    numberOfStays: number;
+    stayList: ICurrentStay[];
 }

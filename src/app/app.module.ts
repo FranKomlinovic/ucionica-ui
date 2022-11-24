@@ -1,59 +1,59 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {AmplifyAuthenticatorModule} from '@aws-amplify/ui-angular';
-import {AppComponent} from './app.component';
-import {Amplify} from 'aws-amplify';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {LastPaymentsComponent} from './components/last-payments/last-payments.component';
-import {HttpClientModule} from '@angular/common/http';
-import {RouterLinkWithHref, RouterOutlet} from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {UcionicaMenuComponent} from './ucionica-menu/ucionica-menu.component';
-import {AppRoutingModule} from './app-routing.module';
-import {CurrentStaysComponent} from './components/current-stays/current-stays.component';
-import {HighestDebtComponent} from './components/highest-debt/highest-debt.component';
-import {HomepageInfoComponent} from './homepage/homepage-info.component';
-import {ServiceWorkerModule} from '@angular/service-worker';
-import {environment} from '../environments/environment';
-import {ConfirmationService} from 'primeng/api';
-import {SharedModule} from './modules/shared/shared.module';
-import {MultiSelectModule} from "primeng/multiselect";
-import {UserCreateComponent} from './components/user-create/user-create.component';
-import {InputTextModule} from "primeng/inputtext";
-import {PasswordModule} from "primeng/password";
-import {FileUploadModule} from "primeng/fileupload";
-import {HighestCreditComponent} from './components/highest-credit/highest-credit.component';
-import {UserInfoComponent} from "./components/user-info/user-info.component";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
+import { AppComponent } from './app.component';
+import { Amplify } from 'aws-amplify';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LastPaymentsComponent } from './components/last-payments/last-payments.component';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterLinkWithHref, RouterOutlet } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UcionicaMenuComponent } from './ucionica-menu/ucionica-menu.component';
+import { AppRoutingModule } from './app-routing.module';
+import { CurrentStaysComponent } from './components/current-stays/current-stays.component';
+import { HighestDebtComponent } from './components/highest-debt/highest-debt.component';
+import { HomepageInfoComponent } from './homepage/homepage-info.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { SharedModule } from './modules/shared/shared.module';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { UserCreateComponent } from './components/user-create/user-create.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { FileUploadModule } from 'primeng/fileupload';
+import { HighestCreditComponent } from './components/highest-credit/highest-credit.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
 import { EventsComponent } from './components/events/events.component';
-import {InputTextareaModule} from "primeng/inputtextarea";
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FeedbackService } from './services/feedback.service';
 
 Amplify.configure({
     Auth: {
-      region: 'eu-central-1',
-      userPoolId: 'eu-central-1_zpNOTpJzD',
-      userPoolWebClientId: '5abotfe77buga1l7kavuusjlfj',
-      mandatorySignIn: 'enable'
+        region: 'eu-central-1',
+        userPoolId: 'eu-central-1_zpNOTpJzD',
+        userPoolWebClientId: '5abotfe77buga1l7kavuusjlfj',
+        mandatorySignIn: 'enable',
     },
     Storage: {
-      bucket: 'ucionica-pictures/profile/',
-      region: 'eu-central-1',
-    }
-  }
-);
+        bucket: 'ucionica-pictures/profile/',
+        region: 'eu-central-1',
+    },
+});
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LastPaymentsComponent,
-    UcionicaMenuComponent,
-    CurrentStaysComponent,
-    HighestDebtComponent,
-    HomepageInfoComponent,
-    UserInfoComponent,
-    UserCreateComponent,
-    HighestCreditComponent,
-    EventsComponent,
-  ],
+    declarations: [
+        AppComponent,
+        LastPaymentsComponent,
+        UcionicaMenuComponent,
+        CurrentStaysComponent,
+        HighestDebtComponent,
+        HomepageInfoComponent,
+        UserInfoComponent,
+        UserCreateComponent,
+        HighestCreditComponent,
+        EventsComponent,
+    ],
     imports: [
         AppRoutingModule,
         SharedModule,
@@ -76,9 +76,9 @@ Amplify.configure({
         PasswordModule,
         FileUploadModule,
         InputTextareaModule,
+        SharedModule,
     ],
-  providers: [ConfirmationService],
-  bootstrap: [AppComponent],
+    providers: [ConfirmationService, FeedbackService, MessageService],
+    bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

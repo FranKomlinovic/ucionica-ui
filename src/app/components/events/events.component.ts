@@ -1,117 +1,143 @@
-import {Component, OnInit} from '@angular/core';
-import {UserModel} from "../../interfaces/user.interface";
-import {Events} from "../../interfaces/events";
-import {BackendService} from "../../backend.service";
-import {ConfirmationService, MessageService, PrimeNGConfig} from "primeng/api";
-import {CreateEventModel} from "../../models/create-event.model";
+import { Component, OnInit } from '@angular/core';
+import { IUser } from '../../interfaces/user.interface';
+import { IEvent } from '../../interfaces/event.interface';
+import { BackendService } from '../../backend.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { map, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { FeedbackService } from 'src/app/services/feedback.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class EventsComponent implements OnInit {
   //Display controls
+
   displayDialog: boolean = false;
-  spinnerOn: boolean = false;
-  //Form controls
-  selectedUserAdvanced: UserModel[];
-  startTime: Date = new Date();
-  endTime: Date = new Date();
-  name: string;
-  description: string;
-  picture: string;
-  users: UserModel[] = [];
-  //Grid controls
-  allEvents: Events[] = [];
+
+  allEvents$ = new Subject<IEvent[]>();
+  users$ = new Subject<IUser[]>();
+  destroy$ = new Subject<boolean>();
+
+  formGroup = new FormGroup({
+    id: new FormControl<string>(''),
+    name: new FormControl<string>('', {
+      nonNullable: true,
+      validators: Validators.required,
+    }),
+    description: new FormControl<string>(''),
+    picture: new FormControl<string>(''),
+    users: new FormControl<string[]>([]),
+    startTime: new FormControl<Date | null>(null, {
+      validators: Validators.required,
+    }),
+    endTime: new FormControl<Date | null>(null, {
+      validators: Validators.required,
+    }),
+  });
 
   constructor(
     private backendService: BackendService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
-    private primengConfig: PrimeNGConfig
-  ) {
-  }
+    private feedbackService: FeedbackService
+  ) {}
 
   ngOnInit(): void {
-    this.getAllEvents();
-    this.primengConfig.ripple = true;
+    this.loadEvents();
+    this.loadUsers();
   }
 
-  confirm(id: string) {
+  loadEvents(): void {
+    this.feedbackService.spinner$.next(true);
+    this.backendService
+      .getAllEvents()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((events: IEvent[]) => {
+        this.allEvents$.next(events);
+        this.feedbackService.spinner(false);
+      });
+  }
+
+  loadUsers() {
+    this.feedbackService.spinner(true);
+    this.backendService
+      .getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((users: IUser[]) => {
+        this.users$.next(users);
+        this.feedbackService.spinner(false);
+      });
+  }
+
+  deleteClick(id: string) {
     this.confirmationService.confirm({
       message: 'Jeste li sigurni da želite obrisati događaj?',
-      icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteEvent(id);
-        this.confirmationService.close();
       },
-      reject: () => {
-        this.confirmationService.close();
-      }
     });
   }
 
   deleteEvent(id: string) {
-    this.spinnerOn = true;
+    this.feedbackService.spinner(true);
     this.backendService.deleteEvent(id).subscribe({
-      next: () => {
-        this.getAllEvents();
-        this.showSuccess("Uspješno ste obrisali događaj");
-        this.spinnerOn = false;
+      next: (a) => {
+        this.loadEvents();
+        this.feedbackService.successToast(a.message);
       },
       error: () => {
-        this.showSuccess("Vjerojatno ste obrisali događaj, fixaj ovo");
-        this.getAllEvents();
-        this.spinnerOn = false;
-      }
+        this.feedbackService.errorToast(
+          'Vjerojatno ste obrisali događaj, fixaj ovo'
+        );
+      },
     });
   }
 
-  getAllEvents() {
-    this.spinnerOn = true;
-    this.backendService.getAllEvents().subscribe((data: Events[]) => {
-      this.allEvents = data;
-      this.displayDialog = false;
-      this.spinnerOn = false;
-    });
-
-    this.backendService.getUsers().subscribe((data) => {
-      this.users = data;
-      this.selectedUserAdvanced = [];
+  createEvent() {
+    const eventData = this.formGroup.getRawValue();
+    this.feedbackService.spinner(true);
+    this.backendService.createEvent(eventData).subscribe({
+      next: (a) => {
+        this.feedbackService.successToast(a.message);
+        this.loadEvents();
+        this.displayDialog = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.displayDialog = false;
+        this.feedbackService.errorToast(err.message);
+      },
     });
   }
 
-  postEvent() {
-    let event = new CreateEventModel(this.name, this.description, this.selectedUserAdvanced.map(a => a.id), this.startTime, this.endTime, this.picture)
-    this.spinnerOn = true;
+  editEvent(eventId: string) {
+    this.openDialog();
+    this.feedbackService.spinner(true);
     this.backendService
-      .postEvent(event)
-      .pipe()
-      .subscribe((response) => {
-        this.showSuccess(response.message);
-        this.getAllEvents();
-        this.spinnerOn = false;
+      .getEventById(eventId)
+      .pipe(
+        map((res) => ({
+          ...res,
+          startTime: new Date(res.startTime!),
+          endTime: new Date(res.endTime!),
+        }))
+      )
+      .subscribe((value) => {
+        this.formGroup.patchValue(value);
+        this.feedbackService.spinner(false);
       });
   }
 
   openDialog() {
-    this.displayDialog = true
-    this.startTime = new Date();
-    this.endTime = new Date();
+    this.displayDialog = true;
   }
 
-  showSuccess(message: string) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: message,
-    });
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
-
-  isValid(): boolean {
-    return !(this.startTime < this.endTime && this.name != null);
-  }
-
 }

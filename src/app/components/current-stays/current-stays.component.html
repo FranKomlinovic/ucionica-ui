@@ -1,7 +1,4 @@
-<p-toast></p-toast>
-<app-spinner [visible]="spinnerOn"></app-spinner>
-
-<div style="margin-left: 20px">
+<div>
   <h1>Trenutni dejstvenici</h1>
 
   <!-- Open form button -->
@@ -13,13 +10,13 @@
   ></p-button>
   <p-button
     *ngIf="admin"
-    style="margin-left: 3px"
     styleClass="p-button-danger"
     label="Završi dejstvo"
     (click)="confirmEndAllStays()"
   ></p-button>
 
-  <h2>Broj dejstvenika: {{ numberOfStays }}
+  <h2>
+    Broj dejstvenika: {{ numberOfStays }}
     <p-button
       *ngIf="admin"
       icon="pi pi-sync"
@@ -27,16 +24,23 @@
       (click)="getAllStays()"
     ></p-button>
   </h2>
-
 </div>
 <!-- Dialog -->
 <p-dialog header="Dodaj dejstvo" [(visible)]="displayDialog">
   <h5>Korisnik</h5>
-  <p-multiSelect [options]="users" [showToggleAll]="false" [(ngModel)]="selectedUserAdvanced" optionLabel="username"
-                 [virtualScroll]="true" [filter]="true" [itemSize]="34" class="multiselect-custom-virtual-scroll">
+  <p-multiSelect
+    [options]="users"
+    [showToggleAll]="false"
+    [(ngModel)]="selectedUserAdvanced"
+    optionLabel="username"
+    [virtualScroll]="true"
+    [filter]="true"
+    [itemSize]="34"
+    class="multiselect-custom-virtual-scroll"
+  >
     <ng-template let-user pTemplate="item">
       <div class="country-item">
-        <div>{{user.username}}</div>
+        <div>{{ user.username }}</div>
       </div>
     </ng-template>
   </p-multiSelect>
@@ -52,47 +56,58 @@
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid">
-  <div *ngFor="let stay of currentStays">
-    <div class="col flex align-items-center justify-content-center m-3">
-      <p-card
-        header="{{ stay.user }}"
-        subheader="{{ stay.startTime }}"
-        [style]="{ width: '230px'}"
-        styleClass="p-card-shadow"
-      >
-        <ng-template pTemplate="header" style="width: 100%; height: 40%">
-          <img [style]="{ width: '270px', height: '270px', 'object-fit': 'cover'}" alt="Card" src="{{ stay.picture }}"/>
-        </ng-template>
-        <div>
-          {{ stay.balance }}
-        </div>
-        <p-confirmDialog></p-confirmDialog>
-        <ng-template pTemplate="footer">
-          <p-button
-            *ngIf="admin"
-            styleClass="p-button-secondary"
-            label="Odjavi"
-            (click)="confirmEndStay(stay.userId)"
-          >
-          </p-button>
-          <p-button
-            *ngIf="admin"
-            styleClass="p-button-primary"
-            label="Info"
-            (click)="showInfo(stay.userId)"
-            class="m-3"
-          >
-          </p-button>
-        </ng-template>
-      </p-card>
-    </div>
+<div class="grid grid-nogutter">
+  <div *ngFor="let stay of currentStays" class="col">
+    <p-card
+      header="{{ stay.user }}"
+      subheader="{{ stay.startTime }}"
+      styleClass="p-card-shadow"
+    >
+      <ng-template pTemplate="header" style="width: 100%; height: 40%">
+        <img
+          [style]="{
+            width: '270px',
+            height: '270px',
+            'object-fit': 'cover'
+          }"
+          alt="Card"
+          src="{{ stay.picture }}"
+        />
+      </ng-template>
+      <div>
+        {{ stay.balance }}
+      </div>
+      <ng-template pTemplate="footer">
+        <p-button
+          *ngIf="admin"
+          styleClass="p-button-secondary"
+          label="Odjavi"
+          (click)="confirmEndStay(stay.userId)"
+        >
+        </p-button>
+        <p-button
+          *ngIf="admin"
+          styleClass="p-button-primary"
+          label="Info"
+          (click)="showInfo(stay.userId)"
+          class="m-3"
+        >
+        </p-button>
+      </ng-template>
+    </p-card>
   </div>
 </div>
 
-<p-dialog header="Informacije o dejstveniku" [(visible)]="showDialog" [style]="{width: '320px'}" [baseZIndex]="10000">
+<p-dialog
+  header="Informacije o dejstveniku"
+  [(visible)]="showDialog"
+  [style]="{ width: '320px' }"
+  [baseZIndex]="10000"
+>
   <div *ngIf="showDialog">
-    <app-user-info [userId]=selectedUserId [showButton]=false></app-user-info>
+    <app-user-info
+      [userId]="selectedUserId"
+      [showButton]="false"
+    ></app-user-info>
   </div>
 </p-dialog>
-

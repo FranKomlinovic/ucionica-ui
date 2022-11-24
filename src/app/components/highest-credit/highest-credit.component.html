@@ -1,18 +1,21 @@
-<app-spinner [visible]="spinnerOn"></app-spinner>
-<div style="margin-left: 20px">
+<div>
   <h1>Stup ponosa</h1>
 </div>
 <!-- Grid -->
-<div class="grid">
+<div class="grid grid-nogutter">
   <div *ngFor="let debt of highestCredit">
     <div class="col flex align-items-center justify-content-center m-3">
-      <p-card
-        header="{{ debt.user }}"
-        [style]="{ width: '230px' }"
-        styleClass="p-card-shadow"
-      >
+      <p-card header="{{ debt.user }}" styleClass="p-card-shadow">
         <ng-template pTemplate="header">
-          <img [style]="{ width: '270px', height: '270px', 'object-fit': 'cover'}" alt="Card" src="{{ debt.picture }}" />
+          <img
+            [style]="{
+              width: '270px',
+              height: '270px',
+              'object-fit': 'cover'
+            }"
+            alt="Card"
+            src="{{ debt.picture }}"
+          />
         </ng-template>
         <div>
           {{ debt.amount }}

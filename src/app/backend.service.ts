@@ -1,93 +1,94 @@
 import { Injectable } from '@angular/core';
-import { PaymentsModel } from './interfaces/payments.interface';
+import { IPayment } from './interfaces/payments.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserModel } from './interfaces/user.interface';
-import { MessageResponse } from './interfaces/message-response';
+import { IUser } from './interfaces/user.interface';
+import { IMessageResponse } from './interfaces/message-response.interface';
 import { PaymentCreate } from './models/payment-create.model';
-import { CurrentStayModel } from './interfaces/current-stay.interface';
-import { HighestDebt } from './interfaces/highest-debt';
-import { UserDetails } from './models/user.details.model';
+import { ICurrentStay } from './interfaces/current-stay.interface';
+import { IHighestDebt } from './interfaces/highest-debt.interface';
+import { IUserDetails } from './interfaces/user-details.interface';
 import { CreateStayModel } from './models/create-stay.model';
-import {CreateEventModel} from "./models/create-event.model";
-import {Events} from "./interfaces/events";
+import { CreateEventModel } from './models/create-event.model';
+import { IEvent } from './interfaces/event.interface';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class BackendService {
-  rootUrl = 'https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod';
-  staysUrl = this.rootUrl + '/stays';
-  usersUrl = this.rootUrl + '/users';
-  eventsUrl = this.rootUrl + '/events';
-  paymentsUrl = this.rootUrl + '/payments';
-  highestDebtUrl = this.rootUrl + '/users/highest-debt';
-  highestCreditUrl = this.rootUrl + '/users/highest-credit';
+    rootUrl = 'https://ua1sevlcal.execute-api.eu-central-1.amazonaws.com/prod';
+    staysUrl = this.rootUrl + '/stays';
+    usersUrl = this.rootUrl + '/users';
+    eventsUrl = this.rootUrl + '/events';
+    paymentsUrl = this.rootUrl + '/payments';
+    highestDebtUrl = this.rootUrl + '/users/highest-debt';
+    highestCreditUrl = this.rootUrl + '/users/highest-credit';
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getAllPayments(): Observable<PaymentsModel[]> {
-    return this.http.get<PaymentsModel[]>(this.paymentsUrl);
-  }
+    getAllPayments(): Observable<IPayment[]> {
+        return this.http.get<IPayment[]>(this.paymentsUrl);
+    }
 
-  deletePayment(id: string): Observable<MessageResponse> {
-    return this.http.delete<MessageResponse>(this.paymentsUrl + '/' + id);
-  }
+    deletePayment(id: string): Observable<IMessageResponse> {
+        return this.http.delete<IMessageResponse>(this.paymentsUrl + '/' + id);
+    }
 
-  deleteEvent(id: string): Observable<MessageResponse> {
-    return this.http.delete<MessageResponse>(this.eventsUrl + '/' + id);
-  }
+    deleteEvent(id: string): Observable<IMessageResponse> {
+        return this.http.delete<IMessageResponse>(this.eventsUrl + '/' + id);
+    }
 
-  getUserDetails(id: string | null): Observable<UserDetails> {
-    return this.http.get<UserDetails>(this.usersUrl + '/' + id);
-  }
+    getUserDetails(id: string | null): Observable<IUserDetails> {
+        return this.http.get<IUserDetails>(this.usersUrl + '/' + id);
+    }
 
-  getUsers(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(this.usersUrl);
-  }
+    getUsers(): Observable<IUser[]> {
+        return this.http.get<IUser[]>(this.usersUrl);
+    }
 
-  postPayment(userId: string, amount: number): Observable<MessageResponse> {
-    return this.http.post<MessageResponse>(
-      this.paymentsUrl,
-      new PaymentCreate(userId, amount)
-    );
-  }
+    postPayment(userId: string, amount: number): Observable<IMessageResponse> {
+        return this.http.post<IMessageResponse>(
+            this.paymentsUrl,
+            new PaymentCreate(userId, amount)
+        );
+    }
 
-  getAllStays(): Observable<CurrentStayModel[]> {
-    return this.http.get<CurrentStayModel[]>(this.staysUrl);
-  }
+    getAllStays(): Observable<ICurrentStay[]> {
+        return this.http.get<ICurrentStay[]>(this.staysUrl);
+    }
 
-  getAllEvents(): Observable<Events[]> {
-    return this.http.get<Events[]>(this.eventsUrl);
-  }
+    getAllEvents(): Observable<IEvent[]> {
+        return this.http.get<IEvent[]>(this.eventsUrl);
+    }
 
-  getEventsByUserId(userId: string): Observable<Events[]> {
-    return this.http.get<Events[]>(this.eventsUrl + "/" + userId);
-  }
+    getEventsByUserId(userId: string): Observable<IEvent[]> {
+        return this.http.get<IEvent[]>(this.eventsUrl + '/user/' + userId);
+    }
 
-  getHighestDebt(): Observable<HighestDebt[]> {
-    return this.http.get<HighestDebt[]>(this.highestDebtUrl);
-  }
+    getEventById(id: string): Observable<CreateEventModel> {
+        return this.http.get<CreateEventModel>(this.eventsUrl + '/' + id);
+    }
 
-  getHighestCredit(): Observable<HighestDebt[]> {
-    return this.http.get<HighestDebt[]>(this.highestCreditUrl);
-  }
+    getHighestDebt(): Observable<IHighestDebt[]> {
+        return this.http.get<IHighestDebt[]>(this.highestDebtUrl);
+    }
 
-  postStay(userId: string, date: Date): Observable<MessageResponse> {
-    return this.http.post<MessageResponse>(
-      this.staysUrl,
-      new CreateStayModel(userId, date)
-    );
-  }
+    getHighestCredit(): Observable<IHighestDebt[]> {
+        return this.http.get<IHighestDebt[]>(this.highestCreditUrl);
+    }
 
-  postEvent(event: CreateEventModel): Observable<MessageResponse> {
-    return this.http.post<MessageResponse>(
-      this.eventsUrl,
-      event
-    );
-  }
+    postStay(userId: string, date: Date): Observable<IMessageResponse> {
+        return this.http.post<IMessageResponse>(
+            this.staysUrl,
+            new CreateStayModel(userId, date)
+        );
+    }
 
-  endAllStays(): Observable<MessageResponse> {
-    return this.http.delete<MessageResponse>(this.staysUrl);
-  }
+    createEvent(event: CreateEventModel): Observable<IMessageResponse> {
+        return this.http.post<IMessageResponse>(this.eventsUrl, event);
+    }
+
+    endAllStays(): Observable<IMessageResponse> {
+        return this.http.delete<IMessageResponse>(this.staysUrl);
+    }
 }

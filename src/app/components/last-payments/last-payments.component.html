@@ -1,7 +1,4 @@
-<p-toast></p-toast>
-<app-spinner [visible]="spinnerOn"></app-spinner>
-
-<div style="margin-left: 20px">
+<div>
   <h1>Posljednje uplate</h1>
   <!-- Open form button -->
   <p-button
@@ -11,7 +8,6 @@
   ></p-button>
   <p-button
     icon="pi pi-sync"
-    style="margin-left: 3px"
     styleClass="p-button-secondary"
     (click)="getAllPayments()"
   ></p-button>
@@ -52,32 +48,36 @@
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid">
-  <div *ngFor="let payment of lastPayments">
-    <div class="col flex align-items-center justify-content-center m-3">
-      <p-card
-        header="{{ payment.user }}"
-        subheader="{{ payment.time }}"
-        [style]="{ width: '230px' }"
-        styleClass="p-card-shadow"
-      >
-        <ng-template pTemplate="header">
-          <img [style]="{ width: '270px', height: '270px', 'object-fit': 'cover'}" alt="Card"
-               src="{{ payment.picture }}"/>
-        </ng-template>
-        <div>
-          {{ payment.amount }}
-        </div>
-        <p-confirmDialog></p-confirmDialog>
-        <ng-template pTemplate="footer">
-          <p-button
-            icon="pi pi-trash"
-            styleClass="p-button-danger"
-            (click)="confirm(payment.id)"
-          >
-          </p-button>
-        </ng-template>
-      </p-card>
-    </div>
+<div class="grid grid-nogutter">
+  <div *ngFor="let payment of lastPayments" class="col">
+    <p-card
+      header="{{ payment.user }}"
+      subheader="{{ payment.time }}"
+      styleClass="p-card-shadow"
+    >
+      <ng-template pTemplate="header">
+        <img
+          [style]="{
+            width: '270px',
+            height: '270px',
+            'object-fit': 'cover'
+          }"
+          alt="Card"
+          src="{{ payment.picture }}"
+        />
+      </ng-template>
+      <div>
+        {{ payment.amount }}
+      </div>
+
+      <ng-template pTemplate="footer">
+        <p-button
+          icon="pi pi-trash"
+          styleClass="p-button-danger"
+          (click)="confirm(payment.id)"
+        >
+        </p-button>
+      </ng-template>
+    </p-card>
   </div>
 </div>
