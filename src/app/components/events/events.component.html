@@ -21,13 +21,13 @@
 <p-dialog header="Kreiraj event" [(visible)]="displayDialog">
   <form [formGroup]="formGroup">
     <h5>Naziv</h5>
-    <input type="text" pInputText formControlName="name" />
+    <input type="text" pInputText formControlName="name"/>
 
     <h5>Opis</h5>
     <textarea pInputTextarea formControlName="description"></textarea>
 
     <h5>Link slike</h5>
-    <input type="text" pInputText formControlName="picture" />
+    <input type="text" pInputText formControlName="picture"/>
 
     <h5>Korisnik</h5>
     <p-multiSelect
@@ -82,7 +82,7 @@
       styleClass="p-card-shadow"
     >
       <ng-template pTemplate="header" style="width: 100%; height: 40%">
-        <img alt="Card" src="{{ event.picture }}" />
+        <img alt="Card" src="{{ event.picture }}"/>
       </ng-template>
       <div>
         <p>Opis:</p>

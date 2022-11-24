@@ -104,7 +104,7 @@ export class EventsComponent implements OnInit {
       .deleteEvent(id)
       .pipe(tap(() => this.toggleSpinner(true)))
       .subscribe({
-        next: a => {
+        next: (a) => {
           this.loadEvents();
           this.feedbackService.successToast(a.message);
           this.formGroup.reset();
@@ -123,7 +123,7 @@ export class EventsComponent implements OnInit {
     this.showSpinner = true;
     const eventData = this.formGroup.getRawValue();
     this.backendService.createEvent(eventData).subscribe({
-      next: a => {
+      next: (a) => {
         this.feedbackService.successToast(a.message);
         this.loadEvents();
         this.displayDialog = false;
