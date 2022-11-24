@@ -1,11 +1,15 @@
 <amplify-authenticator>
-    <ng-template amplifySlot="authenticated">
-        <p-toast></p-toast>
+  <ng-template amplifySlot="authenticated">
+    <p-toast></p-toast>
+    <app-spinner *ngIf="feedbackService.spinner$ | async"></app-spinner>
+    <p-confirmDialog
+      header="Confirmation"
+      icon="pi pi-exclamation-triangle"
+    ></p-confirmDialog>
+    <app-ucionica-menu></app-ucionica-menu>
 
-        <app-ucionica-menu></app-ucionica-menu>
-
-        <div class="content">
-            <router-outlet></router-outlet>
-        </div>
-    </ng-template>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </ng-template>
 </amplify-authenticator>

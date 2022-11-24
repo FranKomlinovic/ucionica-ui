@@ -1,0 +1,14 @@
+.grid-nogutter {
+  .col {
+    padding: 1rem !important;
+    max-width: 25rem !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .grid-nogutter {
+    .col {
+      padding: 0 !important;
+    }
+  }
+}

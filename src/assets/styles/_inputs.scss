@@ -1,0 +1,24 @@
+p-button {
+  margin-right: 1rem;
+}
+
+.p-multiselect {
+    min-width: 20rem;
+  max-width: 20rem;
+  width: 100%;
+}
+
+// .p-multiselect-panel {
+//   z-index: 9 !important;
+// }
+
+input,
+textarea {
+  width: 100%;
+}
+
+.p-calendar {
+  width: 100%;
+  display: flex;
+  z-index: 0;
+}

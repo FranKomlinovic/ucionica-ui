@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
+import { FeedbackService } from './services/feedback.service';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    title = 'ucionica';
+  title = 'ucionica';
 
-    constructor(private primeeConfig: PrimeNGConfig) {
-        this.primeeConfig.ripple = true;
-    }
+  constructor(
+    private primeConfig: PrimeNGConfig,
+    protected feedbackService: FeedbackService
+  ) {
+    this.primeConfig.ripple = true;
+  }
 }

@@ -1,5 +1,3 @@
-<app-spinner [visible]="showSpinner"></app-spinner>
-
 <div>
   <h1>Eventi</h1>
 
@@ -18,16 +16,21 @@
 </div>
 
 <!-- Dialog -->
-<p-dialog header="Kreiraj event" [(visible)]="displayDialog">
+<p-dialog
+  header="Kreiraj event"
+  [(visible)]="displayDialog"
+  [modal]="true"
+  (onHide)="formGroup.reset()"
+>
   <form [formGroup]="formGroup">
     <h5>Naziv</h5>
-    <input type="text" pInputText formControlName="name"/>
+    <input type="text" pInputText formControlName="name" />
 
     <h5>Opis</h5>
     <textarea pInputTextarea formControlName="description"></textarea>
 
     <h5>Link slike</h5>
-    <input type="text" pInputText formControlName="picture"/>
+    <input type="text" pInputText formControlName="picture" />
 
     <h5>Korisnik</h5>
     <p-multiSelect
@@ -36,11 +39,14 @@
       formControlName="users"
       optionLabel="username"
       optionValue="id"
+      display="chip"
       [filter]="true"
       [itemSize]="34"
+      [autofocusFilter]="true"
+      [appendTo]="'body'"
     >
       <ng-template let-user pTemplate="item">
-        <div class="country-item">
+        <div>
           <div>{{ user.username }}</div>
         </div>
       </ng-template>
@@ -52,6 +58,8 @@
       [showTime]="true"
       [readonlyInput]="true"
       [touchUI]="true"
+      [dateFormat]="'dd.mm.yy'"
+      [appendTo]="'body'"
     ></p-calendar>
 
     <h5>Kraj</h5>
@@ -60,6 +68,8 @@
       [showTime]="true"
       [readonlyInput]="true"
       [touchUI]="true"
+      [dateFormat]="'dd.mm.yy'"
+      [appendTo]="'body'"
     ></p-calendar>
   </form>
 
@@ -82,7 +92,7 @@
       styleClass="p-card-shadow"
     >
       <ng-template pTemplate="header" style="width: 100%; height: 40%">
-        <img alt="Card" src="{{ event.picture }}"/>
+        <img alt="Card" src="{{ event.picture }}" />
       </ng-template>
       <div>
         <p>Opis:</p>
@@ -92,13 +102,13 @@
         <p>Pozvani su:</p>
         {{ event.users }}
       </div>
-      <p-confirmDialog></p-confirmDialog>
+
       <ng-template pTemplate="footer">
         <p-button
           styleClass="p-button-danger"
           label="Obriši"
           icon="pi pi-trash"
-          (click)="confirm(event.id)"
+          (click)="deleteClick(event.id)"
         >
         </p-button>
         <p-button

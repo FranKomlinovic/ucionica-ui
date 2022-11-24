@@ -4,7 +4,7 @@ import { IEvent } from '../../interfaces/event.interface';
 import { BackendService } from '../../backend.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -17,11 +17,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class EventsComponent implements OnInit {
   //Display controls
-  displayDialog: boolean = false;
-  showSpinner: boolean = true;
 
-  //Form controls
-  selectedUserAdvanced: IUser[];
+  displayDialog: boolean = false;
+
+  allEvents$ = new Subject<IEvent[]>();
+  users$ = new Subject<IUser[]>();
+  destroy$ = new Subject<boolean>();
 
   formGroup = new FormGroup({
     id: new FormControl<string>(''),
@@ -40,10 +41,6 @@ export class EventsComponent implements OnInit {
     }),
   });
 
-  allEvents$ = new Subject<IEvent[]>();
-  users$ = new Subject<IUser[]>();
-  destroy$ = new Subject<boolean>();
-
   constructor(
     private backendService: BackendService,
     private confirmationService: ConfirmationService,
@@ -56,90 +53,70 @@ export class EventsComponent implements OnInit {
   }
 
   loadEvents(): void {
+    this.feedbackService.spinner$.next(true);
     this.backendService
       .getAllEvents()
-      .pipe(
-        tap(() => this.toggleSpinner(true)),
-        takeUntil(this.destroy$)
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe((events: IEvent[]) => {
         this.allEvents$.next(events);
-        this.toggleSpinner(false);
+        this.feedbackService.spinner(false);
       });
   }
 
   loadUsers() {
+    this.feedbackService.spinner(true);
     this.backendService
       .getUsers()
-      .pipe(
-        tap(() => this.toggleSpinner(true)),
-        takeUntil(this.destroy$)
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe((users: IUser[]) => {
         this.users$.next(users);
-        this.toggleSpinner(false);
+        this.feedbackService.spinner(false);
       });
   }
 
-  toggleSpinner(value: boolean) {
-    this.showSpinner = value;
-  }
-
-  confirm(id: string) {
+  deleteClick(id: string) {
     this.confirmationService.confirm({
       message: 'Jeste li sigurni da želite obrisati događaj?',
-      icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteEvent(id);
-        this.confirmationService.close();
-      },
-      reject: () => {
-        this.confirmationService.close();
       },
     });
   }
 
   deleteEvent(id: string) {
-    this.backendService
-      .deleteEvent(id)
-      .pipe(tap(() => this.toggleSpinner(true)))
-      .subscribe({
-        next: (a) => {
-          this.loadEvents();
-          this.feedbackService.successToast(a.message);
-          this.formGroup.reset();
-        },
-        error: () => {
-          this.toggleSpinner(false);
-          this.feedbackService.errorToast(
-            'Vjerojatno ste obrisali događaj, fixaj ovo'
-          );
-          this.formGroup.reset();
-        },
-      });
+    this.feedbackService.spinner(true);
+    this.backendService.deleteEvent(id).subscribe({
+      next: (a) => {
+        this.loadEvents();
+        this.feedbackService.successToast(a.message);
+      },
+      error: () => {
+        this.feedbackService.errorToast(
+          'Vjerojatno ste obrisali događaj, fixaj ovo'
+        );
+      },
+    });
   }
 
   createEvent() {
-    this.showSpinner = true;
     const eventData = this.formGroup.getRawValue();
+    this.feedbackService.spinner(true);
     this.backendService.createEvent(eventData).subscribe({
       next: (a) => {
         this.feedbackService.successToast(a.message);
         this.loadEvents();
         this.displayDialog = false;
-        this.formGroup.reset();
       },
       error: (err: HttpErrorResponse) => {
-        this.toggleSpinner(false);
         this.displayDialog = false;
         this.feedbackService.errorToast(err.message);
-        this.formGroup.reset();
       },
     });
   }
 
   editEvent(eventId: string) {
     this.openDialog();
+    this.feedbackService.spinner(true);
     this.backendService
       .getEventById(eventId)
       .pipe(
@@ -151,6 +128,7 @@ export class EventsComponent implements OnInit {
       )
       .subscribe((value) => {
         this.formGroup.patchValue(value);
+        this.feedbackService.spinner(false);
       });
   }
 

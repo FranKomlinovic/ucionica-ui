@@ -1,29 +1,24 @@
-<app-spinner [visible]="spinnerOn"></app-spinner>
 <div>
-    <h1>Stup srama</h1>
+  <h1>Stup srama</h1>
 </div>
 <!-- Grid -->
 <div class="grid grid-nogutter">
-    <div *ngFor="let debt of highestDebt" class="col">
-        <p-card
-            header="{{ debt.user }}"
-            
-            styleClass="p-card-shadow"
-        >
-            <ng-template pTemplate="header">
-                <img
-                    [style]="{
-                        width: '270px',
-                        height: '270px',
-                        'object-fit': 'cover'
-                    }"
-                    alt="Card"
-                    src="{{ debt.picture }}"
-                />
-            </ng-template>
-            <div>
-                {{ debt.amount }}
-            </div>
-        </p-card>
-    </div>
+  <div *ngFor="let debt of highestDebt" class="col">
+    <p-card header="{{ debt.user }}" styleClass="p-card-shadow">
+      <ng-template pTemplate="header">
+        <img
+          [style]="{
+            width: '270px',
+            height: '270px',
+            'object-fit': 'cover'
+          }"
+          alt="Card"
+          src="{{ debt.picture }}"
+        />
+      </ng-template>
+      <div>
+        {{ debt.amount }}
+      </div>
+    </p-card>
+  </div>
 </div>

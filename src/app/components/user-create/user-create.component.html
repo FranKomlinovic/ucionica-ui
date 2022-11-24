@@ -1,26 +1,22 @@
-<app-spinner [visible]="spinnerOn"></app-spinner>
 <div>
-    <h2>Dodaj korisnika</h2>
-    <h5>Email</h5>
-    <input type="text" pInputText [(ngModel)]="email" />
-    <h5>Lozinka (6 znakova)</h5>
-    <p-password [(ngModel)]="password" [toggleMask]="true"></p-password>
-    <h5>Potvrdi lozinku</h5>
-    <p-password
-        [(ngModel)]="passwordValidation"
-        [toggleMask]="true"
-    ></p-password>
-    <h5>Ime</h5>
-    <input type="text" pInputText [(ngModel)]="givenName" />
-    <h5>Prezime</h5>
-    <input type="text" pInputText [(ngModel)]="familyName" />
-    <br />
-    <br />
-    <p-button
-        [disabled]="isValid()"
-        label="Kreiraj korisnika"
-        styleClass="p-button"
-        (click)="signUp()"
-    >
-    </p-button>
+  <h2>Dodaj korisnika</h2>
+  <h5>Email</h5>
+  <input type="text" pInputText [(ngModel)]="email" />
+  <h5>Lozinka (6 znakova)</h5>
+  <p-password [(ngModel)]="password" [toggleMask]="true"></p-password>
+  <h5>Potvrdi lozinku</h5>
+  <p-password [(ngModel)]="passwordValidation" [toggleMask]="true"></p-password>
+  <h5>Ime</h5>
+  <input type="text" pInputText [(ngModel)]="givenName" />
+  <h5>Prezime</h5>
+  <input type="text" pInputText [(ngModel)]="familyName" />
+  <br />
+  <br />
+  <p-button
+    [disabled]="isValid()"
+    label="Kreiraj korisnika"
+    styleClass="p-button"
+    (click)="signUp()"
+  >
+  </p-button>
 </div>
