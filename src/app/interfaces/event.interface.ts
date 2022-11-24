@@ -5,7 +5,7 @@ export interface IEvent {
     users: string[];
     date: string;
     startTime: string;
-    endTime: string;
-    picture: string;
+    endTime: Date;
+    picture: Date;
     currentEvent: boolean;
 }
