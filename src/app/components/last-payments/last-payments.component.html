@@ -7,20 +7,20 @@
     label="Dodaj uplatu"
   ></p-button>
   <p-button
+    (click)="getAllPayments()"
     icon="pi pi-sync"
     styleClass="p-button-secondary"
-    (click)="getAllPayments()"
   ></p-button>
 </div>
 <!-- Dialog -->
-<p-dialog header="Dodaj uplatu" [(visible)]="displayDialog">
+<p-dialog [(visible)]="displayDialog" header="Dodaj uplatu">
   <h5>Korisnik</h5>
   <p-autoComplete
-    [(ngModel)]="selectedUserAdvanced"
-    [suggestions]="filteredUsers"
     (completeMethod)="filterPayments($event)"
-    field="username"
+    [(ngModel)]="selectedUserAdvanced"
     [dropdown]="true"
+    [suggestions]="filteredUsers"
+    field="username"
   >
     <ng-template let-user pTemplate="item">
       <div>
@@ -32,16 +32,16 @@
   <h5>Iznos</h5>
   <p-inputNumber
     [(ngModel)]="amount"
-    mode="currency"
     currency="HRK"
     locale="de-DE"
+    mode="currency"
   >
   </p-inputNumber>
 
   <ng-template pTemplate="footer">
     <p-button
-      icon="pi pi-plus"
       (click)="savePayment()"
+      icon="pi pi-plus"
       label="Kreiraj"
     ></p-button>
   </ng-template>
@@ -52,8 +52,8 @@
   <div *ngFor="let payment of lastPayments" class="col">
     <p-card
       header="{{ payment.user }}"
-      subheader="{{ payment.time }}"
       styleClass="p-card-shadow"
+      subheader="{{ payment.time }}"
     >
       <ng-template pTemplate="header">
         <img
@@ -72,9 +72,9 @@
 
       <ng-template pTemplate="footer">
         <p-button
+          (click)="confirm(payment.id)"
           icon="pi pi-trash"
           styleClass="p-button-danger"
-          (click)="confirm(payment.id)"
         >
         </p-button>
       </ng-template>

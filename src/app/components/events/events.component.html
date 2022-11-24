@@ -9,41 +9,41 @@
   ></p-button>
 
   <p-button
+    (click)="loadEvents()"
     icon="pi pi-sync"
     styleClass="p-button-secondary"
-    (click)="loadEvents()"
   ></p-button>
 </div>
 
 <!-- Dialog -->
 <p-dialog
-  header="Kreiraj event"
+  (onHide)="formGroup.reset()"
   [(visible)]="displayDialog"
   [modal]="true"
-  (onHide)="formGroup.reset()"
+  header="Kreiraj event"
 >
   <form [formGroup]="formGroup">
     <h5>Naziv</h5>
-    <input type="text" pInputText formControlName="name" />
+    <input formControlName="name" pInputText type="text"/>
 
     <h5>Opis</h5>
-    <textarea pInputTextarea formControlName="description"></textarea>
+    <textarea formControlName="description" pInputTextarea></textarea>
 
     <h5>Link slike</h5>
-    <input type="text" pInputText formControlName="picture" />
+    <input formControlName="picture" pInputText type="text"/>
 
     <h5>Korisnik</h5>
     <p-multiSelect
+      [appendTo]="'body'"
+      [autofocusFilter]="true"
+      [filter]="true"
+      [itemSize]="34"
       [options]="(users$ | async) || []"
       [showToggleAll]="false"
+      display="chip"
       formControlName="users"
       optionLabel="username"
       optionValue="id"
-      display="chip"
-      [filter]="true"
-      [itemSize]="34"
-      [autofocusFilter]="true"
-      [appendTo]="'body'"
     >
       <ng-template let-user pTemplate="item">
         <div>
@@ -54,45 +54,45 @@
 
     <h5>Početak</h5>
     <p-calendar
-      formControlName="startTime"
-      [showTime]="true"
-      [readonlyInput]="true"
-      [touchUI]="true"
-      [dateFormat]="'dd.mm.yy'"
       [appendTo]="'body'"
+      [dateFormat]="'dd.mm.yy'"
+      [readonlyInput]="true"
+      [showTime]="true"
+      [touchUI]="true"
+      formControlName="startTime"
     ></p-calendar>
 
     <h5>Kraj</h5>
     <p-calendar
-      formControlName="endTime"
-      [showTime]="true"
-      [readonlyInput]="true"
-      [touchUI]="true"
-      [dateFormat]="'dd.mm.yy'"
       [appendTo]="'body'"
+      [dateFormat]="'dd.mm.yy'"
+      [readonlyInput]="true"
+      [showTime]="true"
+      [touchUI]="true"
+      formControlName="endTime"
     ></p-calendar>
   </form>
 
   <ng-template pTemplate="footer">
     <p-button
+      (click)="createEvent()"
       [disabled]="!formGroup.valid"
       icon="pi pi-plus"
-      (click)="createEvent()"
       label="Kreiraj"
     ></p-button>
   </ng-template>
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid grid-nogutter" *ngIf="allEvents$ | async as events">
+<div *ngIf="allEvents$ | async as events" class="grid grid-nogutter">
   <div *ngFor="let event of events" class="col">
     <p-card
       header="{{ event.name }}"
-      subheader="{{ event.date + ' u ' + event.startTime }}"
       styleClass="p-card-shadow"
+      subheader="{{ event.date + ' u ' + event.startTime }}"
     >
       <ng-template pTemplate="header" style="width: 100%; height: 40%">
-        <img alt="Card" src="{{ event.picture }}" />
+        <img alt="Card" src="{{ event.picture }}"/>
       </ng-template>
       <div>
         <p>Opis:</p>
@@ -105,17 +105,17 @@
 
       <ng-template pTemplate="footer">
         <p-button
-          styleClass="p-button-danger"
-          label="Obriši"
-          icon="pi pi-trash"
           (click)="deleteClick(event.id)"
+          icon="pi pi-trash"
+          label="Obriši"
+          styleClass="p-button-danger"
         >
         </p-button>
         <p-button
-          styleClass="p-button-success"
-          label="Uredi"
-          icon="pi pi-pencil"
           (click)="editEvent(event.id)"
+          icon="pi pi-pencil"
+          label="Uredi"
+          styleClass="p-button-success"
         >
         </p-button>
       </ng-template>
