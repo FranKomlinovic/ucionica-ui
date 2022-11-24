@@ -8,7 +8,6 @@ import { map, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CreateEventModel } from 'src/app/models/create-event.model';
 
 @Component({
   selector: 'app-events',
@@ -105,9 +104,9 @@ export class EventsComponent implements OnInit {
       .deleteEvent(id)
       .pipe(tap(() => this.toggleSpinner(true)))
       .subscribe({
-        next: () => {
+        next: a => {
           this.loadEvents();
-          this.feedbackService.successToast('Uspješno ste obrisali događaj');
+          this.feedbackService.successToast(a.message);
           this.formGroup.reset();
         },
         error: () => {
@@ -124,8 +123,8 @@ export class EventsComponent implements OnInit {
     this.showSpinner = true;
     const eventData = this.formGroup.getRawValue();
     this.backendService.createEvent(eventData).subscribe({
-      next: () => {
-        this.feedbackService.successToast('Uspješno ste kreirali događaj');
+      next: a => {
+        this.feedbackService.successToast(a.message);
         this.loadEvents();
         this.displayDialog = false;
         this.formGroup.reset();
