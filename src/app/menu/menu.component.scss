@@ -1,0 +1,53 @@
+.menu {
+    display: flex;
+    padding: 0;
+
+    .burger-menu {
+        display: none;
+    }
+
+    .menu-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 2px solid rgb(186, 188, 188);
+        transition: 0.5s ease-in-out;
+
+        i {
+            font-size: 1.5rem;
+            color: gray;
+        }
+
+        &:hover {
+            cursor: pointer;
+            border-bottom: 2px solid lightblue;
+        }
+
+        &.col-fixed {
+            color: #d32f2f;
+            width: 3rem;
+        }
+
+        &.active-item {
+            border-bottom: 2px solid lightblue;
+            i {
+                color: rgb(55, 147, 223);
+            }
+        }
+
+        &.last {
+            margin-left: auto;
+            background-color: #d32f2f;
+            width: 3rem;
+
+            &:hover {
+                cursor: pointer;
+                border-bottom: 2px solid red;
+            }
+
+            i {
+                color: white;
+            }
+        }
+    }
+}

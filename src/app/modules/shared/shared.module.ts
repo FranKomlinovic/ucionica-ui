@@ -15,7 +15,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { AccordionModule } from 'primeng/accordion';
 import { TabViewModule } from 'primeng/tabview';
-import { SpinnerComponent } from './spinner/spinner.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
     declarations: [SpinnerComponent],

@@ -27,6 +27,7 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { EventsComponent } from './components/events/events.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FeedbackService } from './services/feedback.service';
+import { MenuComponent } from './menu/menu.component';
 
 Amplify.configure({
     Auth: {
@@ -53,6 +54,7 @@ Amplify.configure({
         UserCreateComponent,
         HighestCreditComponent,
         EventsComponent,
+        MenuComponent,
     ],
     imports: [
         AppRoutingModule,

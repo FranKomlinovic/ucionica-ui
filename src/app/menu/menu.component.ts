@@ -1,19 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { Component, Input, OnInit } from '@angular/core';
 import { Auth } from 'aws-amplify';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 
 @Component({
-    selector: 'app-ucionica-menu',
-    templateUrl: './ucionica-menu.component.html',
-    styleUrls: ['./ucionica-menu.component.scss'],
+    selector: 'app-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.scss'],
 })
-export class UcionicaMenuComponent implements OnInit {
+export class MenuComponent implements OnInit {
+    @Input() menuItems: MenuItem[] = [];
+
     nonAdminMenu: MenuItem[] = [];
     adminMenu: MenuItem[] = [];
     items: MenuItem[] = this.nonAdminMenu;
-    activeItem: MenuItem;
+    activeItemIndex: number = 0;
 
     constructor(private confirmationService: ConfirmationService) {}
+
+    selectItem(i: number) {
+        this.activeItemIndex = i;
+    }
 
     ngOnInit() {
         this.adminMenu = [
@@ -27,6 +33,7 @@ export class UcionicaMenuComponent implements OnInit {
             {
                 icon: 'pi pi-fw pi-sign-out',
                 command: () => this.confirmSignOut(),
+                styleClass: 'last',
             },
         ];
 
@@ -36,6 +43,7 @@ export class UcionicaMenuComponent implements OnInit {
             {
                 icon: 'pi pi-fw pi-sign-out',
                 command: () => this.confirmSignOut(),
+                styleClass: 'last col-fixed',
             },
         ];
 
@@ -43,15 +51,13 @@ export class UcionicaMenuComponent implements OnInit {
             const groups =
                 data.signInUserSession.accessToken.payload['cognito:groups'];
             if (!groups) {
-                this.items = this.nonAdminMenu;
+                this.menuItems = this.nonAdminMenu;
                 return;
             }
             if (groups.includes('Generali')) {
-                this.items = this.adminMenu;
+                this.menuItems = this.adminMenu;
             }
         });
-
-        this.activeItem = this.items[0];
     }
 
     signOut() {

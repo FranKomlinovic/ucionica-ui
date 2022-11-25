@@ -1,0 +1,11 @@
+<div class="menu grid grid-nogutter">
+    <i class="pi pi-bars col-fixed burger-menu"></i>
+    <div
+        *ngFor="let item of menuItems; let i = index"
+        class="menu-item col {{ item.styleClass }}"
+        [ngClass]="{ 'active-item': i === activeItemIndex }"
+        (click)="selectItem(i)"
+    >
+        <i class="{{ item.icon }}"></i>
+    </div>
+</div>
