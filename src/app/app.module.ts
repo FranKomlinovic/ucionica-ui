@@ -8,7 +8,6 @@ import { LastPaymentsComponent } from './components/last-payments/last-payments.
 import { HttpClientModule } from '@angular/common/http';
 import { RouterLinkWithHref, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UcionicaMenuComponent } from './ucionica-menu/ucionica-menu.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CurrentStaysComponent } from './components/current-stays/current-stays.component';
 import { HighestDebtComponent } from './components/highest-debt/highest-debt.component';
@@ -46,7 +45,6 @@ Amplify.configure({
     declarations: [
         AppComponent,
         LastPaymentsComponent,
-        UcionicaMenuComponent,
         CurrentStaysComponent,
         HighestDebtComponent,
         HomepageInfoComponent,

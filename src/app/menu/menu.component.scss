@@ -1,26 +1,43 @@
+.placeholder {
+    display: none;
+    height: 3rem;
+}
 .menu {
     display: flex;
     padding: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    z-index: 10;
 
-    .burger-menu {
+    #mobile-header {
         display: none;
     }
 
     .menu-item {
+        background-color: white;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom: 2px solid rgb(186, 188, 188);
-        transition: 0.5s ease-in-out;
+        border-bottom: 2px solid rgb(190, 196, 198);
+        transition: 0.2s ease-in-out;
+        height: 4rem;
+
+        .tooltip {
+            display: none;
+        }
 
         i {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: gray;
         }
 
         &:hover {
             cursor: pointer;
-            border-bottom: 2px solid lightblue;
+            border-bottom: 2px solid #82b9e7;
+            background-color: rgb(240, 243, 244);
+
+            i {
+                color: rgb(138, 138, 138);
+            }
         }
 
         &.col-fixed {
@@ -29,7 +46,7 @@
         }
 
         &.active-item {
-            border-bottom: 2px solid lightblue;
+            border-bottom: 2px solid #3793df;
             i {
                 color: rgb(55, 147, 223);
             }
@@ -42,11 +59,92 @@
 
             &:hover {
                 cursor: pointer;
-                border-bottom: 2px solid red;
+                border-bottom: 2px solid rgb(134, 34, 34);
             }
 
             i {
                 color: white;
+            }
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .placeholder {
+        display: block;
+    }
+    .menu {
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        width: 100%;
+
+        #mobile-header {
+            display: flex;
+            padding: 0;
+            background-color: white;
+
+            .burger-menu {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .title {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin-left: 2rem;
+                span {
+                    font-size: 2.2rem;
+                }
+            }
+
+            .log-out {
+                width: 4rem;
+                margin-left: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                i {
+                    font-size: 1.5rem;
+                    color: #d32f2f;
+                }
+            }
+        }
+
+        .menu-item,
+        .burger-menu {
+            justify-content: flex-start;
+            max-width: none !important;
+            padding: 1rem !important;
+
+            i {
+                font-size: 2.2rem;
+            }
+
+            .tooltip {
+                display: block;
+                color: rgb(138, 138, 138);
+                margin-left: 3rem;
+                font-size: 1.2rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            &.active-item {
+                .tooltip {
+                    color: #3793df;
+                }
+            }
+
+            &.last {
+                display: none;
+            }
+
+            &:nth-last-child(2) {
+                border-bottom: none;
             }
         }
     }

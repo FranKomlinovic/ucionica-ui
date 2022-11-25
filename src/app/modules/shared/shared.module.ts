@@ -16,6 +16,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { AccordionModule } from 'primeng/accordion';
 import { TabViewModule } from 'primeng/tabview';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
     declarations: [SpinnerComponent],
@@ -36,7 +37,9 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
         TabMenuModule,
         AccordionModule,
         TabViewModule,
+        TooltipModule,
     ],
+
     exports: [
         CommonModule,
         TieredMenuModule,
@@ -55,6 +58,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
         AccordionModule,
         TabViewModule,
         SpinnerComponent,
+        TooltipModule,
     ],
     providers: [],
 })
