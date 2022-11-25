@@ -4,7 +4,7 @@ import { IEvent } from '../../interfaces/event.interface';
 import { BackendService } from '../../backend.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, takeUntil } from 'rxjs/operators';
+import { delay, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -18,7 +18,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class EventsComponent implements OnInit {
   //Display controls
 
-  displayDialog: boolean = false;
+  displayDialog: boolean;
+  today: Date = new Date();
 
   allEvents$ = new Subject<IEvent[]>();
   users$ = new Subject<IUser[]>();
