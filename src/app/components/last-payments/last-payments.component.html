@@ -1,6 +1,5 @@
 <div>
     <h1>Posljednje uplate</h1>
-    <!-- Open form button -->
     <p-button
         (click)="openDialog()"
         icon="pi pi-external-link"
@@ -12,7 +11,6 @@
         (click)="getAllPayments()"
     ></p-button>
 </div>
-<!-- Dialog -->
 <p-dialog header="Dodaj uplatu" [(visible)]="displayDialog">
     <h5>Korisnik</h5>
     <p-autoComplete
