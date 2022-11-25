@@ -1,10 +1,9 @@
 .progress-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   z-index: 10000;
-  height: 2em;
-  width: 2em;
-  overflow: visible;
-  margin: auto;
   top: 0;
   left: 0;
   bottom: 0;
