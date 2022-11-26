@@ -2,25 +2,43 @@
   <h1>Stup ponosa</h1>
 </div>
 <!-- Grid -->
-<div class="grid grid-nogutter">
-  <div *ngFor="let debt of highestCredit">
-    <div class="col flex align-items-center justify-content-center m-3">
-      <p-card header="{{ debt.user }}" styleClass="p-card-shadow">
-        <ng-template pTemplate="header">
-          <img
-            [style]="{
-              width: '270px',
-              height: '270px',
-              'object-fit': 'cover'
-            }"
-            alt="Card"
-            src="{{ debt.picture }}"
-          />
-        </ng-template>
-        <div>
-          {{ debt.amount }}
-        </div>
-      </p-card>
-    </div>
+<div *ngIf="highestCredits$ | async as highestCredit" class="grid grid-nogutter">
+  <div *ngFor="let credit of highestCredit" class="col">
+    <p-card
+      header="{{ credit.user }}"
+      styleClass="p-card-shadow"
+    >
+      <ng-template pTemplate="header" style="width: 100%; height: 40%">
+        <img alt="Card" src="{{ credit.picture }}" onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"/>
+      </ng-template>
+      <div>
+        <p>Iznos:</p>
+        {{ credit.amount }}
+      </div>
+
+      <ng-template pTemplate="footer">
+        <p-button
+          (click)="getDetails(credit.userId)"
+          icon="pi pi-search"
+          label="Detalji"
+          styleClass="p-button"
+        >
+        </p-button>
+      </ng-template>
+    </p-card>
   </div>
 </div>
+
+<p-dialog
+  [(visible)]="showDialog"
+  [baseZIndex]="10000"
+  [modal]="true"
+  header="Informacije o dejstveniku"
+>
+  <div *ngIf="showDialog">
+    <app-user-info
+      [showButton]="false"
+      [userId]="selectedUserId"
+    ></app-user-info>
+  </div>
+</p-dialog>
