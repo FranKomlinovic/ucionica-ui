@@ -10,9 +10,8 @@
   right: 0;
 }
 
-/* Transparent Overlay */
 .progress-spinner:before {
-  content: "";
+  content: '';
   display: block;
   position: fixed;
   top: 0;

@@ -1,6 +1,5 @@
 <div>
   <h1>Posljednje uplate</h1>
-  <!-- Open form button -->
   <p-button
     (click)="openDialog()"
     icon="pi pi-external-link"
@@ -12,7 +11,6 @@
     styleClass="p-button-secondary"
   ></p-button>
 </div>
-<!-- Dialog -->
 <p-dialog [(visible)]="displayDialog" header="Dodaj uplatu">
   <h5>Korisnik</h5>
   <p-autoComplete
@@ -58,10 +56,10 @@
       <ng-template pTemplate="header">
         <img
           [style]="{
-            width: '270px',
-            height: '270px',
-            'object-fit': 'cover'
-          }"
+                        width: '270px',
+                        height: '270px',
+                        'object-fit': 'cover'
+                    }"
           alt="Card"
           src="{{ payment.picture }}"
         />
