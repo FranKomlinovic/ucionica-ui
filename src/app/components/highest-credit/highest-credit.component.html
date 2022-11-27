@@ -2,7 +2,7 @@
   <h1>Stup ponosa</h1>
 </div>
 <!-- Grid -->
-<div *ngIf="highestCredits$ | async as highestCredit" class="grid grid-nogutter">
+<div class="grid grid-nogutter">
   <div *ngFor="let credit of highestCredit" class="col">
     <p-card
       header="{{ credit.user }}"
@@ -16,30 +16,6 @@
         <p>Iznos:</p>
         {{ credit.amount }}
       </div>
-
-      <ng-template pTemplate="footer">
-        <p-button
-          (click)="getDetails(credit.userId)"
-          icon="pi pi-search"
-          label="Detalji"
-          styleClass="p-button"
-        >
-        </p-button>
-      </ng-template>
     </p-card>
   </div>
 </div>
-
-<p-dialog
-  [(visible)]="showDialog"
-  [baseZIndex]="10000"
-  [modal]="true"
-  header="Informacije o dejstveniku"
->
-  <div *ngIf="showDialog">
-    <app-user-info
-      [showButton]="false"
-      [userId]="selectedUserId"
-    ></app-user-info>
-  </div>
-</p-dialog>
