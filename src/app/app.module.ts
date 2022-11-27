@@ -29,56 +29,56 @@ import { FeedbackService } from './services/feedback.service';
 import { MenuComponent } from './menu/menu.component';
 
 Amplify.configure({
-    Auth: {
-        region: 'eu-central-1',
-        userPoolId: 'eu-central-1_zpNOTpJzD',
-        userPoolWebClientId: '5abotfe77buga1l7kavuusjlfj',
-        mandatorySignIn: 'enable',
-    },
-    Storage: {
-        bucket: 'ucionica-pictures/profile/',
-        region: 'eu-central-1',
-    },
+  Auth: {
+    region: 'eu-central-1',
+    userPoolId: 'eu-central-1_zpNOTpJzD',
+    userPoolWebClientId: '5abotfe77buga1l7kavuusjlfj',
+    mandatorySignIn: 'enable',
+  },
+  Storage: {
+    bucket: 'ucionica-pictures/profile/',
+    region: 'eu-central-1',
+  },
 });
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        LastPaymentsComponent,
-        CurrentStaysComponent,
-        HighestDebtComponent,
-        HomepageInfoComponent,
-        UserInfoComponent,
-        UserCreateComponent,
-        HighestCreditComponent,
-        EventsComponent,
-        MenuComponent,
-    ],
-    imports: [
-        AppRoutingModule,
-        SharedModule,
-        BrowserModule,
-        HttpClientModule,
-        AmplifyAuthenticatorModule,
-        BrowserAnimationsModule,
-        RouterLinkWithHref,
-        RouterOutlet,
-        ReactiveFormsModule,
-        FormsModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: environment.production,
-            // Register the ServiceWorker as soon as the application is stable
-            // or after 30 seconds (whichever comes first).
-            registrationStrategy: 'registerWhenStable:30000',
-        }),
-        MultiSelectModule,
-        InputTextModule,
-        PasswordModule,
-        FileUploadModule,
-        InputTextareaModule,
-        SharedModule,
-    ],
-    providers: [ConfirmationService, FeedbackService, MessageService],
-    bootstrap: [AppComponent],
+  declarations: [
+    AppComponent,
+    LastPaymentsComponent,
+    CurrentStaysComponent,
+    HighestDebtComponent,
+    HomepageInfoComponent,
+    UserInfoComponent,
+    UserCreateComponent,
+    HighestCreditComponent,
+    EventsComponent,
+    MenuComponent,
+  ],
+  imports: [
+    AppRoutingModule,
+    SharedModule,
+    BrowserModule,
+    HttpClientModule,
+    AmplifyAuthenticatorModule,
+    BrowserAnimationsModule,
+    RouterLinkWithHref,
+    RouterOutlet,
+    ReactiveFormsModule,
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+    MultiSelectModule,
+    InputTextModule,
+    PasswordModule,
+    FileUploadModule,
+    InputTextareaModule,
+    SharedModule,
+  ],
+  providers: [ConfirmationService, FeedbackService, MessageService],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

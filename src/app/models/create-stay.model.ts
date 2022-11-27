@@ -4,7 +4,8 @@ export class CreateStayModel {
 
   constructor(userId: string, time: Date) {
     this.userId = userId;
-    this.time = new Date(time.getTime() - (time.getTimezoneOffset() * 60000)).toISOString();
+    this.time = new Date(
+      time.getTime() - time.getTimezoneOffset() * 60000
+    ).toISOString();
   }
-
 }

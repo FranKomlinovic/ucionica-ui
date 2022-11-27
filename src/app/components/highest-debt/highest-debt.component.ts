@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { IHighestDebt } from '../../interfaces/highest-debt.interface';
 import { BackendService } from '../../backend.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-highest-debt',
@@ -24,7 +23,7 @@ export class HighestDebtComponent implements OnInit {
   getHighestDebt() {
     this.backendService
       .getHighestDebt()
-    //   .pipe(tap(() => this.feedbackService.spinner(false)))
+      //   .pipe(tap(() => this.feedbackService.spinner(false)))
       .subscribe((data) => {
         this.highestDebt = data;
         // this.feedbackService.spinner(false);

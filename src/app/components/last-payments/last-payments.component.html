@@ -1,81 +1,81 @@
 <div>
-    <h1>Posljednje uplate</h1>
-    <p-button
-        (click)="openDialog()"
-        icon="pi pi-external-link"
-        label="Dodaj uplatu"
-    ></p-button>
-    <p-button
-        icon="pi pi-sync"
-        styleClass="p-button-secondary"
-        (click)="getAllPayments()"
-    ></p-button>
+  <h1>Posljednje uplate</h1>
+  <p-button
+    (click)="openDialog()"
+    icon="pi pi-external-link"
+    label="Dodaj uplatu"
+  ></p-button>
+  <p-button
+    (click)="getAllPayments()"
+    icon="pi pi-sync"
+    styleClass="p-button-secondary"
+  ></p-button>
 </div>
-<p-dialog header="Dodaj uplatu" [(visible)]="displayDialog">
-    <h5>Korisnik</h5>
-    <p-autoComplete
-        [(ngModel)]="selectedUserAdvanced"
-        [suggestions]="filteredUsers"
-        (completeMethod)="filterPayments($event)"
-        field="username"
-        [dropdown]="true"
-    >
-        <ng-template let-user pTemplate="item">
-            <div>
-                <div>{{ user.username }}</div>
-            </div>
-        </ng-template>
-    </p-autoComplete>
-
-    <h5>Iznos</h5>
-    <p-inputNumber
-        [(ngModel)]="amount"
-        mode="currency"
-        currency="HRK"
-        locale="de-DE"
-    >
-    </p-inputNumber>
-
-    <ng-template pTemplate="footer">
-        <p-button
-            icon="pi pi-plus"
-            (click)="savePayment()"
-            label="Kreiraj"
-        ></p-button>
+<p-dialog [(visible)]="displayDialog" header="Dodaj uplatu">
+  <h5>Korisnik</h5>
+  <p-autoComplete
+    (completeMethod)="filterPayments($event)"
+    [(ngModel)]="selectedUserAdvanced"
+    [dropdown]="true"
+    [suggestions]="filteredUsers"
+    field="username"
+  >
+    <ng-template let-user pTemplate="item">
+      <div>
+        <div>{{ user.username }}</div>
+      </div>
     </ng-template>
+  </p-autoComplete>
+
+  <h5>Iznos</h5>
+  <p-inputNumber
+    [(ngModel)]="amount"
+    currency="HRK"
+    locale="de-DE"
+    mode="currency"
+  >
+  </p-inputNumber>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="savePayment()"
+      icon="pi pi-plus"
+      label="Kreiraj"
+    ></p-button>
+  </ng-template>
 </p-dialog>
 
 <!-- Grid -->
 <div class="grid grid-nogutter">
-    <div *ngFor="let payment of lastPayments" class="col">
-        <p-card
-            header="{{ payment.user }}"
-            subheader="{{ payment.time }}"
-            styleClass="p-card-shadow"
-        >
-            <ng-template pTemplate="header">
-                <img
-                    [style]="{
+  <div *ngFor="let payment of lastPayments" class="col">
+    <p-card
+      header="{{ payment.user }}"
+      styleClass="p-card-shadow"
+      subheader="{{ payment.time }}"
+    >
+      <ng-template pTemplate="header">
+        <img
+          [style]="{
                         width: '270px',
                         height: '270px',
                         'object-fit': 'cover'
                     }"
-                    alt="Card"
-                    src="{{ payment.picture }}"
-                />
-            </ng-template>
-            <div>
-                {{ payment.amount }}
-            </div>
+          alt="Card"
+          src="{{ payment.picture }}"
+        />
+      </ng-template>
+      <div>
+        {{ payment.amount }}
+      </div>
 
-            <ng-template pTemplate="footer">
-                <p-button
-                    icon="pi pi-trash"
-                    styleClass="p-button-danger"
-                    (click)="confirm(payment.id)"
-                >
-                </p-button>
-            </ng-template>
-        </p-card>
-    </div>
+      <ng-template pTemplate="footer">
+        <p-button
+          (click)="confirm(payment.id)"
+          icon="pi pi-trash"
+          styleClass="p-button-danger"
+        >
+        </p-button>
+      </ng-template>
+    </p-card>
+  </div>
 </div>

@@ -1,5 +1,5 @@
 export interface IUserStay {
-  date: string
+  date: string;
   startTime: string;
   endTime: string;
   price: string;
