@@ -1,6 +1,6 @@
 export interface IHighestDebt {
-  userId: string;
-  user: string;
-  amount: string;
-  picture: string;
+	userId: string;
+	user: string;
+	amount: string;
+	picture: string;
 }

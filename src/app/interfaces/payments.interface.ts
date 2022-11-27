@@ -1,7 +1,7 @@
 export interface IPayment {
-  id: string;
-  user: string;
-  time: string;
-  amount: string;
-  picture: string;
+	id: string;
+	user: string;
+	time: string;
+	amount: string;
+	picture: string;
 }

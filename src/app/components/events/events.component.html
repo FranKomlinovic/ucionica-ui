@@ -56,21 +56,21 @@
     <p-calendar
       [appendTo]="'body'"
       [dateFormat]="'dd.mm.yy'"
+      [minDate]="today"
       [readonlyInput]="true"
       [showTime]="true"
       [touchUI]="true"
       formControlName="startTime"
-      [minDate]="today"
     ></p-calendar>
 
     <h5>Kraj</h5>
     <p-calendar
       [appendTo]="'body'"
       [dateFormat]="'dd.mm.yy'"
+      [minDate]="today"
       [readonlyInput]="true"
       [showTime]="true"
       [touchUI]="true"
-      [minDate]="today"
       formControlName="endTime"
     ></p-calendar>
   </form>

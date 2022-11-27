@@ -1,30 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { Auth } from 'aws-amplify';
-import { MessageService } from 'primeng/api';
+import { Component, OnInit } from "@angular/core";
+import { Auth } from "aws-amplify";
+import { MessageService } from "primeng/api";
 
 @Component({
-  selector: 'app-homepage',
-  templateUrl: './homepage-component.html',
-  styleUrls: ['./homepage-info.component.scss'],
-  providers: [MessageService],
+	selector: "app-homepage",
+	templateUrl: "./homepage-component.html",
+	styleUrls: ["./homepage-info.component.scss"],
+	providers: [MessageService]
 })
 export class HomepageInfoComponent implements OnInit {
-  spinnerOn: boolean;
-  userId: string;
-  test: boolean;
+	spinnerOn: boolean;
+	userId: string;
+	test: boolean;
 
-  constructor() {}
+	constructor() {}
 
-  ngOnInit() {
-    this.getAuthenticatedUser();
-  }
+	ngOnInit() {
+		this.getAuthenticatedUser();
+	}
 
-  getAuthenticatedUser() {
-    this.spinnerOn = true;
-    Auth.currentAuthenticatedUser().then((data) => {
-      this.userId = data.username;
-      this.test = true;
-      this.spinnerOn = false;
-    });
-  }
+	getAuthenticatedUser() {
+		this.spinnerOn = true;
+		Auth.currentAuthenticatedUser().then(data => {
+			this.userId = data.username;
+			this.test = true;
+			this.spinnerOn = false;
+		});
+	}
 }
