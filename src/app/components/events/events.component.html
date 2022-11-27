@@ -1,126 +1,127 @@
 <div>
-  <h1>Eventi</h1>
+	<h1>Eventi</h1>
 
-  <!-- Open form button -->
-  <p-button
-    (click)="openDialog()"
-    icon="pi pi-external-link"
-    label="Kreiraj event"
-  ></p-button>
+	<!-- Open form button -->
+	<p-button
+		(click)="openDialog()"
+		icon="pi pi-external-link"
+		label="Kreiraj event"
+		[loading]="(users$ | async) === null"
+	></p-button>
 
-  <p-button
-    (click)="loadEvents()"
-    icon="pi pi-sync"
-    styleClass="p-button-secondary"
-  ></p-button>
+	<p-button
+		icon="pi pi-sync"
+		styleClass="p-button-secondary"
+		(click)="loadEvents()"
+	></p-button>
 </div>
 
 <!-- Dialog -->
 <p-dialog
-  (onHide)="formGroup.reset()"
-  [(visible)]="displayDialog"
-  [modal]="true"
-  header="Kreiraj event"
+	header="Kreiraj event"
+	[(visible)]="displayDialog"
+	[modal]="true"
+	(onHide)="formGroup.reset()"
 >
-  <form [formGroup]="formGroup">
-    <h5>Naziv</h5>
-    <input formControlName="name" pInputText type="text"/>
+	<form [formGroup]="formGroup">
+		<h5>Naziv</h5>
+		<input type="text" pInputText formControlName="name" />
 
-    <h5>Opis</h5>
-    <textarea formControlName="description" pInputTextarea></textarea>
+		<h5>Opis</h5>
+		<textarea pInputTextarea formControlName="description"></textarea>
 
-    <h5>Link slike</h5>
-    <input formControlName="picture" pInputText type="text"/>
+		<h5>Link slike</h5>
+		<input type="text" pInputText formControlName="picture" />
 
-    <h5>Korisnik</h5>
-    <p-multiSelect
-      [appendTo]="'body'"
-      [autofocusFilter]="true"
-      [filter]="true"
-      [itemSize]="34"
-      [options]="(users$ | async) || []"
-      [showToggleAll]="false"
-      display="chip"
-      formControlName="users"
-      optionLabel="username"
-      optionValue="id"
-    >
-      <ng-template let-user pTemplate="item">
-        <div>
-          <div>{{ user.username }}</div>
-        </div>
-      </ng-template>
-    </p-multiSelect>
+		<h5>Korisnik</h5>
+		<p-multiSelect
+			[options]="(users$ | async) || []"
+			[showToggleAll]="false"
+			formControlName="users"
+			optionLabel="username"
+			optionValue="id"
+			display="chip"
+			[filter]="true"
+			[itemSize]="34"
+			[autofocusFilter]="true"
+			[appendTo]="'body'"
+		>
+			<ng-template let-user pTemplate="item">
+				<div>
+					<div>{{ user.username }}</div>
+				</div>
+			</ng-template>
+		</p-multiSelect>
 
-    <h5>Početak</h5>
-    <p-calendar
-      [appendTo]="'body'"
-      [dateFormat]="'dd.mm.yy'"
-      [minDate]="today"
-      [readonlyInput]="true"
-      [showTime]="true"
-      [touchUI]="true"
-      formControlName="startTime"
-    ></p-calendar>
+		<h5>Početak</h5>
+		<p-calendar
+			formControlName="startTime"
+			[showTime]="true"
+			[readonlyInput]="true"
+			[touchUI]="true"
+			[dateFormat]="'dd.mm.yy'"
+			[appendTo]="'body'"
+			[minDate]="today"
+		></p-calendar>
 
-    <h5>Kraj</h5>
-    <p-calendar
-      [appendTo]="'body'"
-      [dateFormat]="'dd.mm.yy'"
-      [minDate]="today"
-      [readonlyInput]="true"
-      [showTime]="true"
-      [touchUI]="true"
-      formControlName="endTime"
-    ></p-calendar>
-  </form>
+		<h5>Kraj</h5>
+		<p-calendar
+			formControlName="endTime"
+			[showTime]="true"
+			[readonlyInput]="true"
+			[touchUI]="true"
+			[dateFormat]="'dd.mm.yy'"
+			[appendTo]="'body'"
+			[minDate]="today"
+		></p-calendar>
+	</form>
 
-  <ng-template pTemplate="footer">
-    <p-button
-      (click)="createEvent()"
-      [disabled]="!formGroup.valid"
-      icon="pi pi-plus"
-      label="Kreiraj"
-    ></p-button>
-  </ng-template>
+	<ng-template pTemplate="footer">
+		<p-button
+			[disabled]="!formGroup.valid"
+			icon="pi pi-plus"
+			(click)="createEvent()"
+			label="Kreiraj"
+		></p-button>
+	</ng-template>
 </p-dialog>
 
 <!-- Grid -->
-<div *ngIf="allEvents$ | async as events" class="grid grid-nogutter">
-  <div *ngFor="let event of events" class="col">
-    <p-card
-      header="{{ event.name }}"
-      styleClass="p-card-shadow"
-      subheader="{{ event.date + ' u ' + event.startTime }}"
-    >
-      <ng-template pTemplate="header" style="width: 100%; height: 40%">
-        <img alt="Card" src="{{ event.picture }}"/>
-      </ng-template>
-      <div>
-        <p>Opis:</p>
-        {{ event.description }}
-        <p>Vrijeme:</p>
-        {{ event.startTime }} - {{ event.endTime }}
-        <p>Pozvani su:</p>
-        {{ event.users }}
-      </div>
+<div class="grid grid-nogutter" *ngIf="allEvents$ | async as events">
+	<div *ngFor="let event of events" class="col">
+		<p-card
+			header="{{ event.name }}"
+			subheader="{{ event.date + ' u ' + event.startTime }}"
+			styleClass="p-card-shadow"
+		>
+			<ng-template pTemplate="header" style="width: 100%; height: 40%">
+				<img alt="Card" src="{{ event.picture }}" />
+			</ng-template>
+			<div>
+				<p>Opis:</p>
+				{{ event.description }}
+				<p>Vrijeme:</p>
+				{{ event.startTime }} - {{ event.endTime }}
+				<p>Pozvani su:</p>
+				{{ event.users }}
+			</div>
 
-      <ng-template pTemplate="footer">
-        <p-button
-          (click)="deleteClick(event.id)"
-          icon="pi pi-trash"
-          label="Obriši"
-          styleClass="p-button-danger"
-        >
-        </p-button>
-        <p-button
-          (click)="editEvent(event.id)"
-          icon="pi pi-pencil"
-          label="Uredi"
-          styleClass="p-button-success"
-        >
-        </p-button>
-      </ng-template>
-    </p-card>
-  </div>
+			<ng-template pTemplate="footer">
+				<p-button
+					styleClass="p-button-danger"
+					label="Obriši"
+					icon="pi pi-trash"
+					(click)="deleteClick(event.id)"
+				>
+				</p-button>
+				<p-button
+					styleClass="p-button-success"
+					label="Uredi"
+					icon="pi pi-pencil"
+					(click)="editEvent(event.id)"
+				>
+				</p-button>
+			</ng-template>
+		</p-card>
+	</div>
 </div>

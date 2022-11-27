@@ -65,13 +65,11 @@ export class EventsComponent implements OnInit {
 	}
 
 	loadUsers() {
-		this.feedbackService.spinner(true);
 		this.backendService
 			.getUsers()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((users: IUser[]) => {
 				this.users$.next(users);
-				this.feedbackService.spinner(false);
 			});
 	}
 
