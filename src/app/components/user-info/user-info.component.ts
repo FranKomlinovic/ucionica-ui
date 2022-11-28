@@ -3,6 +3,9 @@ import { BackendService } from "../../backend.service";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { IUserDetails } from "../../interfaces/user-details.interface";
 import { IEvent } from "../../interfaces/event.interface";
+import { takeUntil } from "rxjs/operators";
+import { FeedbackService } from "../../services/feedback.service";
+import { Subject } from "rxjs";
 
 @Component({
 	selector: "app-user-info",
@@ -13,18 +16,22 @@ import { IEvent } from "../../interfaces/event.interface";
 export class UserInfoComponent implements OnInit {
 	@Input() userId: string;
 	@Input() showButton: boolean;
-	userDetails: IUserDetails = new IUserDetails();
-	events: IEvent[];
-	spinnerOn: boolean;
+
+	userEvents$ = new Subject<IEvent[]>();
+	userDetails: IUserDetails;
+	userDetails$ = new Subject<IUserDetails>();
+	destroy$ = new Subject<boolean>();
 
 	constructor(
 		private backendService: BackendService,
 		private confirmationService: ConfirmationService,
-		private messageService: MessageService
+		private messageService: MessageService,
+		private feedbackService: FeedbackService
 	) {}
 
 	ngOnInit() {
-		this.getAuthenticatedUser();
+		this.loadUserDetails();
+		this.loadUserEvents();
 	}
 
 	generateName(event: IEvent): string {
@@ -34,37 +41,36 @@ export class UserInfoComponent implements OnInit {
 		return event.name;
 	}
 
-	getAuthenticatedUser() {
-		this.getUserDetails();
-		this.getUserEvents();
+	loadUserEvents(): void {
+		this.feedbackService.spinner$.next(true);
+		this.backendService
+			.getEventsByUserId(this.userId)
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((events: IEvent[]) => {
+				this.userEvents$.next(events);
+				this.feedbackService.spinner(false);
+			});
 	}
 
-	getUserEvents() {
-		this.spinnerOn = true;
-		this.backendService.getEventsByUserId(this.userId).subscribe(a => {
-			this.events = a;
-			this.spinnerOn = false;
-		});
-	}
-
-	getUserDetails() {
-		this.spinnerOn = true;
-		this.backendService.getUserDetails(this.userId).subscribe(a => {
-			this.userDetails = a;
-			this.spinnerOn = false;
-		});
+	loadUserDetails(): void {
+		this.feedbackService.spinner$.next(true);
+		this.backendService
+			.getUserDetails(this.userId)
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((details: IUserDetails) => {
+				this.userDetails = details;
+				this.userDetails$.next(details);
+				this.feedbackService.spinner(false);
+			});
 	}
 
 	evidentStay(userId: string) {
-		this.spinnerOn = true;
-		this.backendService
-			.postStay(userId, new Date())
-			.pipe()
-			.subscribe(response => {
-				this.showSuccess(response.message);
-				this.getAuthenticatedUser();
-				this.confirmationService.close();
-			});
+		this.feedbackService.spinner$.next(true);
+		this.backendService.postStay(userId, new Date()).subscribe(response => {
+			this.showSuccess(response.message);
+			this.loadUserDetails();
+			this.confirmationService.close();
+		});
 	}
 
 	showSuccess(message: string) {

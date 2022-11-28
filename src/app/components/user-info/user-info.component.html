@@ -1,59 +1,60 @@
-<div>
-  <div class="grid grid-nogutter">
-    <div class="col">
-      <p-card
-        header="{{ userDetails.username }}"
-        styleClass="p-card-shadow"
-        subheader="Stanje: {{ userDetails.balance }}"
-      >
-        <ng-template pTemplate="header">
-          <img
-            alt="Card"
-            src="{{ userDetails.picture }}"
-          />
-        </ng-template>
-        <div>
-          <h4>Ukupno vrijeme provedeno:</h4>
-          {{ userDetails.timeSpent }}
-          <h4>Trajanje prosječnog djestva:</h4>
-          {{ userDetails.averageTimeSpent }}
-          <h4>Cijena prosječnog djestva:</h4>
-          {{ userDetails.averageStayPrice }}
-          <h4>Ukupna cijena dejstva:</h4>
-          {{ userDetails.totalStayPrice }}
-          <h4>Ukupne uplate:</h4>
-          {{ userDetails.totalPayments }}
-        </div>
-        <div *ngIf="showButton">
-          <h5 *ngIf="!userDetails.currentlyActive">Jeste li u učionici?</h5>
-          <p-button
-            (click)="confirmStay()"
-            *ngIf="!userDetails.currentlyActive"
-            label="Prijavi dolazak"
-            styleClass="p-button"
-          >
-          </p-button>
-          <p-button
-            (click)="confirmStay()"
-            *ngIf="userDetails.currentlyActive"
-            label="Odjavi se"
-            styleClass="p-button-danger"
-          >
-          </p-button>
-        </div>
-        <h5 *ngIf="userDetails.currentlyActive">Trenutno ste u učionici</h5>
-      </p-card>
-    </div>
+<div class="grid grid-nogutter" *ngIf="userDetails$ | async as details">
+  <div class="col">
+    <p-card
+      header="{{ details.username }}"
+      styleClass="p-card-shadow"
+      subheader="Stanje: {{ details.balance }}"
+    >
+      <ng-template pTemplate="header">
+        <img
+          alt="Card"
+          src="{{ details.picture }}"
+        />
+      </ng-template>
+      <div>
+        <h4>Ukupno vrijeme provedeno:</h4>
+        {{ details.timeSpent }}
+        <h4>Trajanje prosječnog djestva:</h4>
+        {{ details.averageTimeSpent }}
+        <h4>Cijena prosječnog djestva:</h4>
+        {{ details.averageStayPrice }}
+        <h4>Ukupna cijena dejstva:</h4>
+        {{ details.totalStayPrice }}
+        <h4>Ukupne uplate:</h4>
+        {{ details.totalPayments }}
+      </div>
+      <div *ngIf="showButton">
+        <h5 *ngIf="!details.currentlyActive">Jeste li u učionici?</h5>
+        <p-button
+          (click)="confirmStay()"
+          *ngIf="!details.currentlyActive"
+          label="Prijavi dolazak"
+          styleClass="p-button"
+        >
+        </p-button>
+        <p-button
+          (click)="confirmStay()"
+          *ngIf="details.currentlyActive"
+          label="Odjavi se"
+          styleClass="p-button-danger"
+        >
+        </p-button>
+      </div>
+      <h5 *ngIf="details.currentlyActive">Trenutno ste u učionici</h5>
+    </p-card>
   </div>
-  <h1>Eventi</h1>
-  <div *ngIf="showButton" class="grid grid-nogutter">
+</div>
+<div *ngIf="showButton">
+
+  <div class="grid grid-nogutter" *ngIf="userEvents$ | async as events">
+    <h1>Eventi</h1>
     <div *ngFor="let event of events" class="col">
       <p-card
         header="{{ generateName(event) }}"
         styleClass="p-card-shadow"
         subheader="{{ event.date + ' u ' + event.startTime }}"
       >
-        <ng-template pTemplate="header" style="width: 100%; height: 40%">
+        <ng-template pTemplate="header">
           <img alt="Card" src="{{ event.picture }}"/>
         </ng-template>
         <div>
@@ -68,32 +69,34 @@
       </p-card>
     </div>
   </div>
-  <p-tabView>
-    <p-tabPanel header="Moja dejstva">
-      <h3>Dejstva</h3>
-      <p-accordion [style]="{ width: '250px' }">
-        <div *ngFor="let stay of userDetails.stays">
-          <p-accordionTab header="{{ stay.date }}">
-            <h4>Vrijeme</h4>
-            <p>{{ stay.startTime }} - {{ stay.endTime }}</p>
-            <h4>Cijena</h4>
-            <p>{{ stay.price }}</p>
-          </p-accordionTab>
-        </div>
-      </p-accordion>
-    </p-tabPanel>
-    <p-tabPanel header="Moje uplate">
-      <h3>Uplate</h3>
-      <p-accordion [style]="{ width: '250px' }">
-        <div *ngFor="let payment of userDetails.payments">
-          <p-accordionTab header="{{ payment.date }}">
-            <h4>Vrijeme</h4>
-            <p>{{ payment.time }}</p>
-            <h4>Uplata</h4>
-            <p>{{ payment.amount }}</p>
-          </p-accordionTab>
-        </div>
-      </p-accordion>
-    </p-tabPanel>
-  </p-tabView>
 </div>
+
+<p-tabView>
+  <p-tabPanel header="Moja dejstva">
+    <h3>Dejstva</h3>
+    <p-accordion [style]="{ width: '250px' }">
+      <div *ngFor="let stay of userDetails.stays">
+        <p-accordionTab header="{{ stay.date }}">
+          <h4>Vrijeme</h4>
+          <p>{{ stay.startTime }} - {{ stay.endTime }}</p>
+          <h4>Cijena</h4>
+          <p>{{ stay.price }}</p>
+        </p-accordionTab>
+      </div>
+    </p-accordion>
+  </p-tabPanel>
+  <p-tabPanel header="Moje uplate">
+    <h3>Uplate</h3>
+    <p-accordion [style]="{ width: '250px' }">
+      <div *ngFor="let payment of userDetails.payments">
+        <p-accordionTab header="{{ payment.date }}">
+          <h4>Vrijeme</h4>
+          <p>{{ payment.time }}</p>
+          <h4>Uplata</h4>
+          <p>{{ payment.amount }}</p>
+        </p-accordionTab>
+      </div>
+    </p-accordion>
+  </p-tabPanel>
+</p-tabView>
+
