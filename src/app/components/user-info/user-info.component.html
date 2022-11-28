@@ -1,20 +1,29 @@
 <div>
   <div class="grid grid-nogutter">
     <div class="col">
-      <h1>Profil</h1>
       <p-card
         header="{{ userDetails.username }}"
         styleClass="p-card-shadow"
-        subheader="{{ userDetails.balance }}"
+        subheader="Stanje: {{ userDetails.balance }}"
       >
         <ng-template pTemplate="header">
           <img
-            [style]="{ width: '100%', 'object-fit': 'cover' }"
             alt="Card"
             src="{{ userDetails.picture }}"
           />
         </ng-template>
-        <h5 *ngIf="userDetails.currentlyActive">Trenutno ste u učionici</h5>
+        <div>
+          <h4>Ukupno vrijeme provedeno:</h4>
+          {{ userDetails.timeSpent }}
+          <h4>Trajanje prosječnog djestva:</h4>
+          {{ userDetails.averageTimeSpent }}
+          <h4>Cijena prosječnog djestva:</h4>
+          {{ userDetails.averageStayPrice }}
+          <h4>Ukupna cijena dejstva:</h4>
+          {{ userDetails.totalStayPrice }}
+          <h4>Ukupne uplate:</h4>
+          {{ userDetails.totalPayments }}
+        </div>
         <div *ngIf="showButton">
           <h5 *ngIf="!userDetails.currentlyActive">Jeste li u učionici?</h5>
           <p-button
@@ -32,12 +41,12 @@
           >
           </p-button>
         </div>
+        <h5 *ngIf="userDetails.currentlyActive">Trenutno ste u učionici</h5>
       </p-card>
     </div>
   </div>
-
   <h1>Eventi</h1>
-  <div class="grid grid-nogutter">
+  <div *ngIf="showButton" class="grid grid-nogutter">
     <div *ngFor="let event of events" class="col">
       <p-card
         header="{{ generateName(event) }}"

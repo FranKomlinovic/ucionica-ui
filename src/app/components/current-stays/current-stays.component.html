@@ -20,7 +20,6 @@
       <p-button
         (click)="loadCurrentStays()"
         [loading]="(allStays$ | async) === null"
-        *ngIf="admin"
         icon="pi pi-sync"
         label="{{'Broj dejstvenika: ' + numberOfStays}}"
         styleClass="p-button-secondary col"
