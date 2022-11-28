@@ -8,7 +8,7 @@ import { FeedbackService } from "./services/feedback.service";
 	styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-	title = "ucionica";
+	title = "Učionica";
 
 	constructor(
 		private primeConfig: PrimeNGConfig,
