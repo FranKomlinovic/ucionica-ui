@@ -1,5 +1,5 @@
 p-button {
-  margin-right: 1rem;
+  margin: 1rem 1rem 0 0 !important;
 }
 
 .p-multiselect {
@@ -7,10 +7,6 @@ p-button {
   max-width: 20rem;
   width: 100%;
 }
-
-// .p-multiselect-panel {
-//   z-index: 9 !important;
-// }
 
 input,
 textarea {

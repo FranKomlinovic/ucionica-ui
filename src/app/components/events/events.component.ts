@@ -16,8 +16,6 @@ import { HttpErrorResponse } from "@angular/common/http";
 	providers: [MessageService]
 })
 export class EventsComponent implements OnInit {
-	//Display controls
-
 	displayDialog: boolean;
 	today: Date = new Date();
 

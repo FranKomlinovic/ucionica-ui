@@ -2,27 +2,30 @@
   <h1>Trenutni dejstvenici</h1>
 
   <!-- Open form button -->
-  <p-button
-    (click)="openDialog()"
-    *ngIf="admin"
-    [loading]="(users$ | async) === null"
-    icon="pi pi-external-link"
-    label="Evidentiraj dolazak"
-  ></p-button>
-  <p-button
-    (click)="confirmEndAllStays()"
-    *ngIf="admin"
-    label="Završi dejstvo"
-    styleClass="p-button-danger"
-  ></p-button>
-  <p-button
-    (click)="loadCurrentStays()"
-    [loading]="(allStays$ | async) === null"
-    *ngIf="admin"
-    icon="pi pi-sync"
-    label="{{'Broj dejstvenika: ' + numberOfStays}}"
-    styleClass="p-button-secondary"
-  ></p-button>
+  <div class="grid grid-nogutter">
+      <p-button
+        (click)="openDialog()"
+        *ngIf="admin"
+        [loading]="(users$ | async) === null"
+        icon="pi pi-external-link"
+        styleClass="col"
+        label="Evidentiraj dolazak"
+      ></p-button>
+      <p-button
+        (click)="confirmEndAllStays()"
+        *ngIf="admin"
+        label="Završi dejstvo"
+        styleClass="p-button-danger col"
+      ></p-button>
+      <p-button
+        (click)="loadCurrentStays()"
+        [loading]="(allStays$ | async) === null"
+        *ngIf="admin"
+        icon="pi pi-sync"
+        label="{{'Broj dejstvenika: ' + numberOfStays}}"
+        styleClass="p-button-secondary col"
+      ></p-button>
+  </div>
 </div>
 
 <!-- Dialog -->
