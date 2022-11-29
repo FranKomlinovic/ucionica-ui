@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { BackendService } from "../../backend.service";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { IUserDetails } from "../../interfaces/user-details.interface";
@@ -6,7 +6,8 @@ import { IEvent } from "../../interfaces/event.interface";
 import { takeUntil } from "rxjs/operators";
 import { FeedbackService } from "../../services/feedback.service";
 import { BehaviorSubject, Subject } from "rxjs";
-import { ThisReceiver } from "@angular/compiler";
+import { Auth, Storage } from "aws-amplify";
+import { FileUpload } from "primeng/fileupload";
 
 @Component({
 	selector: "app-user-info",
@@ -17,6 +18,7 @@ import { ThisReceiver } from "@angular/compiler";
 export class UserInfoComponent implements OnInit {
 	@Input() userId: string;
 	@Input() readOnly: boolean;
+	@ViewChild(FileUpload) fileUpload: FileUpload;
 
 	userEvents$ = new Subject<IEvent[]>();
 	userDetails$ = new BehaviorSubject<IUserDetails>({} as IUserDetails);
@@ -59,19 +61,19 @@ export class UserInfoComponent implements OnInit {
 	evidentStay(userId: string) {
 		this.feedbackService.spinner$.next(true);
 		this.backendService.postStay(userId, new Date()).subscribe(response => {
-			this.feedbackService.successToast(response.message)
+			this.feedbackService.successToast(response.message);
 			this.loadUserDetails();
 			this.confirmationService.close();
 		});
 	}
 
-
-
 	confirmStay() {
-		const isUserActive = this.userDetails$.value.currentlyActive
+		const isUserActive = this.userDetails$.value.currentlyActive;
 
 		this.confirmationService.confirm({
-			message: isUserActive ? "Želite li se odjaviti iz učionice?" :  "Želite li se prijaviti u učionicu?",
+			message: isUserActive
+				? "Želite li se odjaviti iz učionice?"
+				: "Želite li se prijaviti u učionicu?",
 			icon: "pi pi-exclamation-triangle",
 			accept: () => {
 				this.evidentStay(this.userDetails$.value.id);
@@ -82,8 +84,27 @@ export class UserInfoComponent implements OnInit {
 		});
 	}
 
-	ngOnDestroy(){
+	ngOnDestroy() {
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	upload($event: any) {
+		this.feedbackService.spinner$.next(true);
+
+		Auth.currentAuthenticatedUser().then(a => {
+			let file = $event.files[0];
+			Storage.put(file.name, file).then(result => {
+				Auth.updateUserAttributes(a, {
+					picture:
+						"https://ucionica-pictures.s3.eu-central-1.amazonaws.com/public/" +
+						result.key
+				}).then(() => {
+					this.feedbackService.spinner(false);
+					this.fileUpload.clear();
+					this.loadUserDetails();
+				});
+			});
+		});
 	}
 }

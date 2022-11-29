@@ -10,6 +10,9 @@
           alt="Card"
           src="{{ details.picture }}"
         />
+        <p-fileUpload [chooseIcon]="'pi pi-upload'" mode="basic" [customUpload]="true" (uploadHandler)="upload($event)"
+                      accept="image/*" [maxFileSize]=2000000 [auto]="true" chooseLabel="Promijeni sliku"></p-fileUpload>
+
       </ng-template>
       <div>
         <h4>Ukupno vrijeme provedeno:</h4>
