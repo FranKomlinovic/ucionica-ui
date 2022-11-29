@@ -6,6 +6,7 @@ import { IEvent } from "../../interfaces/event.interface";
 import { takeUntil } from "rxjs/operators";
 import { FeedbackService } from "../../services/feedback.service";
 import { BehaviorSubject, Subject } from "rxjs";
+import { ThisReceiver } from "@angular/compiler";
 
 @Component({
 	selector: "app-user-info",
@@ -58,19 +59,13 @@ export class UserInfoComponent implements OnInit {
 	evidentStay(userId: string) {
 		this.feedbackService.spinner$.next(true);
 		this.backendService.postStay(userId, new Date()).subscribe(response => {
-			this.showSuccess(response.message);
+			this.feedbackService.successToast(response.message)
 			this.loadUserDetails();
 			this.confirmationService.close();
 		});
 	}
 
-	showSuccess(message: string) {
-		this.messageService.add({
-			severity: "success",
-			summary: "Success",
-			detail: message
-		});
-	}
+
 
 	confirmStay() {
 		const isUserActive = this.userDetails$.value.currentlyActive
