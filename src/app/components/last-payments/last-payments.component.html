@@ -32,7 +32,7 @@
       (onSelect)="selectUser($event)"
     >
 
-    </p-autoComplete> 
+    </p-autoComplete>
 
 
     <h5>Vrijeme</h5>
@@ -84,7 +84,10 @@
              src="{{ payment.picture }}"/>
       </ng-template>
       <div>
+        <h4>Iznos</h4>
         {{ payment.amount }}
+        <h4>Opis</h4>
+        {{ payment.description }}
       </div>
 
       <ng-template pTemplate="footer">
