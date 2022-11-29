@@ -11,7 +11,7 @@
           onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
           src="{{ details.picture }}"
         />
-        <p-fileUpload [chooseIcon]="'pi pi-upload'" mode="basic" [customUpload]="true" (uploadHandler)="upload($event)"
+        <p-fileUpload *ngIf="!readOnly" [chooseIcon]="'pi pi-upload'" mode="basic" [customUpload]="true" (uploadHandler)="upload($event)"
                       accept="image/*" [maxFileSize]=2000000 [auto]="true" chooseLabel="Promijeni sliku"></p-fileUpload>
 
       </ng-template>

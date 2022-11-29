@@ -28,7 +28,7 @@ export class CurrentStaysComponent implements OnInit {
 	selectedUserAdvanced: IUser[];
 	date: Date = new Date();
 	//Grid controls
-	numberOfStays: number;
+	numberOfStays: number = 0;
 	//User details
 	selectedUserId: string;
 	infoDialog: boolean;
