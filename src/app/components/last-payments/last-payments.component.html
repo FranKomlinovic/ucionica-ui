@@ -4,65 +4,82 @@
     (click)="openDialog()"
     icon="pi pi-external-link"
     label="Dodaj uplatu"
+    [loading]="(users$ | async) === null"
   ></p-button>
   <p-button
-    (click)="getAllPayments()"
+    (click)="loadPayments()"
     icon="pi pi-sync"
     styleClass="p-button-secondary"
   ></p-button>
 </div>
-<p-dialog [(visible)]="displayDialog" header="Dodaj uplatu">
-  <h5>Korisnik</h5>
-  <p-autoComplete
-    (completeMethod)="filterPayments($event)"
-    [(ngModel)]="selectedUserAdvanced"
-    [dropdown]="true"
-    [suggestions]="filteredUsers"
-    field="username"
-  >
-    <ng-template let-user pTemplate="item">
-      <div>
-        <div>{{ user.username }}</div>
-      </div>
-    </ng-template>
-  </p-autoComplete>
 
-  <h5>Iznos</h5>
-  <p-inputNumber
-    [(ngModel)]="amount"
-    currency="HRK"
-    locale="de-DE"
-    mode="currency"
-  >
-  </p-inputNumber>
+<p-dialog
+  header="Dodaj uplatu"
+  [(visible)]="displayDialog"
+  [modal]="true"
+  (onHide)="formGroup.reset()"
+>
+
+  <form [formGroup]="formGroup">
+    <!--    <h5>Korisnik</h5>-->
+    <!--    <p-autoComplete-->
+    <!--      formControlName="userId"-->
+    <!--      [dropdown]="true"-->
+    <!--      [suggestions]="(users$ | async) || []"-->
+    <!--      field="username"-->
+    <!--    >-->
+    <!--      <ng-template let-user pTemplate="item">-->
+    <!--        <div>-->
+    <!--          <div>{{ user.username }}</div>-->
+    <!--        </div>-->
+    <!--      </ng-template>-->
+    <!--    </p-autoComplete>-->
+
+
+    <h5>Vrijeme</h5>
+    <p-calendar
+      formControlName="time"
+      [showTime]="true"
+      [readonlyInput]="true"
+      [touchUI]="true"
+      [dateFormat]="'dd.mm.yy'"
+      [appendTo]="'body'"
+    ></p-calendar>
+
+    <h5>Iznos</h5>
+    <p-inputNumber
+      formControlName="amount"
+      currency="HRK"
+      locale="de-DE"
+      mode="currency"
+    ></p-inputNumber>
+
+    <h5>Opis</h5>
+    <textarea pInputTextarea formControlName="description"></textarea>
+
+  </form>
 
   <ng-template pTemplate="footer">
     <p-button
-      (click)="savePayment()"
+      [disabled]="!formGroup.valid"
       icon="pi pi-plus"
+      (click)="createPayment()"
       label="Kreiraj"
     ></p-button>
   </ng-template>
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid grid-nogutter">
-  <div *ngFor="let payment of lastPayments" class="col">
+<div class="grid grid-nogutter" *ngIf="allPayments$ | async as payments">
+
+  <div *ngFor="let payment of payments" class="col">
     <p-card
       header="{{ payment.user }}"
       styleClass="p-card-shadow"
       subheader="{{ payment.time }}"
     >
       <ng-template pTemplate="header">
-        <img
-          [style]="{
-                        width: '270px',
-                        height: '270px',
-                        'object-fit': 'cover'
-                    }"
-          alt="Card"
-          src="{{ payment.picture }}"
-        />
+        <img alt="Card" src="{{ payment.picture }}"/>
       </ng-template>
       <div>
         {{ payment.amount }}
@@ -70,9 +87,16 @@
 
       <ng-template pTemplate="footer">
         <p-button
-          (click)="confirm(payment.id)"
+          (click)="deleteClick(payment.id)"
           icon="pi pi-trash"
           styleClass="p-button-danger"
+        >
+        </p-button>
+        <p-button
+          styleClass="p-button-success"
+          label="Uredi"
+          icon="pi pi-pencil"
+          (click)="editPayment(payment.id)"
         >
         </p-button>
       </ng-template>

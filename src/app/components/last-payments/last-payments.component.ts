@@ -1,130 +1,137 @@
-import { Component, OnInit } from '@angular/core';
-import { IPayment } from '../../interfaces/payments.interface';
-import {
-  ConfirmationService,
-  MessageService,
-  PrimeNGConfig,
-} from 'primeng/api';
-import { IUser } from '../../interfaces/user.interface';
-import { BackendService } from '../../backend.service';
+import { Component, OnInit } from "@angular/core";
+import { IPayment } from "../../interfaces/payments.interface";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { IUser } from "../../interfaces/user.interface";
+import { BackendService } from "../../backend.service";
+import { Subject } from "rxjs";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { map, takeUntil } from "rxjs/operators";
+import { FeedbackService } from "../../services/feedback.service";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
-  selector: 'app-last-payments',
-  templateUrl: './last-payments.component.html',
-  styleUrls: ['./last-payments.component.scss'],
-  providers: [MessageService],
+	selector: "app-last-payments",
+	templateUrl: "./last-payments.component.html",
+	styleUrls: ["./last-payments.component.scss"],
+	providers: [MessageService]
 })
 export class LastPaymentsComponent implements OnInit {
-  //Display controls
-  displayDialog: boolean = false;
-  spinnerOn: boolean = false;
-  //Form controls
-  amount: number = 100;
-  date: Date = new Date();
-  time: Date = new Date();
-  selectedUserAdvanced: IUser | undefined;
-  filteredUsers: IUser[] = [];
-  users: IUser[] = [];
-  //Grid controls
-  lastPayments: IPayment[] = [];
+	allPayments$ = new Subject<IPayment[]>();
+	users$ = new Subject<IUser[]>();
+	destroy$ = new Subject<boolean>();
 
-  constructor(
-    private backendService: BackendService,
-    private primengConfig: PrimeNGConfig,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
-  ) {}
+	formGroup = new FormGroup({
+		id: new FormControl<string>(""),
+		userId: new FormControl<string>("", {
+			nonNullable: true,
+			validators: Validators.required
+		}),
+		time: new FormControl<Date | null>(null, {
+			validators: Validators.required
+		}),
+		description: new FormControl<string>(""),
+		amount: new FormControl<number>(100, {
+			nonNullable: true,
+			validators: Validators.required
+		})
+	});
 
-  ngOnInit(): void {
-    this.getAllPayments();
-    this.getAllUsers();
-    this.primengConfig.ripple = true;
-  }
+	//Display controls
+	displayDialog: boolean = false;
 
-  getAllUsers() {
-    this.backendService.getUsers().subscribe((data) => {
-      this.users = data;
-    });
-  }
+	constructor(
+		private backendService: BackendService,
+		private messageService: MessageService,
+		private confirmationService: ConfirmationService,
+		private feedbackService: FeedbackService
+	) {}
 
-  getAllPayments() {
-    this.spinnerOn = true;
-    this.backendService.getAllPayments().subscribe((data) => {
-      this.lastPayments = data;
-      this.spinnerOn = false;
-    });
-  }
+	ngOnInit(): void {
+		this.loadPayments();
+		this.loadUsers();
+	}
 
-  deletePayment(id: string) {
-    this.spinnerOn = true;
-    this.backendService.deletePayment(id).subscribe({
-      next: () => {
-        this.getAllPayments();
-        this.showSuccess('Uspješno ste obrisali uplatu');
-        this.spinnerOn = false;
-      },
-      error: () => {
-        this.showSuccess('Vjerojatno ste obrisali upravu, fixaj ovo');
-        this.getAllPayments();
-        this.spinnerOn = false;
-      },
-    });
-  }
+	loadPayments(): void {
+		this.feedbackService.spinner$.next(true);
+		this.backendService
+			.getAllPayments()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((payments: IPayment[]) => {
+				this.allPayments$.next(payments);
+				this.feedbackService.spinner(false);
+			});
+	}
 
-  openDialog() {
-    this.displayDialog = true;
-    this.date = new Date();
-    this.time = new Date();
-  }
+	loadUsers() {
+		this.backendService
+			.getUsers()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((users: IUser[]) => {
+				this.users$.next(users);
+			});
+	}
 
-  savePayment() {
-    this.spinnerOn = true;
-    if (this.selectedUserAdvanced === undefined) {
-      return;
-    }
-    this.backendService
-      .postPayment(this.selectedUserAdvanced.id, this.amount)
-      .pipe()
-      .subscribe((response) => {
-        this.showSuccess(response.message);
-        this.getAllPayments();
-        this.displayDialog = false;
-        this.spinnerOn = false;
-      });
-  }
+	deleteClick(id: string) {
+		this.confirmationService.confirm({
+			message: "Jeste li sigurni da želite obrisati uplatu?",
+			accept: () => {
+				this.deletePayment(id);
+			}
+		});
+	}
 
-  confirm(id: string) {
-    this.confirmationService.confirm({
-      message: 'Jeste li sigurni da želite obrisati uplatu?',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.deletePayment(id);
-      },
-      reject: () => {
-        this.confirmationService.close();
-      },
-    });
-  }
+	deletePayment(id: string) {
+		this.feedbackService.spinner(true);
+		this.backendService.deletePayment(id).subscribe({
+			next: a => {
+				this.loadPayments();
+				this.feedbackService.successToast(a.message);
+			},
+			error: e => {
+				this.feedbackService.errorToast(e.message);
+			}
+		});
+	}
 
-  showSuccess(message: string) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: message,
-    });
-  }
+	createPayment() {
+		const paymentData = this.formGroup.getRawValue();
+		this.feedbackService.spinner(true);
+		this.backendService.createPayment(paymentData).subscribe({
+			next: a => {
+				this.feedbackService.successToast(a.message);
+				this.loadPayments();
+				this.displayDialog = false;
+			},
+			error: (err: HttpErrorResponse) => {
+				this.displayDialog = false;
+				this.feedbackService.errorToast(err.message);
+			}
+		});
+	}
 
-  filterPayments(event: any) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.users.length; i++) {
-      let user = this.users[i];
-      if (user.username.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(user);
-      }
-    }
+	editPayment(paymentId: string) {
+		this.openDialog();
+		this.feedbackService.spinner(true);
+		this.backendService
+			.getPaymentById(paymentId)
+			.pipe(
+				map(res => ({
+					...res,
+					time: new Date(res.time!)
+				}))
+			)
+			.subscribe(value => {
+				this.formGroup.patchValue(value);
+				this.feedbackService.spinner(false);
+			});
+	}
 
-    this.filteredUsers = filtered;
-  }
+	openDialog() {
+		this.displayDialog = true;
+	}
+
+	ngOnDestroy() {
+		this.destroy$.next(true);
+		this.destroy$.complete();
+	}
 }
