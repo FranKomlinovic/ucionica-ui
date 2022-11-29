@@ -21,19 +21,18 @@
 >
 
   <form [formGroup]="formGroup">
-    <!--    <h5>Korisnik</h5>-->
-    <!--    <p-autoComplete-->
-    <!--      formControlName="userId"-->
-    <!--      [dropdown]="true"-->
-    <!--      [suggestions]="(users$ | async) || []"-->
-    <!--      field="username"-->
-    <!--    >-->
-    <!--      <ng-template let-user pTemplate="item">-->
-    <!--        <div>-->
-    <!--          <div>{{ user.username }}</div>-->
-    <!--        </div>-->
-    <!--      </ng-template>-->
-    <!--    </p-autoComplete>-->
+       <h5>Korisnik</h5>
+       <p-autoComplete
+      formControlName="userId"
+      [showEmptyMessage]="true"
+      (completeMethod)="filterUsers($event)"
+      [suggestions]="users || []"
+      [dropdown]="true"
+      field="username"
+      (onSelect)="selectUser($event)"
+    >
+
+    </p-autoComplete> 
 
 
     <h5>Vrijeme</h5>
@@ -68,6 +67,7 @@
     ></p-button>
   </ng-template>
 </p-dialog>
+
 
 <!-- Grid -->
 <div class="grid grid-nogutter" *ngIf="allPayments$ | async as payments">

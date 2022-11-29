@@ -1,10 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { IPayment } from "../../interfaces/payments.interface";
-import { ConfirmationService, MessageService } from "primeng/api";
+import { ConfirmationService, MessageService, SelectItem } from "primeng/api";
 import { IUser } from "../../interfaces/user.interface";
 import { BackendService } from "../../backend.service";
-import { Subject } from "rxjs";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { BehaviorSubject, Subject } from "rxjs";
+import {
+	AbstractControl,
+	FormControl,
+	FormGroup,
+	Validators
+} from "@angular/forms";
 import { map, takeUntil } from "rxjs/operators";
 import { FeedbackService } from "../../services/feedback.service";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -16,8 +21,10 @@ import { HttpErrorResponse } from "@angular/common/http";
 	providers: [MessageService]
 })
 export class LastPaymentsComponent implements OnInit {
+	users: IUser[] = [];
+
 	allPayments$ = new Subject<IPayment[]>();
-	users$ = new Subject<IUser[]>();
+	users$ = new BehaviorSubject<IUser[]>(this.users);
 	destroy$ = new Subject<boolean>();
 
 	formGroup = new FormGroup({
@@ -41,7 +48,6 @@ export class LastPaymentsComponent implements OnInit {
 
 	constructor(
 		private backendService: BackendService,
-		private messageService: MessageService,
 		private confirmationService: ConfirmationService,
 		private feedbackService: FeedbackService
 	) {}
@@ -49,6 +55,18 @@ export class LastPaymentsComponent implements OnInit {
 	ngOnInit(): void {
 		this.loadPayments();
 		this.loadUsers();
+	}
+
+	filterUsers(event: { ogEvent: PointerEvent; query: string }) {
+		this.users = this.users$.value.filter((user: IUser) =>
+			user.username.toLowerCase().includes(event.query.toLocaleLowerCase())
+		);
+	}
+
+	selectUser(user: IUser) {
+		this.formGroup
+			.get("userId")
+			?.setValue(user.id, { emitModelToViewChange: false });
 	}
 
 	loadPayments(): void {
@@ -67,6 +85,7 @@ export class LastPaymentsComponent implements OnInit {
 			.getUsers()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((users: IUser[]) => {
+				this.users = users;
 				this.users$.next(users);
 			});
 	}
@@ -95,6 +114,7 @@ export class LastPaymentsComponent implements OnInit {
 
 	createPayment() {
 		const paymentData = this.formGroup.getRawValue();
+
 		this.feedbackService.spinner(true);
 		this.backendService.createPayment(paymentData).subscribe({
 			next: a => {
