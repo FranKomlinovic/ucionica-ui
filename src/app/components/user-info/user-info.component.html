@@ -23,7 +23,8 @@
         <h4>Ukupne uplate:</h4>
         {{ details.totalPayments }}
       </div>
-      <div *ngIf="showButton">
+
+      <div *ngIf="!readOnly">
         <h5 *ngIf="!details.currentlyActive">Jeste li u učionici?</h5>
         <p-button
           (click)="confirmStay()"
@@ -44,13 +45,13 @@
     </p-card>
   </div>
 </div>
-<div *ngIf="showButton">
 
+<div *ngIf="!readOnly">
+  <h1>Eventi</h1>
   <div class="grid grid-nogutter" *ngIf="userEvents$ | async as events">
-    <h1>Eventi</h1>
     <div *ngFor="let event of events" class="col">
       <p-card
-        header="{{ generateName(event) }}"
+        header="{{ event.currentEvent ? '[UPRAVO] ' + event.name : event.name }}"
         styleClass="p-card-shadow"
         subheader="{{ event.date + ' u ' + event.startTime }}"
       >
@@ -75,7 +76,7 @@
   <p-tabPanel header="Moja dejstva">
     <h3>Dejstva</h3>
     <p-accordion [style]="{ width: '250px' }">
-      <div *ngFor="let stay of userDetails.stays">
+      <div *ngFor="let stay of (userDetails$ | async)?.stays">
         <p-accordionTab header="{{ stay.date }}">
           <h4>Vrijeme</h4>
           <p>{{ stay.startTime }} - {{ stay.endTime }}</p>
@@ -88,7 +89,7 @@
   <p-tabPanel header="Moje uplate">
     <h3>Uplate</h3>
     <p-accordion [style]="{ width: '250px' }">
-      <div *ngFor="let payment of userDetails.payments">
+      <div *ngFor="let payment of (userDetails$ | async)?.payments">
         <p-accordionTab header="{{ payment.date }}">
           <h4>Vrijeme</h4>
           <p>{{ payment.time }}</p>

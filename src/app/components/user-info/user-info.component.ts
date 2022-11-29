@@ -5,7 +5,7 @@ import { IUserDetails } from "../../interfaces/user-details.interface";
 import { IEvent } from "../../interfaces/event.interface";
 import { takeUntil } from "rxjs/operators";
 import { FeedbackService } from "../../services/feedback.service";
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 
 @Component({
 	selector: "app-user-info",
@@ -15,11 +15,10 @@ import { Subject } from "rxjs";
 })
 export class UserInfoComponent implements OnInit {
 	@Input() userId: string;
-	@Input() showButton: boolean;
+	@Input() readOnly: boolean;
 
 	userEvents$ = new Subject<IEvent[]>();
-	userDetails: IUserDetails;
-	userDetails$ = new Subject<IUserDetails>();
+	userDetails$ = new BehaviorSubject<IUserDetails>({} as IUserDetails);
 	destroy$ = new Subject<boolean>();
 
 	constructor(
@@ -32,13 +31,6 @@ export class UserInfoComponent implements OnInit {
 	ngOnInit() {
 		this.loadUserDetails();
 		this.loadUserEvents();
-	}
-
-	generateName(event: IEvent): string {
-		if (event.currentEvent) {
-			return "[UPRAVO] " + event.name;
-		}
-		return event.name;
 	}
 
 	loadUserEvents(): void {
@@ -58,7 +50,6 @@ export class UserInfoComponent implements OnInit {
 			.getUserDetails(this.userId)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((details: IUserDetails) => {
-				this.userDetails = details;
 				this.userDetails$.next(details);
 				this.feedbackService.spinner(false);
 			});
@@ -82,20 +73,22 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	confirmStay() {
-		let message = "Želite li se prijaviti u učionicu?";
-		if (this.userDetails.currentlyActive) {
-			message = "Želite li se odjaviti iz učionice?";
-		}
+		const isUserActive = this.userDetails$.value.currentlyActive
 
 		this.confirmationService.confirm({
-			message: message,
+			message: isUserActive ? "Želite li se odjaviti iz učionice?" :  "Želite li se prijaviti u učionicu?",
 			icon: "pi pi-exclamation-triangle",
 			accept: () => {
-				this.evidentStay(this.userDetails.id);
+				this.evidentStay(this.userDetails$.value.id);
 			},
 			reject: () => {
 				this.confirmationService.close();
 			}
 		});
+	}
+
+	ngOnDestroy(){
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 }
