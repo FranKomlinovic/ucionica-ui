@@ -70,7 +70,9 @@
       subheader="{{ stay.startTime }}"
     >
       <ng-template pTemplate="header">
-        <img alt="Card" src="{{ stay.picture }}"/>
+        <img alt="Card"
+             onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+             src="{{ stay.picture }}"/>
       </ng-template>
       <div>
         {{ stay.balance }}

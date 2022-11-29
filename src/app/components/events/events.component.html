@@ -95,7 +95,9 @@
 			styleClass="p-card-shadow"
 		>
 			<ng-template pTemplate="header">
-				<img alt="Card" src="{{ event.picture }}" />
+				<img alt="Card"
+             onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+             src="{{ event.picture }}" />
 			</ng-template>
 			<div>
 				<p>Opis:</p>
