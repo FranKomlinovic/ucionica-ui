@@ -90,8 +90,12 @@ export class MenuComponent implements OnInit {
 		];
 
 		this.nonAdminMenu = [
-			{ icon: "pi pi-fw pi-home", routerLink: "/" },
-			{ icon: "pi pi-fw pi-users", routerLink: "/stays" },
+			{ icon: "pi pi-fw pi-home", routerLink: "/", label: "Home" },
+			{
+				icon: "pi pi-fw pi-users",
+				routerLink: "/stays",
+				label: "Trenutni dejstvenici"
+			},
 			{
 				icon: "pi pi-fw pi-sign-out",
 				command: () => this.confirmSignOut(),
