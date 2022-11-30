@@ -12,7 +12,7 @@ import { Subject } from "rxjs";
 })
 export class HighestDebtComponent implements OnInit {
 	destroy$ = new Subject<boolean>();
-	highestDebt$ = new Subject<IHighestDebt[]>();
+	highestDebt$ = new Subject<IHighestDebt[] | null>();
 
 	//User details
 	selectedUserId: string;
@@ -28,13 +28,11 @@ export class HighestDebtComponent implements OnInit {
 	}
 
 	getHighestDebt(): void {
-		this.feedbackService.spinner$.next(true);
 		this.backendService
 			.getHighestDebt()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((events: IHighestDebt[]) => {
 				this.highestDebt$.next(events);
-				this.feedbackService.spinner(false);
 			});
 	}
 

@@ -4,8 +4,8 @@ import { IEvent } from "../../interfaces/event.interface";
 import { BackendService } from "../../backend.service";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { map, takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
+import { delay, map, takeUntil, tap } from "rxjs/operators";
+import { ReplaySubject, Subject } from "rxjs";
 import { FeedbackService } from "src/app/services/feedback.service";
 import { HttpErrorResponse } from "@angular/common/http";
 
@@ -19,7 +19,7 @@ export class EventsComponent implements OnInit {
 	displayDialog: boolean;
 	today: Date = new Date();
 
-	allEvents$ = new Subject<IEvent[]>();
+	allEvents$ = new ReplaySubject<IEvent[] | null>();
 	users$ = new Subject<IUser[]>();
 	destroy$ = new Subject<boolean>();
 
@@ -52,17 +52,17 @@ export class EventsComponent implements OnInit {
 	}
 
 	loadEvents(): void {
-		this.feedbackService.spinner$.next(true);
+		this.allEvents$.next(null);
 		this.backendService
 			.getAllEvents()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((events: IEvent[]) => {
 				this.allEvents$.next(events);
-				this.feedbackService.spinner(false);
 			});
 	}
 
 	loadUsers() {
+		this.allEvents$.next(null);
 		this.backendService
 			.getUsers()
 			.pipe(takeUntil(this.destroy$))
@@ -121,7 +121,8 @@ export class EventsComponent implements OnInit {
 					...res,
 					startTime: new Date(res.startTime!),
 					endTime: new Date(res.endTime!)
-				}))
+				})),
+				takeUntil(this.destroy$)
 			)
 			.subscribe(value => {
 				this.formGroup.patchValue(value);

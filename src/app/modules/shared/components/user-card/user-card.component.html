@@ -1,0 +1,69 @@
+
+<div class="grid grid-nogutter" *ngIf="userDetails as details">
+    <div class="col">
+      <p-card
+        header="{{ details.username }}"
+        styleClass="p-card-shadow"
+        subheader="Stanje: {{ details.ballance }}"
+      >
+        <ng-template pTemplate="header">
+          <img
+            *ngIf="details.picture; else pictureLoader"
+            alt="Card"
+            onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+            src="{{ details.picture }}"
+          />
+          
+          <p-fileUpload *ngIf="!readOnly" [chooseIcon]="'pi pi-upload'" mode="basic" [customUpload]="true" (uploadHandler)="uploadClick($event)"
+          accept="image/*" [maxFileSize]=2000000 [auto]="true" chooseLabel="Promijeni sliku"></p-fileUpload>
+        </ng-template>
+        <div>
+          
+          <h4>Ukupno vrijeme provedeno:</h4>
+          <ng-container *ngIf="details.timeSpent; else textLoading">
+            {{ details.timeSpent }}
+          </ng-container>
+          
+          <h4>Trajanje prosječnog djestva:</h4>
+          <ng-container *ngIf="details.averageTimeSpent; else textLoading">
+            {{ details.averageTimeSpent }}
+          </ng-container>
+          
+          <h4>Cijena prosječnog djestva:</h4>
+          <ng-container *ngIf="details.averageStayPrice; else textLoading">
+            {{ details.averageStayPrice }}
+          </ng-container>
+  
+          <h4>Ukupna cijena dejstva:</h4>
+          <ng-container *ngIf="details.totalStayPrice; else textLoading">
+            {{ details.totalStayPrice }}
+          </ng-container>
+  
+          <h4>Ukupne uplate:</h4>
+          <ng-container *ngIf="details.totalPayments; else textLoading">
+            {{ details.totalPayments }}
+          </ng-container>
+        </div>
+        
+  
+        <div *ngIf="!readOnly">
+            <h5>{{details.currentlyActive ? 'Trenutno ste u učionici' : 'Jeste li u učionici?'}}</h5>
+            <p-button
+              (click)="logStay()"
+              label="{{details.currentlyActive ? 'Odjavi se' : 'Prijavi dolazak'}}"
+              styleClass="{{details.currentlyActive ? 'p-button-danger' : 'p-button'}}"
+            >
+            </p-button>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <ng-template #pictureLoader>
+    <p-skeleton shape="square" width="100%" height="20rem"></p-skeleton>
+  </ng-template>
+  
+  <ng-template #textLoading>
+    <p-skeleton height="2rem" width="100%"></p-skeleton>
+  </ng-template>
+  

@@ -3,7 +3,7 @@ import { BackendService } from "../../backend.service";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { IUserDetails } from "../../interfaces/user-details.interface";
 import { IEvent } from "../../interfaces/event.interface";
-import { takeUntil } from "rxjs/operators";
+import { delay, takeUntil } from "rxjs/operators";
 import { FeedbackService } from "../../services/feedback.service";
 import { BehaviorSubject, Subject } from "rxjs";
 import { Auth, Storage } from "aws-amplify";
@@ -27,7 +27,6 @@ export class UserInfoComponent implements OnInit {
 	constructor(
 		private backendService: BackendService,
 		private confirmationService: ConfirmationService,
-		private messageService: MessageService,
 		private feedbackService: FeedbackService
 	) {}
 
@@ -37,24 +36,20 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	loadUserEvents(): void {
-		this.feedbackService.spinner$.next(true);
 		this.backendService
 			.getEventsByUserId(this.userId)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((events: IEvent[]) => {
 				this.userEvents$.next(events);
-				this.feedbackService.spinner(false);
 			});
 	}
 
 	loadUserDetails(): void {
-		this.feedbackService.spinner$.next(true);
 		this.backendService
 			.getUserDetails(this.userId)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((details: IUserDetails) => {
 				this.userDetails$.next(details);
-				this.feedbackService.spinner(false);
 			});
 	}
 
@@ -84,16 +79,11 @@ export class UserInfoComponent implements OnInit {
 		});
 	}
 
-	ngOnDestroy() {
-		this.destroy$.next(true);
-		this.destroy$.complete();
-	}
-
-	upload($event: any) {
+	upload(event: any) {
 		this.feedbackService.spinner$.next(true);
 
 		Auth.currentAuthenticatedUser().then(a => {
-			let file = $event.files[0];
+			let file = event.files[0];
 			Storage.put(file.name, file).then(result => {
 				Auth.updateUserAttributes(a, {
 					picture:
@@ -106,5 +96,10 @@ export class UserInfoComponent implements OnInit {
 				});
 			});
 		});
+	}
+
+	ngOnDestroy() {
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 }

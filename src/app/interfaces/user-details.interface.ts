@@ -4,7 +4,7 @@ import { IUserStay } from "./user-stay.interface";
 export class IUserDetails {
 	id: string;
 	username: string;
-	balance: string;
+	ballance: string;
 	picture: string;
 	timeSpent: string;
 	averageTimeSpent: string;

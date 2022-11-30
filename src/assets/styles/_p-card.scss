@@ -1,6 +1,13 @@
 .p-card {
   width: 100%;
   margin-bottom: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  min-width: 15rem;
+
+  .p-card-header{
+    height: 15rem;
+    overflow: hidden;
+  }
 }
 
 .p-card-footer {
@@ -20,3 +27,4 @@
     padding: 0;
   }
 }
+

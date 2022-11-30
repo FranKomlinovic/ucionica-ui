@@ -1,3 +1,5 @@
+
+
 <div>
 	<h1>Eventi</h1>
 
@@ -87,43 +89,15 @@
 </p-dialog>
 
 <!-- Grid -->
-<div class="grid grid-nogutter" *ngIf="allEvents$ | async as events">
-	<div *ngFor="let event of events" class="col">
-		<p-card
-			header="{{ event.name }}"
-			subheader="{{ event.date + ' u ' + event.startTime }}"
-			styleClass="p-card-shadow"
-		>
-			<ng-template pTemplate="header">
-				<img alt="Card"
-             onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
-             src="{{ event.picture }}" />
-			</ng-template>
-			<div>
-				<p>Opis:</p>
-				{{ event.description }}
-				<p>Vrijeme:</p>
-				{{ event.startTime }} - {{ event.endTime }}
-				<p>Pozvani su:</p>
-				{{ event.users }}
-			</div>
-
-			<ng-template pTemplate="footer">
-				<p-button
-					styleClass="p-button-danger"
-					label="Obriši"
-					icon="pi pi-trash"
-					(click)="deleteClick(event.id)"
-				>
-				</p-button>
-				<p-button
-					styleClass="p-button-success"
-					label="Uredi"
-					icon="pi pi-pencil"
-					(click)="editEvent(event.id)"
-				>
-				</p-button>
-			</ng-template>
-		</p-card>
-	</div>
+<div class="grid grid-nogutter" *ngIf="allEvents$ | async as events; else eventsLoading">
+	<app-event-card *ngFor="let event of events" [event]="event" (editClicked)="editEvent($event)" (deleteClicked)="deleteClick($event)"></app-event-card>
 </div>
+
+<ng-template #eventsLoading>
+	<div class="grid grid-nogutter">
+	<app-event-card></app-event-card>
+	<app-event-card></app-event-card>
+	<app-event-card></app-event-card>
+	<app-event-card></app-event-card>
+	</div>
+</ng-template>

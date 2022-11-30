@@ -2,33 +2,25 @@
   <h1>Stup ponosa</h1>
 </div>
 
-<!-- Grid -->
-<div class="grid grid-nogutter" *ngIf="highestCredit$ | async as highestCredit">
-  <div *ngFor="let credit of highestCredit" class="col">
-    <p-card
-      header="{{ credit.user }}"
-      styleClass="p-card-shadow"
-    >
-      <ng-template pTemplate="header">
-        <img alt="Card"
-             onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
-             src="{{ credit.picture }}"/>
-      </ng-template>
-      <div>
-        <p>Iznos:</p>
-        {{ credit.amount }}
-      </div>
-      <ng-template pTemplate="footer">
-        <p-button
-          (click)="showInfo(credit.userId)"
-          label="Info"
-          styleClass="p-button-primary"
-        >
-        </p-button>
-      </ng-template>
-    </p-card>
-  </div>
+<div class="grid grid-nogutter" *ngIf="highestCredit$ | async as credits; else creditsLoading">
+  <app-user-credit-card *ngFor="let credit of credits" [credit]="credit" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
+ 
 </div>
+
+
+
+<ng-template #creditsLoading>
+	<div class="grid grid-nogutter">
+	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card></app-user-credit-card>
+	</div>
+</ng-template>
 
 <p-dialog
   [(visible)]="infoDialog"
