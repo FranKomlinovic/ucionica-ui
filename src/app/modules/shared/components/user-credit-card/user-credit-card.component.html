@@ -1,44 +1,41 @@
+<div>
+	<p-card
+		header="{{ credit?.user ? credit?.user : '' }}"
+		styleClass="p-card-shadow"
+	>
+		<ng-template pTemplate="header">
+			<img
+				*ngIf="credit?.picture; else pictureLoader"
+				onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+				src="{{ credit?.picture }}"
+			/>
+		</ng-template>
+		<div>
+			<p>Iznos:</p>
+			<ng-container *ngIf="credit?.amount; else textLoading">
+					{{ credit?.amount }}
+			</ng-container>
+		</div>
+		<ng-template pTemplate="footer">
+			<p-button
+				*ngIf="credit; else buttonsLoader"
+				(click)="showInfo(credit.userId!)"
+				label="Info"
+				styleClass="p-button-primary"
+			>
+			</p-button>
+		</ng-template>
+	</p-card>
+</div>
 
-    <div>
-      <p-card
-        header="{{credit?.user ?  credit?.user : '' }}"
-        styleClass="p-card-shadow"
-      >
-        <ng-template pTemplate="header">
-          <img alt="Card"
-          *ngIf="credit?.picture; else pictureLoader"
-               onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
-               src="{{ credit?.picture }}"/>
-        </ng-template>
-        <div>
-          <p>Iznos:</p>
-          <ng-container *ngIf="credit?.amount; else textLoading">
-            {{ credit?.amount }}
-        </ng-container>
-        
-        </div>
-        <ng-template pTemplate="footer">
-          <p-button
-          *ngIf="credit; else buttonsLoader"
-            (click)="showInfo(credit.userId!)"
-            label="Info"
-            styleClass="p-button-primary"
-          >
-          </p-button>
-        </ng-template>
-      </p-card>
-    </div>
+<ng-template #pictureLoader>
+	<p-skeleton shape="square" width="100%" height="20rem"></p-skeleton>
+</ng-template>
 
+<ng-template #textLoading>
+	<p-skeleton height="2rem" width="100%"></p-skeleton>
+</ng-template>
 
-    <ng-template #pictureLoader>
-        <p-skeleton shape="square" width="100%" height="20rem"></p-skeleton>
-      </ng-template>
-      
-      <ng-template #textLoading>
-        <p-skeleton height="2rem" width="100%"></p-skeleton>
-      </ng-template>
-      
-      <ng-template #buttonsLoader>
-           <p-skeleton height="3rem" width="6rem"></p-skeleton>
-      </ng-template>
-      
+<ng-template #buttonsLoader>
+	<p-skeleton height="3rem" width="6rem"></p-skeleton>
+</ng-template>

@@ -28,6 +28,7 @@ export class MenuComponent implements OnInit {
 	selectItem(i: number) {
 		this.activeItemIndex = i;
 		this.router.navigate([this.menuItems[i].routerLink]);
+		this.title = this.menuItems[i].label || "Učionica";
 		window.scrollTo({ top: 0, behavior: "smooth" });
 
 		if (this.isMobileSize) {
