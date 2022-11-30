@@ -44,7 +44,6 @@
 			optionValue="id"
 			display="chip"
 			[filter]="true"
-			[itemSize]="34"
 			[autofocusFilter]="true"
 			[appendTo]="'body'"
 		>
@@ -90,14 +89,14 @@
 
 <!-- Grid -->
 <div class="grid grid-nogutter" *ngIf="allEvents$ | async as events; else eventsLoading">
-	<app-event-card *ngFor="let event of events" [event]="event" (editClicked)="editEvent($event)" (deleteClicked)="deleteClick($event)"></app-event-card>
+	<app-event-card class="col" *ngFor="let event of events" [event]="event" (editClicked)="editEvent($event)" (deleteClicked)="deleteClick($event)"></app-event-card>
 </div>
 
 <ng-template #eventsLoading>
 	<div class="grid grid-nogutter">
-	<app-event-card></app-event-card>
-	<app-event-card></app-event-card>
-	<app-event-card></app-event-card>
-	<app-event-card></app-event-card>
+	<app-event-card class="col"></app-event-card>
+	<app-event-card class="col"></app-event-card>
+	<app-event-card class="col"></app-event-card>
+	<app-event-card class="col"></app-event-card>
 	</div>
 </ng-template>

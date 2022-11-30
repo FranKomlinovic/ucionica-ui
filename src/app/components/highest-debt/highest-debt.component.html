@@ -4,20 +4,20 @@
 
 <!-- Grid -->
 <div class="grid grid-nogutter" *ngIf="highestDebt$ | async as highestDebt; else creditsLoading">
-  <app-user-credit-card *ngFor="let debt of highestDebt" [credit]="debt" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
+  <app-user-credit-card class="col" *ngFor="let debt of highestDebt" [credit]="debt" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
  
 </div>
 
 <ng-template #creditsLoading>
 	<div class="grid grid-nogutter">
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
 	</div>
 </ng-template>
 

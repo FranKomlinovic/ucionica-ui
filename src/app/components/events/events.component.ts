@@ -4,7 +4,7 @@ import { IEvent } from "../../interfaces/event.interface";
 import { BackendService } from "../../backend.service";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { delay, map, takeUntil, tap } from "rxjs/operators";
+import { map, takeUntil, tap } from "rxjs/operators";
 import { ReplaySubject, Subject } from "rxjs";
 import { FeedbackService } from "src/app/services/feedback.service";
 import { HttpErrorResponse } from "@angular/common/http";

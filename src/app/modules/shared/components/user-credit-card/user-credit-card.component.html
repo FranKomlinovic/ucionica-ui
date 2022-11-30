@@ -1,5 +1,5 @@
 
-    <div class="col">
+    <div>
       <p-card
         header="{{credit?.user ?  credit?.user : '' }}"
         styleClass="p-card-shadow"
@@ -31,7 +31,7 @@
 
 
     <ng-template #pictureLoader>
-        <p-skeleton shape="square" width="30rem" height="20rem"></p-skeleton>
+        <p-skeleton shape="square" width="100%" height="20rem"></p-skeleton>
       </ng-template>
       
       <ng-template #textLoading>

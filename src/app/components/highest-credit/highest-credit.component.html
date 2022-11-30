@@ -3,7 +3,7 @@
 </div>
 
 <div class="grid grid-nogutter" *ngIf="highestCredit$ | async as credits; else creditsLoading">
-  <app-user-credit-card *ngFor="let credit of credits" [credit]="credit" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
+  <app-user-credit-card class="col" *ngFor="let credit of credits" [credit]="credit" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
  
 </div>
 
@@ -11,14 +11,14 @@
 
 <ng-template #creditsLoading>
 	<div class="grid grid-nogutter">
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
-	<app-user-credit-card></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
+	<app-user-credit-card class="col"></app-user-credit-card>
 	</div>
 </ng-template>
 
