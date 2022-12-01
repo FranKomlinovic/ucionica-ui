@@ -1,11 +1,7 @@
-<div>
-  <h1>Stup srama</h1>
-</div>
-
 <!-- Grid -->
 <div class="grid grid-nogutter" *ngIf="highestDebt$ | async as highestDebt; else creditsLoading">
   <app-user-credit-card class="col" *ngFor="let debt of highestDebt" [credit]="debt" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
- 
+
 </div>
 
 <ng-template #creditsLoading>

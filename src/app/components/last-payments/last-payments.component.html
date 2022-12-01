@@ -1,5 +1,4 @@
 <div>
-  <h1>Posljednje uplate</h1>
   <p-button
     (click)="openDialog()"
     icon="pi pi-external-link"
@@ -73,7 +72,7 @@
 <div class="grid grid-nogutter" *ngIf="allPayments$ | async as payments; else paymentsLoader">
     <app-last-payment-card class="col" *ngFor="let payment of payments" [payment]="payment" (deleteClicked)="deleteClick($event)" (editClicked)="editPayment($event)"></app-last-payment-card>
   </div>
-  
+
 <ng-template #paymentsLoader>
   <div class="grid grid-nogutter">
   <app-last-payment-card class="col"></app-last-payment-card>

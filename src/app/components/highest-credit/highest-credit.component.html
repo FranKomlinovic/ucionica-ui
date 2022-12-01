@@ -1,10 +1,6 @@
-<div>
-  <h1>Stup ponosa</h1>
-</div>
-
 <div class="grid grid-nogutter" *ngIf="highestCredit$ | async as credits; else creditsLoading">
   <app-user-credit-card class="col" *ngFor="let credit of credits" [credit]="credit" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
- 
+
 </div>
 
 
