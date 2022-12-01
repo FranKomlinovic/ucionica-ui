@@ -22,13 +22,15 @@ import { UserCardComponent } from "./components/user-card/user-card.component";
 import { FileUploadModule } from "primeng/fileupload";
 import { EventCardComponent } from "./components/event-card/event-card.component";
 import { UserCreditCardComponent } from "./components/user-credit-card/user-credit-card.component";
+import { LastPaymentCardComponent } from './components/last-payment-card/last-payment-card.component';
 
 @NgModule({
 	declarations: [
 		SpinnerComponent,
 		UserCardComponent,
 		EventCardComponent,
-		UserCreditCardComponent
+		UserCreditCardComponent,
+  LastPaymentCardComponent
 	],
 	imports: [
 		CommonModule,
@@ -76,7 +78,8 @@ import { UserCreditCardComponent } from "./components/user-credit-card/user-cred
 		// Components
 		UserCardComponent,
 		EventCardComponent,
-		UserCreditCardComponent
+		UserCreditCardComponent,
+		LastPaymentCardComponent
 	],
 	providers: []
 })

@@ -10,9 +10,11 @@ import {
 	FormGroup,
 	Validators
 } from "@angular/forms";
-import { map, takeUntil } from "rxjs/operators";
+import { map, switchMap, takeUntil, tap } from "rxjs/operators";
 import { FeedbackService } from "../../services/feedback.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { CreatePaymentModel } from "src/app/models/create-payment.model";
+import { IUserDetails } from "src/app/interfaces/user-details.interface";
 
 @Component({
 	selector: "app-last-payments",
@@ -23,7 +25,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class LastPaymentsComponent implements OnInit {
 	users: IUser[] = [];
 
-	allPayments$ = new Subject<IPayment[]>();
+	allPayments$ = new Subject<IPayment[] | null>();
 	users$ = new BehaviorSubject<IUser[]>(this.users);
 	destroy$ = new Subject<boolean>();
 
@@ -33,7 +35,7 @@ export class LastPaymentsComponent implements OnInit {
 			nonNullable: true,
 			validators: Validators.required
 		}),
-		time: new FormControl<Date | null>(null, {
+		time: new FormControl<Date | null>(new Date(), {
 			validators: Validators.required
 		}),
 		description: new FormControl<string>(""),
@@ -70,13 +72,12 @@ export class LastPaymentsComponent implements OnInit {
 	}
 
 	loadPayments(): void {
-		this.feedbackService.spinner$.next(true);
+		this.allPayments$.next(null);
 		this.backendService
 			.getAllPayments()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((payments: IPayment[]) => {
 				this.allPayments$.next(payments);
-				this.feedbackService.spinner(false);
 			});
 	}
 
@@ -100,7 +101,7 @@ export class LastPaymentsComponent implements OnInit {
 	}
 
 	deletePayment(id: string) {
-		this.feedbackService.spinner(true);
+		this.allPayments$.next(null);
 		this.backendService.deletePayment(id).subscribe({
 			next: a => {
 				this.loadPayments();
@@ -131,17 +132,22 @@ export class LastPaymentsComponent implements OnInit {
 
 	editPayment(paymentId: string) {
 		this.openDialog();
-		this.feedbackService.spinner(true);
 		this.backendService
 			.getPaymentById(paymentId)
 			.pipe(
-				map(res => ({
-					...res,
-					time: new Date(res.time!)
-				}))
+				tap(() => this.feedbackService.spinner(true)),
+				switchMap(payment =>
+					this.backendService.getUserDetails(payment.userId).pipe(
+						map((user: IUserDetails) => ({
+							...payment,
+							userId: user,
+							time: new Date(payment.time!)
+						}))
+					)
+				)
 			)
-			.subscribe(value => {
-				this.formGroup.patchValue(value);
+			.subscribe(payment => {
+				this.formGroup.patchValue(payment as unknown as IUserDetails);
 				this.feedbackService.spinner(false);
 			});
 	}

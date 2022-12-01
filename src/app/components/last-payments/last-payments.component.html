@@ -70,41 +70,19 @@
 
 
 <!-- Grid -->
-<div class="grid grid-nogutter" *ngIf="allPayments$ | async as payments">
-
-  <div *ngFor="let payment of payments" class="col">
-    <p-card
-      header="{{ payment.user }}"
-      styleClass="p-card-shadow"
-      subheader="{{ payment.time }}"
-    >
-      <ng-template pTemplate="header">
-        <img alt="Card"
-             onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
-             src="{{ payment.picture }}"/>
-      </ng-template>
-      <div>
-        <h4>Iznos</h4>
-        {{ payment.amount }}
-        <h4>Opis</h4>
-        {{ payment.description }}
-      </div>
-
-      <ng-template pTemplate="footer">
-        <p-button
-          (click)="deleteClick(payment.id)"
-          icon="pi pi-trash"
-          styleClass="p-button-danger"
-        >
-        </p-button>
-        <p-button
-          styleClass="p-button-success"
-          label="Uredi"
-          icon="pi pi-pencil"
-          (click)="editPayment(payment.id)"
-        >
-        </p-button>
-      </ng-template>
-    </p-card>
+<div class="grid grid-nogutter" *ngIf="allPayments$ | async as payments; else paymentsLoader">
+    <app-last-payment-card class="col" *ngFor="let payment of payments" [payment]="payment" (deleteClicked)="deleteClick($event)" (editClicked)="editPayment($event)"></app-last-payment-card>
   </div>
+  
+<ng-template #paymentsLoader>
+  <div class="grid grid-nogutter">
+  <app-last-payment-card class="col"></app-last-payment-card>
+  <app-last-payment-card class="col"></app-last-payment-card>
+  <app-last-payment-card class="col"></app-last-payment-card>
+  <app-last-payment-card class="col"></app-last-payment-card>
+  <app-last-payment-card class="col"></app-last-payment-card>
+  <app-last-payment-card class="col"></app-last-payment-card>
+  <app-last-payment-card class="col"></app-last-payment-card>
+  <app-last-payment-card class="col"></app-last-payment-card>
 </div>
+</ng-template>
