@@ -3,7 +3,7 @@ import { BackendService } from '../../backend.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { IUserDetails } from '../../interfaces/user-details.interface';
 import { IEvent } from '../../interfaces/event.interface';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { FeedbackService } from '../../services/feedback.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Auth, Storage } from 'aws-amplify';
@@ -20,7 +20,7 @@ export class UserInfoComponent implements OnInit {
     @Input() readOnly: boolean;
     @ViewChild(FileUpload) fileUpload: FileUpload;
 
-    userEvents$ = new Subject<IEvent[]>();
+    userEvents$ = new BehaviorSubject<IEvent[] | null>(null);
     userDetails$ = new BehaviorSubject<IUserDetails | null>(null);
     destroy$ = new Subject<boolean>();
 
@@ -36,6 +36,7 @@ export class UserInfoComponent implements OnInit {
     }
 
     loadUserEvents(): void {
+        this.userEvents$.next(new Array(2).fill(null));
         this.backendService
             .getEventsByUserId(this.userId)
             .pipe(takeUntil(this.destroy$))

@@ -7,8 +7,10 @@
     >
         <div photo>
             <img
-                onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
-                src="{{ debt?.picture }}"
+                src="{{
+                    debt?.picture ||
+                        'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
+                }}"
             />
         </div>
 

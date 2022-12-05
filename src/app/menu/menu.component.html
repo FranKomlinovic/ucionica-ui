@@ -1,27 +1,27 @@
 <div class="menu grid grid-nogutter">
-  <div class="grid grid-nogutter" id="mobile-header">
-    <div (click)="toggleMenu()" class="col-fixed burger-menu">
-      <i class="pi pi-bars"></i>
+    <div class="grid grid-nogutter" id="mobile-header">
+        <div (click)="toggleMenu()" class="col-fixed burger-menu">
+            <i class="pi pi-bars"></i>
+        </div>
+        <div class="col title">
+            <span>{{ title }}</span>
+        </div>
+        <div (click)="signOut()" *ngIf="menuVisible" class="col-fixed log-out">
+            <i class="pi pi-sign-out"></i>
+        </div>
     </div>
-    <div class="col title">
-      <span>{{ title }}</span>
-    </div>
-    <div (click)="signOut()" *ngIf="menuVisible" class="col-fixed log-out">
-      <i class="pi pi-sign-out"></i>
-    </div>
-  </div>
-  <ng-container *ngIf="menuVisible">
-    <div
-      (click)="selectItem(i)"
-      *ngFor="let item of menuItems; let i = index"
-      [ngClass]="{ 'active-item': i === activeItemIndex }"
-      class="menu-item col {{ item.styleClass }}"
-      pTooltip="{{ item.label }}"
-      tooltipPosition="bottom"
-    >
-      <i class="{{ item.icon }}"></i>
-      <span class="tooltip">{{ item.label }}</span>
-    </div>
-  </ng-container>
+    <ng-container *ngIf="menuVisible">
+        <div
+            (click)="selectItem(i)"
+            *ngFor="let item of menuItems; let i = index"
+            [ngClass]="{ 'active-item': i === activeItemIndex }"
+            class="menu-item col {{ item.styleClass }}"
+            pTooltip="{{ item.label }}"
+            tooltipPosition="bottom"
+        >
+            <i class="{{ item.icon }}"></i>
+            <span class="tooltip">{{ item.label }}</span>
+        </div>
+    </ng-container>
 </div>
 <div class="placeholder"></div>

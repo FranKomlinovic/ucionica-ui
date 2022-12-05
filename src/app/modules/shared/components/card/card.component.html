@@ -6,6 +6,13 @@
         ></ng-content>
     </div>
 
+    <div class="upload">
+        <ng-content
+            select="[upload]"
+            *ngIf="data; else buttonsLoading"
+        ></ng-content>
+    </div>
+
     <div class="card-header">
         <ng-content
             select="[title]"

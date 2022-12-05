@@ -1,10 +1,27 @@
 <div class="grid grid-nogutter">
     <app-card [data]="userDetails$ | async" class="col">
         <div photo>
-            <img
-                onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
-                src="userDetails$.value.picture"
-            />
+            <div photo>
+                <img
+                    src="{{
+                        userDetails$.value?.picture ||
+                            'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
+                    }}"
+                />
+            </div>
+        </div>
+
+        <div upload>
+            <p-fileUpload
+                [chooseIcon]="'pi pi-upload'"
+                mode="basic"
+                [customUpload]="true"
+                (uploadHandler)="upload($event)"
+                accept="image/*"
+                [maxFileSize]="2000000"
+                [auto]="true"
+                chooseLabel="Promijeni sliku"
+            ></p-fileUpload>
         </div>
 
         <b title>{{ userDetails$.value?.username }}</b>
@@ -61,6 +78,46 @@
             </p-button>
         </div>
     </app-card>
+</div>
+
+<div>
+    <h2>Eventi</h2>
+    <div class="grid grid-nogutter">
+        <app-card
+            *ngFor="let event of userEvents$ | async"
+            [data]="event"
+            class="col"
+        >
+            <div photo>
+                <img
+                    src="{{
+                        event?.picture ||
+                            'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
+                    }}"
+                />
+            </div>
+
+            <b title>{{
+                event?.currentEvent ? '[UPRAVO] ' + event?.name : event?.name
+            }}</b>
+            <div subtitle>{{ event?.date + ' u ' + event?.startTime }}</div>
+
+            <div content>
+                <div>
+                    <b *ngIf="event?.currentEvent">TRENUTNO SE DEJSTVUJE</b>
+                </div>
+
+                <b>Opis:</b>
+                <div>{{ event?.description }}</div>
+
+                <b>Vrijeme:</b>
+                <div>{{ event?.startTime }} - {{ event?.endTime }}</div>
+
+                <b>Pozvani su:</b>
+                <div>{{ event?.users }}</div>
+            </div>
+        </app-card>
+    </div>
 </div>
 
 <p-tabView>
