@@ -1,87 +1,122 @@
 <div>
-  <p-button
-    (click)="openDialog()"
-    icon="pi pi-external-link"
-    label="Dodaj uplatu"
-    [loading]="(users$ | async) === null"
-  ></p-button>
-  <p-button
-    (click)="loadPayments()"
-    icon="pi pi-sync"
-    styleClass="p-button-secondary"
-  ></p-button>
+    <p-button
+        (click)="openDialog()"
+        icon="pi pi-external-link"
+        label="Dodaj uplatu"
+        [loading]="(users$ | async) === null"
+    ></p-button>
+    <p-button
+        (click)="loadPayments()"
+        icon="pi pi-sync"
+        styleClass="p-button-secondary"
+    ></p-button>
 </div>
 
 <p-dialog
-  header="Dodaj uplatu"
-  [(visible)]="displayDialog"
-  [modal]="true"
-  (onHide)="formGroup.reset()"
+    header="Dodaj uplatu"
+    [(visible)]="displayDialog"
+    [modal]="true"
+    (onHide)="formGroup.reset()"
 >
+    <form [formGroup]="formGroup">
+        <h5>Korisnik</h5>
+        <p-autoComplete
+            formControlName="userId"
+            [showEmptyMessage]="true"
+            (completeMethod)="filterUsers($event)"
+            [suggestions]="users || []"
+            [dropdown]="true"
+            field="username"
+            (onSelect)="selectUser($event)"
+        >
+        </p-autoComplete>
 
-  <form [formGroup]="formGroup">
-       <h5>Korisnik</h5>
-       <p-autoComplete
-      formControlName="userId"
-      [showEmptyMessage]="true"
-      (completeMethod)="filterUsers($event)"
-      [suggestions]="users || []"
-      [dropdown]="true"
-      field="username"
-      (onSelect)="selectUser($event)"
-    >
+        <h5>Vrijeme</h5>
+        <p-calendar
+            formControlName="time"
+            [showTime]="true"
+            [readonlyInput]="true"
+            [touchUI]="true"
+            [dateFormat]="'dd.mm.yy'"
+            [appendTo]="'body'"
+        ></p-calendar>
 
-    </p-autoComplete>
+        <h5>Iznos</h5>
+        <p-inputNumber
+            formControlName="amount"
+            currency="HRK"
+            locale="de-DE"
+            mode="currency"
+        ></p-inputNumber>
 
+        <h5>Opis</h5>
+        <textarea pInputTextarea formControlName="description"></textarea>
+    </form>
 
-    <h5>Vrijeme</h5>
-    <p-calendar
-      formControlName="time"
-      [showTime]="true"
-      [readonlyInput]="true"
-      [touchUI]="true"
-      [dateFormat]="'dd.mm.yy'"
-      [appendTo]="'body'"
-    ></p-calendar>
-
-    <h5>Iznos</h5>
-    <p-inputNumber
-      formControlName="amount"
-      currency="HRK"
-      locale="de-DE"
-      mode="currency"
-    ></p-inputNumber>
-
-    <h5>Opis</h5>
-    <textarea pInputTextarea formControlName="description"></textarea>
-
-  </form>
-
-  <ng-template pTemplate="footer">
-    <p-button
-      [disabled]="!formGroup.valid"
-      icon="pi pi-plus"
-      (click)="createPayment()"
-      label="Kreiraj"
-    ></p-button>
-  </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button
+            [disabled]="!formGroup.valid"
+            icon="pi pi-plus"
+            (click)="createPayment()"
+            label="Kreiraj"
+        ></p-button>
+    </ng-template>
 </p-dialog>
 
-
 <!-- Grid -->
-<div class="grid grid-nogutter" *ngIf="allPayments$ | async as payments; else paymentsLoader">
-    <app-last-payment-card class="col" *ngFor="let payment of payments" [payment]="payment" (deleteClicked)="deleteClick($event)" (editClicked)="editPayment($event)"></app-last-payment-card>
-  </div>
+<div class="grid grid-nogutter">
+    <app-card
+        *ngFor="let payment of allPayments$ | async"
+        [data]="payment"
+        class="col"
+    >
+        <div photo>
+            <img
+                onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+                src="payment?.picture"
+            />
+        </div>
 
-<ng-template #paymentsLoader>
-  <div class="grid grid-nogutter">
-  <app-last-payment-card class="col"></app-last-payment-card>
-  <app-last-payment-card class="col"></app-last-payment-card>
-  <app-last-payment-card class="col"></app-last-payment-card>
-  <app-last-payment-card class="col"></app-last-payment-card>
-  <app-last-payment-card class="col"></app-last-payment-card>
-  <app-last-payment-card class="col"></app-last-payment-card>
-  <app-last-payment-card class="col"></app-last-payment-card>
-  <app-last-payment-card class="col"></app-last-payment-card>
+        <b title>{{ payment.user }}</b>
+
+        <div content>
+            <b>Iznos:</b>
+            <div>
+                {{ payment?.amount }}
+            </div>
+            <b>Opis:</b>
+            <div>
+                {{ payment?.description }}
+            </div>
+        </div>
+
+        <div buttons>
+            <p-button
+                icon="pi pi-trash"
+                styleClass="p-button-danger"
+                (click)="deleteClick(payment?.id!)"
+            >
+            </p-button>
+            <p-button
+                styleClass="p-button-success"
+                label="Uredi"
+                icon="pi pi-pencil"
+                (click)="editPayment(payment.id!)"
+            >
+            </p-button>
+        </div>
+    </app-card>
 </div>
-</ng-template>
+
+<!-- <ng-template #paymentsLoader>
+    <div class="grid grid-nogutter">
+        <app-last-payment-card class="col"></app-last-payment-card>
+        <app-last-payment-card class="col"></app-last-payment-card>
+        <app-last-payment-card class="col"></app-last-payment-card>
+        <app-last-payment-card class="col"></app-last-payment-card>
+        <app-last-payment-card class="col"></app-last-payment-card>
+        <app-last-payment-card class="col"></app-last-payment-card>
+        <app-last-payment-card class="col"></app-last-payment-card>
+        <app-last-payment-card class="col"></app-last-payment-card>
+    </div>
+</ng-template> -->

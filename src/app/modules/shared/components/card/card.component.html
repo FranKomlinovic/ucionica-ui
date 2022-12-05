@@ -1,0 +1,49 @@
+<div class="card-wrapper">
+    <div class="card-photo">
+        <ng-content
+            select="[photo]"
+            *ngIf="data; else photoLoading"
+        ></ng-content>
+    </div>
+
+    <div class="card-header">
+        <ng-content
+            select="[title]"
+            *ngIf="data; else textLoading"
+        ></ng-content>
+        <ng-content
+            select="[subtitle]"
+            *ngIf="data; else textLoading"
+        ></ng-content>
+    </div>
+
+    <div class="card-content">
+        <ng-content
+            *ngIf="data; else contentLoading"
+            select="[content]"
+        ></ng-content>
+    </div>
+
+    <div class="card-buttons">
+        <ng-content
+            select="[buttons]"
+            *ngIf="data; else buttonsLoading"
+        ></ng-content>
+    </div>
+</div>
+
+<ng-template #photoLoading>
+    <p-skeleton shape="square" width="100%" height="20rem"></p-skeleton>
+</ng-template>
+
+<ng-template #textLoading>
+    <p-skeleton height="2rem" width="100%"></p-skeleton>
+</ng-template>
+
+<ng-template #buttonsLoading>
+    <p-skeleton height="2rem" width="100%"></p-skeleton>
+</ng-template>
+
+<ng-template #contentLoading>
+    <p-skeleton height="2rem" width="100%"></p-skeleton>
+</ng-template>

@@ -1,51 +1,115 @@
+<div class="grid grid-nogutter">
+    <app-card [data]="userDetails$ | async" class="col">
+        <div photo>
+            <img
+                onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+                src="userDetails$.value.picture"
+            />
+        </div>
 
+        <b title>{{ userDetails$.value?.username }}</b>
+        <div subtitle>Stanje : {{ userDetails$.value?.balance }}</div>
 
-<app-user-card [userDetails]="userDetails$ | async" [readOnly]="false" (evidentStay)="confirmStay()" (uploadClicked)="upload($event)"></app-user-card>
+        <div content>
+            <b>Ukupno vrijeme provedeno:</b>
+            <div>
+                {{ userDetails$.value?.timeSpent }}
+            </div>
 
+            <b>Trajanje prosječnog djestva:</b>
+            <div>
+                {{ userDetails$.value?.averageTimeSpent }}
+            </div>
+
+            <b>Cijena prosječnog djestva:</b>
+            <div>
+                {{ userDetails$.value?.averageStayPrice }}
+            </div>
+
+            <b>Ukupna cijena dejstva:</b>
+            <div>
+                {{ userDetails$.value?.totalStayPrice }}
+            </div>
+
+            <b>Ukupne uplate:</b>
+            <div>
+                {{ userDetails$.value?.totalPayments }}
+            </div>
+        </div>
+
+        <div buttons>
+            <h5>
+                {{
+                    userDetails$.value?.currentlyActive
+                        ? 'Trenutno ste u učionici'
+                        : 'Jeste li u učionici?'
+                }}
+            </h5>
+            <p-button
+                (click)="confirmStay()"
+                label="{{
+                    userDetails$.value?.currentlyActive
+                        ? 'Odjavi se'
+                        : 'Prijavi dolazak'
+                }}"
+                styleClass="{{
+                    userDetails$.value?.currentlyActive
+                        ? 'p-button-danger'
+                        : 'p-button'
+                }}"
+            >
+            </p-button>
+        </div>
+    </app-card>
+</div>
 
 <p-tabView>
-  <p-tabPanel header="Moja dejstva">
-    <h3>Dejstva</h3>
-    <ng-container *ngIf="(userDetails$ | async)?.stays as stays; else textLoading">
+    <p-tabPanel header="Moja dejstva">
+        <h3>Dejstva</h3>
+        <ng-container
+            *ngIf="(userDetails$ | async)?.stays as stays; else textLoading"
+        >
+            <p-accordion [style]="{ width: '250px' }">
+                <div *ngFor="let stay of stays">
+                    <p-accordionTab header="{{ stay.date }}">
+                        <h4>Vrijeme</h4>
+                        <p>{{ stay.startTime }} - {{ stay.endTime }}</p>
+                        <h4>Cijena</h4>
+                        <p>{{ stay.price }}</p>
+                    </p-accordionTab>
+                </div>
+            </p-accordion>
+        </ng-container>
+    </p-tabPanel>
 
-      <p-accordion [style]="{ width: '250px' }">
-        <div *ngFor="let stay of stays">
-          <p-accordionTab header="{{ stay.date }}">
-            <h4>Vrijeme</h4>
-            <p>{{ stay.startTime }} - {{ stay.endTime }}</p>
-            <h4>Cijena</h4>
-            <p>{{ stay.price }}</p>
-          </p-accordionTab>
-        </div>
-      </p-accordion>
-    </ng-container>
-  </p-tabPanel>
-
-  <p-tabPanel header="Moje uplate">
-    <h3>Uplate</h3>
-    <ng-container *ngIf="(userDetails$ | async)?.payments as payments; else textLoading">
-    <p-accordion [style]="{ width: '250px' }">
-      <div *ngFor="let payment of (userDetails$ | async)?.payments">
-        <p-accordionTab header="{{ payment.date }}">
-          <h4>Vrijeme</h4>
-          <p>{{ payment.time }}</p>
-          <h4>Uplata</h4>
-          <p>{{ payment.amount }}</p>
-          <h4>Opis</h4>
-          <p>{{ payment.description }}</p>
-        </p-accordionTab>
-      </div>
-    </p-accordion>
-  </ng-container>
-  </p-tabPanel>
+    <p-tabPanel header="Moje uplate">
+        <h3>Uplate</h3>
+        <ng-container
+            *ngIf="
+                (userDetails$ | async)?.payments as payments;
+                else textLoading
+            "
+        >
+            <p-accordion [style]="{ width: '250px' }">
+                <div *ngFor="let payment of (userDetails$ | async)?.payments">
+                    <p-accordionTab header="{{ payment.date }}">
+                        <h4>Vrijeme</h4>
+                        <p>{{ payment.time }}</p>
+                        <h4>Uplata</h4>
+                        <p>{{ payment.amount }}</p>
+                        <h4>Opis</h4>
+                        <p>{{ payment.description }}</p>
+                    </p-accordionTab>
+                </div>
+            </p-accordion>
+        </ng-container>
+    </p-tabPanel>
 </p-tabView>
 
-
-
 <ng-template #pictureLoader>
-  <p-skeleton shape="square" size="20rem"></p-skeleton>
+    <p-skeleton shape="square" size="20rem"></p-skeleton>
 </ng-template>
 
 <ng-template #textLoading>
-  <p-skeleton height="2rem" width="100%"></p-skeleton>
+    <p-skeleton height="2rem" width="100%"></p-skeleton>
 </ng-template>
