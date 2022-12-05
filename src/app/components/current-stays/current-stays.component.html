@@ -1,6 +1,6 @@
 <div>
     <!-- Open form button -->
-    <div class="grid grid-nogutter">
+    <div class="grid grid-nogutter button-wrapper">
         <p-button
             (click)="openDialog()"
             *ngIf="admin"
@@ -26,7 +26,12 @@
 </div>
 
 <!-- Dialog -->
-<p-dialog [(visible)]="displayDialog" header="Dodaj dejstvo" [modal]="true">
+<p-dialog
+    [(visible)]="displayDialog"
+    header="Dodaj dejstvo"
+    [modal]="true"
+    (onHide)="resetForm()"
+>
     <h5>Korisnik</h5>
     <p-multiSelect
         [(ngModel)]="selectedUserAdvanced"

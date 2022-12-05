@@ -19,15 +19,10 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { SkeletonModule } from 'primeng/skeleton';
 import { FileUploadModule } from 'primeng/fileupload';
-import { LastPaymentCardComponent } from './components/last-payment-card/last-payment-card.component';
 import { CardComponent } from './components/card/card.component';
 
 @NgModule({
-    declarations: [
-        SpinnerComponent,
-        LastPaymentCardComponent,
-        CardComponent,
-    ],
+    declarations: [SpinnerComponent, CardComponent],
     imports: [
         CommonModule,
         TieredMenuModule,
@@ -72,7 +67,6 @@ import { CardComponent } from './components/card/card.component';
         SkeletonModule,
         FileUploadModule,
         // Components
-        LastPaymentCardComponent,
         CardComponent,
     ],
     providers: [],

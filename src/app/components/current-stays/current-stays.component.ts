@@ -115,7 +115,7 @@ export class CurrentStaysComponent implements OnInit {
             return;
         }
         for (const userModel of this.selectedUserAdvanced) {
-            this.evidentStay(userModel.id, this.date);
+            this.evidentStay(userModel.id, this.date!);
         }
     }
 
@@ -148,6 +148,11 @@ export class CurrentStaysComponent implements OnInit {
                 this.confirmationService.close();
             },
         });
+    }
+
+    resetForm() {
+        this.selectedUserAdvanced = [];
+        this.date = new Date();
     }
 
     showInfo(userId: string) {

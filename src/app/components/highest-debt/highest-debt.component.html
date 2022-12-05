@@ -1,12 +1,5 @@
 <!-- Grid -->
 <div class="grid grid-nogutter">
-    <!-- <app-user-credit-card
-        class="col"
-        *ngFor="let debt of highestDebt"
-        [credit]="debt"
-        (showInfoClicked)="showInfo($event)"
-    ></app-user-credit-card> -->
-
     <app-card
         *ngFor="let debt of highestDebt$ | async"
         [data]="debt"
