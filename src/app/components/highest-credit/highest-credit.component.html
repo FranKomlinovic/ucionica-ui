@@ -1,33 +1,44 @@
-<div class="grid grid-nogutter" *ngIf="highestCredit$ | async as credits; else creditsLoading">
-  <app-user-credit-card class="col" *ngFor="let credit of credits" [credit]="credit" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
+<div class="grid grid-nogutter">
+    <app-card
+        *ngFor="let credit of highestCredit$ | async as credits"
+        [data]="credit"
+        class="col"
+    >
+        <div photo>
+            <img
+                onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+                src="{{ credit?.picture }}"
+            />
+        </div>
 
+        <b title>{{ credit?.user ? credit?.user : '' }} </b>
+
+        <div content>
+            <b>Iznos:</b>
+            <div>{{ credit?.amount || null }}</div>
+        </div>
+
+        <div buttons>
+            <p-button
+                label="Info"
+                styleClass="p-button-info"
+                (click)="showInfo(credit?.userId!)"
+            >
+            </p-button>
+        </div>
+    </app-card>
 </div>
 
-
-
-<ng-template #creditsLoading>
-	<div class="grid grid-nogutter">
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	</div>
-</ng-template>
-
 <p-dialog
-  [(visible)]="infoDialog"
-  [baseZIndex]="10000"
-  [modal]="true"
-  header="Informacije o dejstveniku"
+    [(visible)]="infoDialog"
+    [baseZIndex]="10000"
+    [modal]="true"
+    header="Informacije o dejstveniku"
 >
-  <div *ngIf="infoDialog">
-    <app-user-info
-      [readOnly]="true"
-      [userId]="selectedUserId"
-    ></app-user-info>
-  </div>
+    <div *ngIf="infoDialog">
+        <app-user-info
+            [readOnly]="true"
+            [userId]="selectedUserId"
+        ></app-user-info>
+    </div>
 </p-dialog>

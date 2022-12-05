@@ -4,16 +4,10 @@ import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { IUser } from '../../interfaces/user.interface';
 import { BackendService } from '../../backend.service';
 import { BehaviorSubject, Subject } from 'rxjs';
-import {
-    AbstractControl,
-    FormControl,
-    FormGroup,
-    Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { FeedbackService } from '../../services/feedback.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CreatePaymentModel } from 'src/app/models/create-payment.model';
 import { IUserDetails } from 'src/app/interfaces/user-details.interface';
 
 @Component({
@@ -23,6 +17,7 @@ import { IUserDetails } from 'src/app/interfaces/user-details.interface';
     providers: [MessageService],
 })
 export class LastPaymentsComponent implements OnInit {
+    sekeletonLoader = new Array(5).fill(null);
     users: IUser[] = [];
 
     allPayments$ = new BehaviorSubject<IPayment[] | null>(null);
@@ -74,7 +69,7 @@ export class LastPaymentsComponent implements OnInit {
     }
 
     loadPayments(): void {
-        this.allPayments$.next(null);
+        this.allPayments$.next(this.sekeletonLoader);
         this.backendService
             .getAllPayments()
             .pipe(takeUntil(this.destroy$))

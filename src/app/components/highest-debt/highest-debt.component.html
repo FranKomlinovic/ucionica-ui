@@ -1,32 +1,52 @@
 <!-- Grid -->
-<div class="grid grid-nogutter" *ngIf="highestDebt$ | async as highestDebt; else creditsLoading">
-  <app-user-credit-card class="col" *ngFor="let debt of highestDebt" [credit]="debt" (showInfoClicked)="showInfo($event)"></app-user-credit-card>
+<div class="grid grid-nogutter">
+    <!-- <app-user-credit-card
+        class="col"
+        *ngFor="let debt of highestDebt"
+        [credit]="debt"
+        (showInfoClicked)="showInfo($event)"
+    ></app-user-credit-card> -->
 
+    <app-card
+        *ngFor="let debt of highestDebt$ | async"
+        [data]="debt"
+        class="col"
+    >
+        <div photo>
+            <img
+                onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
+                src="{{ debt?.picture }}"
+            />
+        </div>
+
+        <b title>{{ debt?.user ? debt?.user : '' }} </b>
+
+        <div content>
+            <b>Iznos:</b>
+            <div>{{ debt?.amount || null }}</div>
+        </div>
+
+        <div buttons>
+            <p-button
+                label="Info"
+                styleClass="p-button-info"
+                (click)="showInfo(debt?.userId!)"
+            >
+            </p-button>
+        </div>
+    </app-card>
 </div>
 
-<ng-template #creditsLoading>
-	<div class="grid grid-nogutter">
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	<app-user-credit-card class="col"></app-user-credit-card>
-	</div>
-</ng-template>
-
 <p-dialog
-  [(visible)]="infoDialog"
-  [baseZIndex]="10000"
-  [modal]="true"
-  header="Informacije o dejstveniku"
+    [(visible)]="infoDialog"
+    [baseZIndex]="10000"
+    [modal]="true"
+    header="Informacije o dejstveniku"
 >
-  <div *ngIf="infoDialog">
-    <app-user-info
-      [readOnly]="true"
-      [userId]="selectedUserId"
-    ></app-user-info>
-  </div>
+    <div *ngIf="infoDialog">
+        <app-user-info
+            [readOnly]="true"
+            [userId]="selectedUserId"
+        ></app-user-info>
+    </div>
 </p-dialog>

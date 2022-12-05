@@ -73,20 +73,18 @@
         <div photo>
             <img
                 onerror="this.src='https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg';this.onerror='';"
-                src="payment?.picture"
+                src="{{ payment?.picture || null }}"
             />
         </div>
 
-        <b title>{{ payment.user }}</b>
+        <b title>{{ payment?.user || null }}</b>
 
         <div content>
             <b>Iznos:</b>
-            <div>
-                {{ payment?.amount }}
-            </div>
+            <div>{{ payment?.amount || null }}</div>
             <b>Opis:</b>
             <div>
-                {{ payment?.description }}
+                {{ payment?.description || null }}
             </div>
         </div>
 
@@ -107,16 +105,3 @@
         </div>
     </app-card>
 </div>
-
-<!-- <ng-template #paymentsLoader>
-    <div class="grid grid-nogutter">
-        <app-last-payment-card class="col"></app-last-payment-card>
-        <app-last-payment-card class="col"></app-last-payment-card>
-        <app-last-payment-card class="col"></app-last-payment-card>
-        <app-last-payment-card class="col"></app-last-payment-card>
-        <app-last-payment-card class="col"></app-last-payment-card>
-        <app-last-payment-card class="col"></app-last-payment-card>
-        <app-last-payment-card class="col"></app-last-payment-card>
-        <app-last-payment-card class="col"></app-last-payment-card>
-    </div>
-</ng-template> -->

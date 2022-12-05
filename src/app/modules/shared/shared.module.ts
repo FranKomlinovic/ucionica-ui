@@ -18,19 +18,13 @@ import { TabViewModule } from 'primeng/tabview';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { SkeletonModule } from 'primeng/skeleton';
-import { UserCardComponent } from './components/user-card/user-card.component';
 import { FileUploadModule } from 'primeng/fileupload';
-import { EventCardComponent } from './components/event-card/event-card.component';
-import { UserCreditCardComponent } from './components/user-credit-card/user-credit-card.component';
 import { LastPaymentCardComponent } from './components/last-payment-card/last-payment-card.component';
 import { CardComponent } from './components/card/card.component';
 
 @NgModule({
     declarations: [
         SpinnerComponent,
-        UserCardComponent,
-        EventCardComponent,
-        UserCreditCardComponent,
         LastPaymentCardComponent,
         CardComponent,
     ],
@@ -78,9 +72,6 @@ import { CardComponent } from './components/card/card.component';
         SkeletonModule,
         FileUploadModule,
         // Components
-        UserCardComponent,
-        EventCardComponent,
-        UserCreditCardComponent,
         LastPaymentCardComponent,
         CardComponent,
     ],
