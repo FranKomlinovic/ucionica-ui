@@ -71,12 +71,7 @@
         class="col"
     >
         <div photo>
-            <img
-                src="{{
-                    payment?.picture ||
-                        'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
-                }}"
-            />
+            <img src="{{ payment?.picture }}" />
         </div>
 
         <b title>{{ payment?.user || null }}</b>

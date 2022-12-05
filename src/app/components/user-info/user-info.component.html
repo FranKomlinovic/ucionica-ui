@@ -2,27 +2,20 @@
     <app-card [data]="userDetails$ | async" class="col">
         <div photo>
             <div photo>
-                <img
-                    src="{{
-                        userDetails$.value?.picture ||
-                            'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
-                    }}"
-                />
+                <img src="{{ userDetails$.value?.picture }}" />
             </div>
         </div>
 
-        <div upload>
-            <p-fileUpload
-                [chooseIcon]="'pi pi-upload'"
-                mode="basic"
-                [customUpload]="true"
-                (uploadHandler)="upload($event)"
-                accept="image/*"
-                [maxFileSize]="2000000"
-                [auto]="true"
-                chooseLabel="Promijeni sliku"
-            ></p-fileUpload>
-        </div>
+        <p-fileUpload
+            [chooseIcon]="'pi pi-upload'"
+            mode="basic"
+            [customUpload]="true"
+            (uploadHandler)="upload($event)"
+            accept="image/*"
+            [maxFileSize]="2000000"
+            [auto]="true"
+            chooseLabel="Promijeni sliku"
+        ></p-fileUpload>
 
         <b title>{{ userDetails$.value?.username }}</b>
         <div subtitle>Stanje : {{ userDetails$.value?.balance }}</div>
@@ -52,16 +45,17 @@
             <div>
                 {{ userDetails$.value?.totalPayments }}
             </div>
-        </div>
 
-        <div buttons>
-            <h5>
+            <div style="font-weight: bold">
                 {{
                     userDetails$.value?.currentlyActive
                         ? 'Trenutno ste u učionici'
                         : 'Jeste li u učionici?'
                 }}
-            </h5>
+            </div>
+        </div>
+
+        <div buttons>
             <p-button
                 (click)="confirmStay()"
                 label="{{
@@ -88,14 +82,7 @@
             [data]="event"
             class="col"
         >
-            <div photo>
-                <img
-                    src="{{
-                        event?.picture ||
-                            'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
-                    }}"
-                />
-            </div>
+            <div photo><img src="{{ event?.picture }}" /></div>
 
             <b title>{{
                 event?.currentEvent ? '[UPRAVO] ' + event?.name : event?.name

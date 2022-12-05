@@ -6,12 +6,7 @@
         class="col"
     >
         <div photo>
-            <img
-                src="{{
-                    debt?.picture ||
-                        'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
-                }}"
-            />
+            <img src="{{ debt?.picture }}" />
         </div>
 
         <b title>{{ debt?.user ? debt?.user : '' }} </b>

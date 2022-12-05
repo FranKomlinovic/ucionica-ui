@@ -72,12 +72,7 @@
 <div class="grid grid-nogutter">
     <app-card *ngFor="let stay of allStays$ | async" [data]="stay" class="col">
         <div photo>
-            <img
-                src="{{
-                    stay?.picture ||
-                        'https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg'
-                }}"
-            />
+            <img src="{{ stay?.picture }}" />
         </div>
 
         <b title>{{ stay?.user }}</b>

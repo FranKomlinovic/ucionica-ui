@@ -4,6 +4,10 @@
         justify-content: center;
         align-items: center;
 
+        b {
+            color: rgb(73, 73, 73);
+        }
+
         .card-wrapper {
             border-radius: 0.5rem;
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -13,29 +17,44 @@
             margin-bottom: 1rem;
             width: 100%;
 
-            b {
-                color: rgb(73, 73, 73);
+            .wrapper {
+                padding: 1rem;
             }
 
             .card-header,
-            .card-content,
-            .card-buttons {
-                padding: 1rem;
+            .card-content {
+                padding: 1rem 0;
+            }
+
+            .card-header {
+                b {
+                    font-size: 1.6rem;
+                }
+                div {
+                    font-size: 1.4rem;
+                }
             }
 
             .card-photo {
                 width: 100%;
                 height: 15rem;
                 overflow: hidden;
+                position: relative;
 
                 img {
                     width: 100%;
                     height: auto;
-                }
-            }
 
-            .upload {
-                margin: 0.5rem;
+                    &:before {
+                        content: ' ';
+                        display: block;
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        background-image: url('https://hungarytoday.hu/wp-content/uploads/2021/04/hide-the-pain-harold.jpg');
+                        background-size: cover;
+                    }
+                }
             }
 
             .card-content {

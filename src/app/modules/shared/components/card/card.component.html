@@ -6,36 +6,38 @@
         ></ng-content>
     </div>
 
-    <div class="upload">
-        <ng-content
-            select="[upload]"
-            *ngIf="data; else buttonsLoading"
-        ></ng-content>
-    </div>
+    <div class="wrapper">
+        <div class="upload">
+            <ng-content
+                select="[upload]"
+                *ngIf="data; else buttonsLoading"
+            ></ng-content>
+        </div>
 
-    <div class="card-header">
-        <ng-content
-            select="[title]"
-            *ngIf="data; else textLoading"
-        ></ng-content>
-        <ng-content
-            select="[subtitle]"
-            *ngIf="data; else textLoading"
-        ></ng-content>
-    </div>
+        <div class="card-header">
+            <ng-content
+                select="[title]"
+                *ngIf="data; else textLoading"
+            ></ng-content>
+            <ng-content
+                select="[subtitle]"
+                *ngIf="data; else textLoading"
+            ></ng-content>
+        </div>
 
-    <div class="card-content">
-        <ng-content
-            *ngIf="data; else contentLoading"
-            select="[content]"
-        ></ng-content>
-    </div>
+        <div class="card-content">
+            <ng-content
+                *ngIf="data; else contentLoading"
+                select="[content]"
+            ></ng-content>
+        </div>
 
-    <div class="card-buttons">
-        <ng-content
-            select="[buttons]"
-            *ngIf="data; else buttonsLoading"
-        ></ng-content>
+        <div class="card-buttons">
+            <ng-content
+                select="[buttons]"
+                *ngIf="data; else buttonsLoading"
+            ></ng-content>
+        </div>
     </div>
 </div>
 
