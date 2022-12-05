@@ -1,17 +1,17 @@
 .grid-nogutter {
-  .col {
-    padding: 1rem !important;
-  }
+    .col {
+        padding: 1rem !important;
+    }
 }
 
 @media (max-width: 500px) {
-  .grid-nogutter {
-    .col {
-      padding:0 !important;
-    }
+    .grid-nogutter {
+        .col {
+            padding: 0 !important;
+        }
 
-    .p-button{
-        padding: 0.5rem  1rem !important;
+        .p-button {
+            padding: 0.5rem 1rem !important;
+        }
     }
-  }
 }
