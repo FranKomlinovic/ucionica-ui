@@ -5,17 +5,19 @@
                 <img src="{{ userDetails$.value?.picture }}" />
             </div>
         </div>
-
-        <p-fileUpload
-            [chooseIcon]="'pi pi-upload'"
-            mode="basic"
-            [customUpload]="true"
-            (uploadHandler)="upload($event)"
-            accept="image/*"
-            [maxFileSize]="2000000"
-            [auto]="true"
-            chooseLabel="Promijeni sliku"
-        ></p-fileUpload>
+        
+        <div upload>
+            <p-fileUpload
+                [chooseIcon]="'pi pi-upload'"
+                mode="basic"
+                [customUpload]="true"
+                (uploadHandler)="upload($event)"
+                accept="image/*"
+                [maxFileSize]="2000000"
+                [auto]="true"
+                chooseLabel="Promijeni sliku"
+            ></p-fileUpload>
+        </div>
 
         <b title>{{ userDetails$.value?.username }}</b>
         <div subtitle>Stanje : {{ userDetails$.value?.balance }}</div>
