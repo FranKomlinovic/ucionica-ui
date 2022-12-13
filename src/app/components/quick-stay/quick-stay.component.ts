@@ -63,7 +63,12 @@ export class QuickStayComponent implements OnInit {
             .postStay(this.formGroup.getRawValue().userId, new Date())
             .subscribe({
                 next: (a) => {
-                    this.feedbackService.successToast(a.message);
+                    let message = a.message;
+                    if (message.startsWith('Zbogom')) {
+                        this.feedbackService.infoToast(message);
+                    } else {
+                        this.feedbackService.successToast(a.message);
+                    }
                 },
                 error: (err: HttpErrorResponse) => {
                     this.feedbackService.errorToast(err.message);
