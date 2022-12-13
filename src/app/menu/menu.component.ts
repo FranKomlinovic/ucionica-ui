@@ -90,6 +90,11 @@ export class MenuComponent implements OnInit {
                 label: 'Događaji',
             },
             {
+                icon: 'pi pi-fw pi-plus',
+                routerLink: '/quick-stay',
+                label: 'Brzi unos',
+            },
+            {
                 icon: 'pi pi-fw pi-sign-out',
                 command: () => this.confirmSignOut(),
                 styleClass: 'last',

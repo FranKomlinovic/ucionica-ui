@@ -1,0 +1,24 @@
+<h1>
+  Prijava/Odjava
+</h1>
+<form [formGroup]="formGroup">
+  <h5>Korisnik</h5>
+  <p-autoComplete
+    formControlName="userId"
+    [showEmptyMessage]="true"
+    (completeMethod)="filterUsers($event)"
+    [suggestions]="users || []"
+    [dropdown]="true"
+    field="username"
+    (onSelect)="selectUser($event)"
+  >
+  </p-autoComplete>
+
+</form>
+<br>
+<p-button
+  [disabled]="!formGroup.valid"
+  icon="pi pi-plus"
+  (click)="evidentStay()"
+  label="Kreiraj"
+></p-button>
