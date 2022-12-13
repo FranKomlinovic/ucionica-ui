@@ -63,6 +63,7 @@ export class QuickStayComponent implements OnInit {
             .postStay(this.formGroup.getRawValue().userId, new Date())
             .subscribe({
                 next: (a) => {
+                    this.formGroup.reset();
                     let message = a.message;
                     if (message.startsWith('Zbogom')) {
                         this.feedbackService.infoToast(message);
