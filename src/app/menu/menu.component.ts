@@ -58,7 +58,7 @@ export class MenuComponent implements OnInit {
         this.listenToWindowResize();
 
         this.adminMenu = [
-            { icon: 'pi pi-fw pi-users', routerLink: '/', label: 'Dejstva' },
+            { icon: 'pi pi-fw pi-home', routerLink: '/', label: 'Dejstva' },
             {
                 icon: 'pi pi-fw pi-user',
                 routerLink: '/user-info',
@@ -102,11 +102,11 @@ export class MenuComponent implements OnInit {
         ];
 
         this.nonAdminMenu = [
-            { icon: 'pi pi-fw pi-home', routerLink: '/', label: 'Home' },
+            { icon: 'pi pi-fw pi-home', routerLink: '/', label: 'Dejstva' },
             {
-                icon: 'pi pi-fw pi-users',
-                routerLink: '/stays',
-                label: 'Trenutni dejstvenici',
+                icon: 'pi pi-fw pi-user',
+                routerLink: '/user-info',
+                label: 'Profil',
             },
             {
                 icon: 'pi pi-fw pi-sign-out',

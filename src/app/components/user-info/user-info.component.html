@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!readOnly">
   <h2>Eventi</h2>
   <div class="grid grid-nogutter">
     <app-card
@@ -6,7 +6,7 @@
       [data]="event"
       class="col"
     >
-      <div photo><img src="{{ event?.picture }}" /></div>
+      <div photo><img src="{{ event?.picture }}"/></div>
 
       <b title>{{
         event?.currentEvent ? '[UPRAVO] ' + event?.name : event?.name
@@ -32,112 +32,111 @@
   </div>
 </div>
 
-<h2>Profil</h2>
+<h2 *ngIf="!readOnly">Profil</h2>
 
 <div class="grid grid-nogutter">
-    <app-card [data]="userDetails$ | async" class="col">
-        <div photo>
-            <div photo>
-                <img src="{{ userDetails$.value?.picture }}" />
-            </div>
-        </div>
+  <app-card [data]="userDetails$ | async" class="col">
+    <div photo>
+      <div photo>
+        <img src="{{ userDetails$.value?.picture }}"/>
+      </div>
+    </div>
 
-        <div upload>
-            <p-fileUpload
-                [chooseIcon]="'pi pi-upload'"
-                mode="basic"
-                [customUpload]="true"
-                (uploadHandler)="upload($event)"
-                accept="image/*"
-                [maxFileSize]="2000000"
-                [auto]="true"
-                chooseLabel="Promijeni sliku"
-            ></p-fileUpload>
-        </div>
+    <div upload *ngIf="!readOnly">
+      <p-fileUpload
+        [chooseIcon]="'pi pi-upload'"
+        mode="basic"
+        [customUpload]="true"
+        (uploadHandler)="upload($event)"
+        accept="image/*"
+        [maxFileSize]="2000000"
+        [auto]="true"
+        chooseLabel="Promijeni sliku"
+      ></p-fileUpload>
+    </div>
 
-        <b title>{{ userDetails$.value?.username }}</b>
-        <div subtitle>Stanje : {{ userDetails$.value?.balance }}</div>
+    <b title>{{ userDetails$.value?.username }}</b>
+    <div subtitle>Stanje : {{ userDetails$.value?.balance }}</div>
 
-        <div content>
-            <b>Ukupno vrijeme provedeno:</b>
-            <div>
-                {{ userDetails$.value?.timeSpent }}
-            </div>
+    <div content>
+      <b>Ukupno vrijeme provedeno:</b>
+      <div>
+        {{ userDetails$.value?.timeSpent }}
+      </div>
 
-            <b>Trajanje prosječnog djestva:</b>
-            <div>
-                {{ userDetails$.value?.averageTimeSpent }}
-            </div>
+      <b>Trajanje prosječnog djestva:</b>
+      <div>
+        {{ userDetails$.value?.averageTimeSpent }}
+      </div>
 
-            <b>Cijena prosječnog djestva:</b>
-            <div>
-                {{ userDetails$.value?.averageStayPrice }}
-            </div>
+      <b>Cijena prosječnog djestva:</b>
+      <div>
+        {{ userDetails$.value?.averageStayPrice }}
+      </div>
 
-            <b>Ukupna cijena dejstva:</b>
-            <div>
-                {{ userDetails$.value?.totalStayPrice }}
-            </div>
+      <b>Ukupna cijena dejstva:</b>
+      <div>
+        {{ userDetails$.value?.totalStayPrice }}
+      </div>
 
-            <b>Ukupne uplate:</b>
-            <div>
-                {{ userDetails$.value?.totalPayments }}
-            </div>
-            </div>
+      <b>Ukupne uplate:</b>
+      <div>
+        {{ userDetails$.value?.totalPayments }}
+      </div>
+    </div>
 
 
-    </app-card>
+  </app-card>
 </div>
 
 
-
 <p-tabView>
-    <p-tabPanel header="Moja dejstva">
-        <h3>Dejstva</h3>
-        <ng-container
-            *ngIf="(userDetails$ | async)?.stays as stays; else textLoading"
-        >
-            <p-accordion [style]="{ width: '250px' }">
-                <div *ngFor="let stay of stays">
-                    <p-accordionTab header="{{ stay.date }}">
-                        <h4>Vrijeme</h4>
-                        <p>{{ stay.startTime }} - {{ stay.endTime }}</p>
-                        <h4>Cijena</h4>
-                        <p>{{ stay.price }}</p>
-                    </p-accordionTab>
-                </div>
-            </p-accordion>
-        </ng-container>
-    </p-tabPanel>
+  <p-tabPanel header="Moja dejstva">
+    <h3>Dejstva</h3>
+    <ng-container
+      *ngIf="(userDetails$ | async)?.stays as stays; else textLoading"
+    >
+      <p-accordion [style]="{ width: '250px' }">
+        <div *ngFor="let stay of stays">
+          <p-accordionTab header="{{ stay.date }}">
+            <h4>Vrijeme</h4>
+            <p>{{ stay.startTime }} - {{ stay.endTime }}</p>
+            <h4>Cijena</h4>
+            <p>{{ stay.price }}</p>
+          </p-accordionTab>
+        </div>
+      </p-accordion>
+    </ng-container>
+  </p-tabPanel>
 
-    <p-tabPanel header="Moje uplate">
-        <h3>Uplate</h3>
-        <ng-container
-            *ngIf="
+  <p-tabPanel header="Moje uplate">
+    <h3>Uplate</h3>
+    <ng-container
+      *ngIf="
                 (userDetails$ | async)?.payments as payments;
                 else textLoading
             "
-        >
-            <p-accordion [style]="{ width: '250px' }">
-                <div *ngFor="let payment of (userDetails$ | async)?.payments">
-                    <p-accordionTab header="{{ payment.date }}">
-                        <h4>Vrijeme</h4>
-                        <p>{{ payment.time }}</p>
-                        <h4>Uplata</h4>
-                        <p>{{ payment.amount }}</p>
-                        <h4>Opis</h4>
-                        <p>{{ payment.description }}</p>
-                    </p-accordionTab>
-                </div>
-            </p-accordion>
-        </ng-container>
-    </p-tabPanel>
+    >
+      <p-accordion [style]="{ width: '250px' }">
+        <div *ngFor="let payment of (userDetails$ | async)?.payments">
+          <p-accordionTab header="{{ payment.date }}">
+            <h4>Vrijeme</h4>
+            <p>{{ payment.time }}</p>
+            <h4>Uplata</h4>
+            <p>{{ payment.amount }}</p>
+            <h4>Opis</h4>
+            <p>{{ payment.description }}</p>
+          </p-accordionTab>
+        </div>
+      </p-accordion>
+    </ng-container>
+  </p-tabPanel>
 </p-tabView>
 
 <ng-template #pictureLoader>
-    <p-skeleton shape="square" size="20rem"></p-skeleton>
+  <p-skeleton shape="square" size="20rem"></p-skeleton>
 </ng-template>
 
 <ng-template #textLoading>
-    <p-skeleton height="2rem" width="100%"></p-skeleton>
+  <p-skeleton height="2rem" width="100%"></p-skeleton>
 </ng-template>
