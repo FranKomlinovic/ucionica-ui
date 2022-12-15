@@ -1,3 +1,39 @@
+<div>
+  <h2>Eventi</h2>
+  <div class="grid grid-nogutter">
+    <app-card
+      *ngFor="let event of userEvents$ | async"
+      [data]="event"
+      class="col"
+    >
+      <div photo><img src="{{ event?.picture }}" /></div>
+
+      <b title>{{
+        event?.currentEvent ? '[UPRAVO] ' + event?.name : event?.name
+        }}</b>
+      <div subtitle>{{ event?.date + ' u ' + event?.startTime }}</div>
+
+      <div content>
+        <div>
+          <b *ngIf="event?.currentEvent">TRENUTNO SE DEJSTVUJE</b>
+        </div>
+
+        <b>Opis:</b>
+        <div>{{ event?.description }}</div>
+
+        <b>Vrijeme:</b>
+        <div>{{ event?.startTime }} - {{ event?.endTime }}</div>
+
+        <b>Pozvani su:</b>
+        <div>{{ event?.users }}</div>
+      </div>
+    </app-card>
+    <p *ngIf="userEvents$.value?.length===0">Trenutno nema evenata</p>
+  </div>
+</div>
+
+<h2>Profil</h2>
+
 <div class="grid grid-nogutter">
     <app-card [data]="userDetails$ | async" class="col">
         <div photo>
@@ -5,7 +41,7 @@
                 <img src="{{ userDetails$.value?.picture }}" />
             </div>
         </div>
-        
+
         <div upload>
             <p-fileUpload
                 [chooseIcon]="'pi pi-upload'"
@@ -47,67 +83,13 @@
             <div>
                 {{ userDetails$.value?.totalPayments }}
             </div>
-
-            <div style="font-weight: bold">
-                {{
-                    userDetails$.value?.currentlyActive
-                        ? 'Trenutno ste u učionici'
-                        : 'Jeste li u učionici?'
-                }}
             </div>
-        </div>
 
-        <div buttons>
-            <p-button
-                (click)="confirmStay()"
-                label="{{
-                    userDetails$.value?.currentlyActive
-                        ? 'Odjavi se'
-                        : 'Prijavi dolazak'
-                }}"
-                styleClass="{{
-                    userDetails$.value?.currentlyActive
-                        ? 'p-button-danger'
-                        : 'p-button'
-                }}"
-            >
-            </p-button>
-        </div>
+
     </app-card>
 </div>
 
-<div>
-    <h2>Eventi</h2>
-    <div class="grid grid-nogutter">
-        <app-card
-            *ngFor="let event of userEvents$ | async"
-            [data]="event"
-            class="col"
-        >
-            <div photo><img src="{{ event?.picture }}" /></div>
 
-            <b title>{{
-                event?.currentEvent ? '[UPRAVO] ' + event?.name : event?.name
-            }}</b>
-            <div subtitle>{{ event?.date + ' u ' + event?.startTime }}</div>
-
-            <div content>
-                <div>
-                    <b *ngIf="event?.currentEvent">TRENUTNO SE DEJSTVUJE</b>
-                </div>
-
-                <b>Opis:</b>
-                <div>{{ event?.description }}</div>
-
-                <b>Vrijeme:</b>
-                <div>{{ event?.startTime }} - {{ event?.endTime }}</div>
-
-                <b>Pozvani su:</b>
-                <div>{{ event?.users }}</div>
-            </div>
-        </app-card>
-    </div>
-</div>
 
 <p-tabView>
     <p-tabPanel header="Moja dejstva">

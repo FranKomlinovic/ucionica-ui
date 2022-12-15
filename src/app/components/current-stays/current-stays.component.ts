@@ -16,6 +16,8 @@ import { HttpErrorResponse } from '@angular/common/http';
     providers: [MessageService],
 })
 export class CurrentStaysComponent implements OnInit {
+    currentUserId: string;
+    currentlyActive: boolean;
     skeletonLoader = new Array(5).fill(null);
     users$ = new Subject<IUser[]>();
     destroy$ = new Subject<boolean>();
@@ -48,6 +50,7 @@ export class CurrentStaysComponent implements OnInit {
 
     checkIfAdmin() {
         Auth.currentAuthenticatedUser().then((data) => {
+            this.currentUserId = data.username;
             let groups =
                 data.signInUserSession.accessToken.payload['cognito:groups'];
             if (groups === undefined) {
@@ -69,12 +72,33 @@ export class CurrentStaysComponent implements OnInit {
             });
     }
 
+    confirmStay() {
+        const isUserActive = this.currentlyActive;
+
+        this.confirmationService.confirm({
+            message: isUserActive
+                ? 'Želite li se odjaviti iz učionice?'
+                : 'Želite li se prijaviti u učionicu?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.evidentStay(this.currentUserId, new Date());
+            },
+            reject: () => {
+                this.confirmationService.close();
+            },
+        });
+    }
+
     loadCurrentStays(): void {
         this.allStays$.next(this.skeletonLoader);
         this.backendService
             .getAllStays()
             .pipe(takeUntil(this.destroy$))
             .subscribe((events: ICurrentStay[]) => {
+                let iCurrentStay = events.find((obj) => {
+                    return obj.userId === this.currentUserId;
+                });
+                this.currentlyActive = iCurrentStay != null;
                 this.allStays$.next(events);
                 this.numberOfStays = events.length;
                 this.feedbackService.spinner(false);

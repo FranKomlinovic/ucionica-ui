@@ -12,12 +12,12 @@ import { QuickStayComponent } from './components/quick-stay/quick-stay.component
 
 const routes: Routes = [
     { path: 'payments', component: LastPaymentsComponent },
-    { path: 'stays', component: CurrentStaysComponent },
+    { path: '', component: CurrentStaysComponent },
     { path: 'debtors', component: HighestDebtComponent },
     { path: 'creditors', component: HighestCreditComponent },
     { path: 'user-create', component: UserCreateComponent },
     { path: 'events', component: EventsComponent },
-    { path: '', component: HomepageInfoComponent },
+    { path: 'user-info', component: HomepageInfoComponent },
     { path: 'quick-stay', component: QuickStayComponent },
 ];
 

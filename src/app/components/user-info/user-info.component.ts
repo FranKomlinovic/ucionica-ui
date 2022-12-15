@@ -54,34 +54,6 @@ export class UserInfoComponent implements OnInit {
             });
     }
 
-    evidentStay(userId: string) {
-        this.feedbackService.spinner$.next(true);
-        this.backendService
-            .postStay(userId, new Date())
-            .subscribe((response) => {
-                this.feedbackService.successToast(response.message);
-                this.loadUserDetails();
-                this.confirmationService.close();
-            });
-    }
-
-    confirmStay() {
-        const isUserActive = this.userDetails$.value?.currentlyActive;
-
-        this.confirmationService.confirm({
-            message: isUserActive
-                ? 'Želite li se odjaviti iz učionice?'
-                : 'Želite li se prijaviti u učionicu?',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                this.evidentStay(this.userDetails$.value?.id!);
-            },
-            reject: () => {
-                this.confirmationService.close();
-            },
-        });
-    }
-
     upload(event: any) {
         this.feedbackService.spinner$.next(true);
 
