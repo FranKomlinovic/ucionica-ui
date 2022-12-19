@@ -7,7 +7,6 @@
     }}
   </div>
 </div>
-
 <div>
   <p-button
     [loading]="(allStays$ | async) === null"
@@ -27,6 +26,9 @@
 </div>
 <h2>Dejstvenici</h2>
 <!-- Open form button -->
+<div *ngIf="isSundayAndAdmin()">
+  <p-badge value="Danas iznesite smeće" size="large" severity="success"></p-badge>
+</div>
 <div class="grid grid-nogutter button-wrapper">
   <p-button
     (click)="openDialog()"
@@ -87,6 +89,7 @@
 
   <ng-template pTemplate="footer">
     <p-button
+      [disabled]="isFormValid()"
       (click)="saveStay()"
       icon="pi pi-plus"
       label="Kreiraj"

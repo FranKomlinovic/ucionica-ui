@@ -183,4 +183,15 @@ export class CurrentStaysComponent implements OnInit {
         this.selectedUserId = userId;
         this.infoDialog = true;
     }
+
+    isSundayAndAdmin(): boolean {
+        return new Date().getDay() === 0 && this.admin;
+    }
+
+    isFormValid() {
+        return (
+            this.selectedUserAdvanced === undefined ||
+            this.selectedUserAdvanced.length === 0
+        );
+    }
 }
