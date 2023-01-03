@@ -8,19 +8,18 @@
   </div>
 </div>
 <div>
-  <p-button
+  <p-button *ngIf="this.currentlyActive"
     [loading]="(allStays$ | async) === null"
-    (click)="confirmStay()"
-    label="{{
-                    this.currentlyActive
-                        ? 'Odjavi se'
-                        : 'Prijavi se'
-                }}"
-    styleClass="{{
-                    this.currentlyActive
-                        ? 'p-button-danger'
-                        : 'p-button'
-                }}"
+    (click)="confirmPersonalEndStay()"
+    label="Odjavi se"
+    styleClass="p-button-danger"
+  >
+  </p-button>
+  <p-button *ngIf="!this.currentlyActive"
+            [loading]="(allStays$ | async) === null"
+            (click)="confirmStay()"
+            label="Prijavi se"
+            styleClass="p-button-success"
   >
   </p-button>
 </div>

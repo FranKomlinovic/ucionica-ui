@@ -76,12 +76,23 @@ export class CurrentStaysComponent implements OnInit {
         const isUserActive = this.currentlyActive;
 
         this.confirmationService.confirm({
-            message: isUserActive
-                ? 'Želite li se odjaviti iz učionice?'
-                : 'Želite li se prijaviti u učionicu?',
+            message: 'Želite li se prijaviti u učionicu?',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 this.evidentStay(this.currentUserId, new Date());
+            },
+            reject: () => {
+                this.confirmationService.close();
+            },
+        });
+    }
+
+    confirmPersonalEndStay() {
+        this.confirmationService.confirm({
+            message: 'Želite li se odjaviti iz učionice?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.endStay(this.currentUserId, new Date());
             },
             reject: () => {
                 this.confirmationService.close();
@@ -108,6 +119,21 @@ export class CurrentStaysComponent implements OnInit {
     evidentStay(userId: string, date: Date) {
         this.feedbackService.spinner$.next(true);
         this.backendService.postStay(userId, date).subscribe({
+            next: (a) => {
+                this.feedbackService.successToast(a.message);
+                this.loadCurrentStays();
+                this.displayDialog = false;
+            },
+            error: (err: HttpErrorResponse) => {
+                this.displayDialog = false;
+                this.feedbackService.errorToast(err.message);
+            },
+        });
+    }
+
+    endStay(userId: string, date: Date) {
+        this.feedbackService.spinner$.next(true);
+        this.backendService.endStay(userId, date).subscribe({
             next: (a) => {
                 this.feedbackService.successToast(a.message);
                 this.loadCurrentStays();
@@ -149,7 +175,7 @@ export class CurrentStaysComponent implements OnInit {
                 'Jeste li sigurni da želite završiti dejstvo za ovog korisnika?',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.evidentStay(id, new Date());
+                this.endStay(id, new Date());
                 this.confirmationService.close();
                 this.loadCurrentStays();
             },
