@@ -34,7 +34,7 @@ export class LastPaymentsComponent implements OnInit {
             validators: Validators.required,
         }),
         description: new FormControl<string>(''),
-        amount: new FormControl<number>(100, {
+        amount: new FormControl<number>(10, {
             nonNullable: true,
             validators: Validators.required,
         }),
