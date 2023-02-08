@@ -29,6 +29,7 @@ import { FeedbackService } from './services/feedback.service';
 import { MenuComponent } from './menu/menu.component';
 import { QuickStayComponent } from './components/quick-stay/quick-stay.component';
 import { BadgeModule } from 'primeng/badge';
+import { EndStayComponent } from './components/end-stay/end-stay.component';
 
 Amplify.configure({
     Auth: {
@@ -58,6 +59,7 @@ Amplify.configure({
         EventsComponent,
         MenuComponent,
         QuickStayComponent,
+        EndStayComponent,
     ],
     imports: [
         AppRoutingModule,

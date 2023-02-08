@@ -1,0 +1,29 @@
+<h5>Dejstvenik: </h5>
+<input type="text" size="30" pInputText [ngModel]="stayToEnd.user" [disabled]="true" />
+
+<h5>Vrijeme prijave: </h5>
+<input type="text" size="30" pInputText [ngModel]="stayToEnd.startTime" [disabled]="true" />
+
+<h5>Vrijeme odjave: </h5>
+<div>
+  <div>
+    <p-calendar
+      [(ngModel)]="date"
+      [showTime]="true"
+      [readonlyInput]="true"
+      [touchUI]="true"
+      [dateFormat]="'dd.mm.yy'"
+      [appendTo]="'body'"
+    ></p-calendar>
+  </div>
+  <br>
+  <div>
+    <p-button
+      (onClick)="endStay()"
+      label="Odjavi"
+      styleClass="p-button-success"
+    >
+    </p-button>
+  </div>
+
+</div>

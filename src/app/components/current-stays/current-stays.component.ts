@@ -8,12 +8,14 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FeedbackService } from '../../services/feedback.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EndStayComponent } from '../end-stay/end-stay.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-current-stays',
     templateUrl: './current-stays.component.html',
     styleUrls: ['./current-stays.component.scss'],
-    providers: [MessageService],
+    providers: [MessageService, DialogService],
 })
 export class CurrentStaysComponent implements OnInit {
     currentUserId: string;
@@ -39,7 +41,8 @@ export class CurrentStaysComponent implements OnInit {
     constructor(
         private backendService: BackendService,
         private confirmationService: ConfirmationService,
-        private feedbackService: FeedbackService
+        private feedbackService: FeedbackService,
+        private dialogService: DialogService
     ) {}
 
     ngOnInit(): void {
@@ -169,20 +172,15 @@ export class CurrentStaysComponent implements OnInit {
         }
     }
 
-    confirmEndStay(id: string) {
-        this.confirmationService.confirm({
-            message:
-                'Jeste li sigurni da želite završiti dejstvo za ovog korisnika?',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                this.endStay(id, new Date());
-                this.confirmationService.close();
-                this.loadCurrentStays();
-            },
-            reject: () => {
-                this.confirmationService.close();
-            },
-        });
+    confirmEndStay(stay: ICurrentStay) {
+        this.dialogService
+            .open(EndStayComponent, {
+                data: stay,
+                contentStyle: { overflow: 'auto' },
+                baseZIndex: 10000,
+                header: 'Odjavi dejstvenika',
+            })
+            .onClose.subscribe(() => this.loadCurrentStays());
     }
 
     confirmEndAllStays() {
