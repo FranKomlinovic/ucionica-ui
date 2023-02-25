@@ -29,6 +29,7 @@ export class CurrentStaysComponent implements OnInit {
     displayDialog: boolean = false;
     spinnerOn: boolean = false;
     admin: boolean = false;
+    officer: boolean = false;
     //Form controls
     selectedUserAdvanced: IUser[];
     date: Date = new Date();
@@ -58,10 +59,15 @@ export class CurrentStaysComponent implements OnInit {
                 data.signInUserSession.accessToken.payload['cognito:groups'];
             if (groups === undefined) {
                 this.admin = false;
+                this.officer = false;
                 return;
             }
             if (groups.includes('Generali')) {
                 this.admin = true;
+                this.officer = true;
+            }
+            if (groups.includes('Oficiri')) {
+                this.officer = true;
             }
         });
     }

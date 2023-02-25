@@ -9,10 +9,10 @@
 </div>
 <div>
   <p-button *ngIf="this.currentlyActive"
-    [loading]="(allStays$ | async) === null"
-    (click)="confirmPersonalEndStay()"
-    label="Odjavi se"
-    styleClass="p-button-danger"
+            [loading]="(allStays$ | async) === null"
+            (click)="confirmPersonalEndStay()"
+            label="Odjavi se"
+            styleClass="p-button-danger"
   >
   </p-button>
   <p-button *ngIf="!this.currentlyActive"
@@ -23,113 +23,114 @@
   >
   </p-button>
 </div>
-<h2>Dejstvenici</h2>
-<!-- Open form button -->
-<div *ngIf="isSundayAndAdmin()">
-  <p-badge value="Danas iznesite smeće" size="large" severity="success"></p-badge>
-</div>
-<div class="grid grid-nogutter button-wrapper">
-  <p-button
-    (click)="openDialog()"
-    *ngIf="admin"
-    [loading]="(users$ | async) === null"
-    icon="pi pi-external-link"
-    styleClass="col"
-    label="Evidentiraj dolazak"
-  ></p-button>
-  <p-button
-    (click)="confirmEndAllStays()"
-    *ngIf="admin"
-    label="Završi dejstvo"
-    styleClass="p-button-danger col"
-  ></p-button>
-  <p-button
-    (click)="loadCurrentStays()"
-    [loading]="(allStays$ | async) === null"
-    icon="pi pi-sync"
-    label="{{ 'Broj dejstvenika: ' + numberOfStays }}"
-    styleClass="p-button-secondary col"
-  ></p-button>
-</div>
-
-<!-- Dialog -->
-<p-dialog
-  [(visible)]="displayDialog"
-  header="Dodaj dejstvo"
-  [modal]="true"
-  (onHide)="resetForm()"
->
-  <h5>Korisnik</h5>
-  <p-multiSelect
-    [(ngModel)]="selectedUserAdvanced"
-    [filter]="true"
-    [itemSize]="34"
-    [options]="(users$ | async) || []"
-    [showToggleAll]="false"
-    [virtualScroll]="true"
-    class="multiselect-custom-virtual-scroll"
-    optionLabel="username"
-  >
-    <ng-template let-user pTemplate="item">
-      <div class="country-item">
-        <div>{{ user.username }}</div>
-      </div>
-    </ng-template>
-  </p-multiSelect>
-  <h5>Datum</h5>
-  <p-calendar
-    [(ngModel)]="date"
-    [showTime]="true"
-    [readonlyInput]="true"
-    [touchUI]="true"
-    [dateFormat]="'dd.mm.yy'"
-    [appendTo]="'body'"
-  ></p-calendar>
-
-  <ng-template pTemplate="footer">
+<div *ngIf="officer">
+  <h2>Dejstvenici</h2>
+  <!-- Open form button -->
+  <div *ngIf="isSundayAndAdmin()">
+    <p-badge value="Danas iznesite smeće" size="large" severity="success"></p-badge>
+  </div>
+  <div class="grid grid-nogutter button-wrapper">
     <p-button
-      [disabled]="isFormValid()"
-      (click)="saveStay()"
-      icon="pi pi-plus"
-      label="Kreiraj"
+      (click)="openDialog()"
+      *ngIf="admin"
+      [loading]="(users$ | async) === null"
+      icon="pi pi-external-link"
+      styleClass="col"
+      label="Evidentiraj dolazak"
     ></p-button>
-  </ng-template>
-</p-dialog>
+    <p-button
+      (click)="confirmEndAllStays()"
+      *ngIf="admin"
+      label="Završi dejstvo"
+      styleClass="p-button-danger col"
+    ></p-button>
+    <p-button
+      (click)="loadCurrentStays()"
+      [loading]="(allStays$ | async) === null"
+      icon="pi pi-sync"
+      label="{{ 'Broj dejstvenika: ' + numberOfStays }}"
+      styleClass="p-button-secondary col"
+    ></p-button>
+  </div>
 
-<!-- Grid -->
-<div class="grid grid-nogutter">
-  <app-card *ngFor="let stay of allStays$ | async" [data]="stay" class="col">
-    <div photo>
-      <img src="{{ stay?.picture }}"/>
-    </div>
+  <!-- Dialog -->
+  <p-dialog
+    [(visible)]="displayDialog"
+    header="Dodaj dejstvo"
+    [modal]="true"
+    (onHide)="resetForm()"
+  >
+    <h5>Korisnik</h5>
+    <p-multiSelect
+      [(ngModel)]="selectedUserAdvanced"
+      [filter]="true"
+      [itemSize]="34"
+      [options]="(users$ | async) || []"
+      [showToggleAll]="false"
+      [virtualScroll]="true"
+      class="multiselect-custom-virtual-scroll"
+      optionLabel="username"
+    >
+      <ng-template let-user pTemplate="item">
+        <div class="country-item">
+          <div>{{ user.username }}</div>
+        </div>
+      </ng-template>
+    </p-multiSelect>
+    <h5>Datum</h5>
+    <p-calendar
+      [(ngModel)]="date"
+      [showTime]="true"
+      [readonlyInput]="true"
+      [touchUI]="true"
+      [dateFormat]="'dd.mm.yy'"
+      [appendTo]="'body'"
+    ></p-calendar>
 
-    <b title>{{ stay?.user }}</b>
-    <div subtitle>
-      {{ stay?.startTime }}
-    </div>
-
-    <div content>
-      <b>Saldo:</b>
-      <div>{{ stay?.balance }}</div>
-    </div>
-
-    <div buttons>
+    <ng-template pTemplate="footer">
       <p-button
-        (click)="confirmEndStay(stay)"
-        label="Odjavi"
-        styleClass="p-button-secondary"
-      >
-      </p-button>
-      <p-button
-        (click)="showInfo(stay.userId)"
-        label="Info"
-        styleClass="p-button-info"
-      >
-      </p-button>
-    </div>
-  </app-card>
+        [disabled]="isFormValid()"
+        (click)="saveStay()"
+        icon="pi pi-plus"
+        label="Kreiraj"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+
+  <!-- Grid -->
+  <div class="grid grid-nogutter">
+    <app-card *ngFor="let stay of allStays$ | async" [data]="stay" class="col">
+      <div photo>
+        <img src="{{ stay?.picture }}"/>
+      </div>
+
+      <b title>{{ stay?.user }}</b>
+      <div subtitle>
+        {{ stay?.startTime }}
+      </div>
+
+      <div content>
+        <b>Saldo:</b>
+        <div>{{ stay?.balance }}</div>
+      </div>
+
+      <div buttons *ngIf="admin">
+        <p-button
+          (click)="confirmEndStay(stay)"
+          label="Odjavi"
+          styleClass="p-button-secondary"
+        >
+        </p-button>
+        <p-button
+          (click)="showInfo(stay.userId)"
+          label="Info"
+          styleClass="p-button-info"
+        >
+        </p-button>
+      </div>
+    </app-card>
+  </div>
 </div>
-
 <p-dialog
   [(visible)]="infoDialog"
   [baseZIndex]="10000"
